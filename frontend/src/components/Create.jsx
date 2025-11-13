@@ -32,6 +32,12 @@ export const Create = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [inputData, setInputData] = React.useState({
+        title:"",
+        start_date:"",
+        due_date:"",
+        content:""
+  })
 
   return (
     <div>
@@ -43,14 +49,16 @@ export const Create = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+            <div>aaa{inputData.title}</div>
           <Typography sx={{ textAlign: 'center',margin:"20px" }} id="modal-modal-title" variant="h6" component="h2">
             新規タスク登録
           </Typography>
-          <Box component="form" onSubmit={""} sx={{textAlign:"center"}}>
-            <TextField label={"タスク名"} sx={TextFieldStyle}/>
-            <TextField label={"開始日時"} sx={TextFieldStyle}/>
-            <TextField label={"完了期限"} sx={TextFieldStyle}/>
-            <TextField label={"タスク詳細"} sx={TextFieldStyle}/>
+          
+          <Box component="form"  sx={{textAlign:"center"}}>
+            <TextField label={"タスク名"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
+            <TextField label={"開始日時"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
+            <TextField label={"完了期限"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
+            <TextField label={"タスク詳細"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,content:e.target.value})}/>
             <Box>
             <CustomButton detail={{text:'登録',bgcolor:'#1976d2'}}/>
             <CustomButton detail={{text:'キャンセル',bgcolor:'#c55858ff'}}/>
