@@ -6,13 +6,12 @@ export const TaskList = () => {
 
     const [tasks, setTasks] = useState([]);
 
-    const url = "http://localhost/api/tasks"
+    const API_URL = "http://localhost/api/tasks"
 
     useEffect(() => {
       (async () => {
         try {
-          const res = await axios.get(url);
-          console.log(res.data.tasks);
+          const res = await axios.get(API_URL);
           setTasks(res.data.tasks);
         } catch (e) {
             return e;
@@ -20,7 +19,6 @@ export const TaskList = () => {
     })();
 }, []);
 
-console.log('tasks',tasks);
   return (
     <>
     <div>

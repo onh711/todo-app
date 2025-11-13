@@ -32,22 +32,36 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TaskCreateRequest $request)
-    {
-        DB::beginTransaction();
-        try {
-            $validated = $request->validated();
+    // public function store(TaskCreateRequest $request)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $validated = $request->validated();
 
-            $task = new Task();
-            $task->title   = $validated["title"];
-            $task->content = $validated["content"];
-            $task->start_date = $validated["start_date"];
-            $task->save();
-            DB::commit();
-            return response()->json($tasks, 201);
-        } catch (\Exception$e) {
-            DB::rollBack();
-            throw $e;
+    //         $task = new Task();
+    //         $task->title = $validated["title"];
+    //         $task->content = $validated["content"];
+    //         $task->start_date = $validated["start_date"];
+    //         $task->save();
+    //         DB::commit();
+    //         return response()->json($tasks, 201);
+    //     } catch (\Exception$e) {
+    //         DB::rollBack();
+    //         throw $e;
+    //     }
+    // }
+
+    public function store(Request $request)
+    {
+        try {
+        $task = new Task();
+        $task->title = $request["title"];
+        $task->content = $request["content"];
+        $task->start_date = $request["start_date"];
+        $task->save();
+        return response()->json($tasks, 201);
+         } catch (\Exception$e) {
+                throw $e;
         }
     }
 
