@@ -23,7 +23,7 @@ console.log('tasks',tasks);
   return (
     <>
     <div>
-        <h1>タスク一覧a</h1>
+        <h1>タスク一覧</h1>
         <button>新規作成</button>
             <div style={{display:"flex"}}>
                 <p>検索：<input type="text" /></p> 

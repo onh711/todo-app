@@ -17,7 +17,7 @@ class TaskController extends Controller
         // return response()->json($tasks);
 
         $tasks = ['tasks'=>Task::all()];
-        return response()->json($tasks);
+        return response()->json($tasks, 200);
 
     }
 
@@ -32,9 +32,23 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TaskCreateRequest $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $validated = $request->validated();
+
+            $task = new Task();
+            $task->title   = $validated["title"];
+            $task->content = $validated["content"];
+            $task->start_date = $validated["start_date"];
+            $task->save();
+            DB::commit();
+            return response()->json($tasks, 201);
+        } catch (\Exception$e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**
