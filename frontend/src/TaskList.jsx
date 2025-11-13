@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios";
+import { Create } from './components/Create';
 
 export const TaskList = () => {
 
@@ -24,7 +25,7 @@ console.log('tasks',tasks);
     <>
     <div>
         <h1>タスク一覧</h1>
-        <button>新規作成</button>
+        <Create/>
             <div style={{display:"flex"}}>
                 <p>検索：<input type="text" /></p> 
                 <p>並べ替え：<input type="text" /></p> 
