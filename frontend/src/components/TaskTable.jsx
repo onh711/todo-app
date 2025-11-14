@@ -19,13 +19,15 @@ export const TaskTable = () => {
 }, []);
 
   const deleteTask = async (id) => {
-    try {
-      const API_URL = `http://localhost/api/tasks/${id}`;
-      await axios.delete(API_URL);
-      return true;
-    } catch (e) {
-      console.error('タスク削除エラー:', e);
-      throw e;
+    if(window.confirm("本当に削除しますか？")){
+      try {
+        const API_URL = `http://localhost/api/tasks/${id}`;
+        await axios.delete(API_URL);
+        return true;
+      } catch (e) {
+        console.error('タスク削除エラー:', e);
+        throw e;
+      }
     }
   }
 
@@ -48,7 +50,7 @@ export const TaskTable = () => {
             <div key={task.id} style={{borderRadius:"10px",border:"solid, thin",margin:"20px", display:"flex"}}>
                <span style={{margin:"20px"}}>{task.title}</span>
                <span style={{margin:"20px"}}>{task.start_date}</span> 
-               <span style={{margin:"20px"}}>{task.due_date  == null ? "--" : ""}</span> 
+               <span style={{margin:"20px"}}>{task.due_date  == null ? "--" : task.due_date}</span> 
                <span style={{margin:"20px"}}>{task.status}</span> 
                <Edit task={task} />
                <button onClick={()=>deleteTask(task.id)}>削除</button>
