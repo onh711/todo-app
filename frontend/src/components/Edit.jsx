@@ -40,7 +40,7 @@ export const Edit = (props) => {
 
   const [inputData, setInputData] = useState({
         user_id:userId,
-        title:"",
+        title:props.task.title,
         start_date:"",
         due_date:"",
         content:"",
@@ -71,7 +71,7 @@ export const Edit = (props) => {
           </Typography>
           
           <Box component="form"  sx={{textAlign:"center"}}>
-            <TextField label={"タスク名"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
+            <TextField label={"タスク名"} sx={TextFieldStyle} value={inputData.title} onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
             <TextField type={"datetime-local"} label={"開始日時"} sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
             <TextField type={"datetime-local"} label={"完了期限"} sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
             <TextField label={"タスク詳細"} sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,content:e.target.value})}/>

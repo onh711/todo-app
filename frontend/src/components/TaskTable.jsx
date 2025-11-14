@@ -4,8 +4,8 @@ import axios from "axios";
 
 export const TaskTable = () => {
 
-        const [tasks, setTasks] = useState([]);
-        const API_URL = "http://localhost/api/tasks"
+    const [tasks, setTasks] = useState([]);
+    const API_URL = "http://localhost/api/tasks"
     
     useEffect(() => {
       (async () => {
@@ -18,7 +18,17 @@ export const TaskTable = () => {
     })();
 }, []);
 
-console.log(tasks)
+  const deleteTask = async (id) => {
+    try {
+      const API_URL = `http://localhost/api/tasks/${id}`;
+      await axios.delete(API_URL);
+      return true;
+    } catch (e) {
+      console.error('タスク削除エラー:', e);
+      throw e;
+    }
+  }
+
   return (
     <>
         <div style={{display:"flex"}}>
@@ -41,7 +51,7 @@ console.log(tasks)
                <span style={{margin:"20px"}}>{task.due_date  == null ? "--" : ""}</span> 
                <span style={{margin:"20px"}}>{task.status}</span> 
                <Edit task={task} />
-               <button >削除</button>
+               <button onClick={()=>deleteTask(task.id)}>削除</button>
         </div>)}
     </>
   )

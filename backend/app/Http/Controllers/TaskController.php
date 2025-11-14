@@ -110,6 +110,12 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+        $task = Task::find($id);
+        $task->delete();
+        return response()->json($task, 200);
+        } catch (\Exception$e) {
+            throw $e;
+        }
     }
 }
