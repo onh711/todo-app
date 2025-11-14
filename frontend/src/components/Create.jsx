@@ -35,7 +35,11 @@ export const Create = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const userId = 1; //ログイン機能作成後にログインユーザの情報を渡すように変更する
+
   const [inputData, setInputData] = React.useState({
+        user_id:userId,
         title:"",
         start_date:"",
         due_date:"",
@@ -47,7 +51,7 @@ export const Create = () => {
       const API_URL = "http://localhost/api/tasks"
       console.log(inputData);
       try {
-      await axios.post(API_URL, { inputData });
+      await axios.post(API_URL, { ...inputData });
       } catch (e) {
       console.error(e);
       }
@@ -70,7 +74,7 @@ export const Create = () => {
           <Box component="form"  sx={{textAlign:"center"}}>
             <TextField label={"タスク名"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
             <TextField type={"date"} label={"開始日時"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
-            <TextField label={"完了期限"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
+            <TextField type={"date"} label={"完了期限"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
             <TextField label={"タスク詳細"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,content:e.target.value})}/>
             <Box sx={{justifyContent:'center'}}>
         

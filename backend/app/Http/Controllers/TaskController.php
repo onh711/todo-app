@@ -55,11 +55,12 @@ class TaskController extends Controller
     {
         try {
         $task = new Task();
+        $task->user_id =$request["user_id"];
         $task->title = $request["title"];
         $task->content = $request["content"];
         $task->start_date = $request["start_date"];
         $task->save();
-        return response()->json($tasks, 201);
+        return response()->json($task, 201);
          } catch (\Exception$e) {
                 throw $e;
         }
