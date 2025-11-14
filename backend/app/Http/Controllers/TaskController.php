@@ -59,6 +59,7 @@ class TaskController extends Controller
         $task->title = $request["title"];
         $task->content = $request["content"];
         $task->start_date = $request["start_date"];
+        $task->due_date = $request["due_date"];
         $task->save();
         return response()->json($task, 201);
          } catch (\Exception$e) {
@@ -79,7 +80,8 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
+
     }
 
     /**
@@ -87,7 +89,20 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        try{
+        $task = Task::find($id);
+
+        $task->title = $request["title"];
+        $task->start_date = $request["start_date"];
+        $task->due_date = $request["due_date"];
+        $task->content = $request["content"];
+        $task->status = $request["status"];
+        $task->save();
+        return response()->json($task, 200);
+        } catch (\Exception$e) {
+            throw $e;
+        }
     }
 
     /**
