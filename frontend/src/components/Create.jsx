@@ -72,8 +72,8 @@ export const Create = () => {
           
           <Box component="form"  sx={{textAlign:"center"}}>
             <TextField label={"タスク名"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
-            <TextField type={"datetime-local"} label={"開始日時"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
-            <TextField type={"datetime-local"} label={"完了期限"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
+            <TextField type={"datetime-local"} label={"開始日時"} InputLabelProps={{ shrink: true }} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
+            <TextField type={"datetime-local"} label={"完了期限"} InputLabelProps={{ shrink: true }}sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
             <TextField label={"タスク詳細"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,content:e.target.value})}/>
             <Box sx={{justifyContent:'center'}}>
         
