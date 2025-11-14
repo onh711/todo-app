@@ -8,6 +8,7 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { CustomButton } from './CustomButton';
 import { useEffect } from 'react';
+import MenuItem from '@mui/material/MenuItem';
 
 const style = {
   position: 'absolute',
@@ -47,6 +48,13 @@ export const Edit = (props) => {
         status:status
   })
 
+  const selectStatus = [
+    { label: "未着手", value: 1 },
+    { label: "進行中", value: 2 },
+    { label: "完了", value: 3 },
+    { label: "期限切れ", value: 4 }
+    ];
+
   const editTask = async () =>{
     const API_URL = `http://localhost/api/tasks/${props.task.id}`;
       try {
@@ -72,10 +80,16 @@ export const Edit = (props) => {
           
           <Box component="form"  sx={{textAlign:"center"}}>
             <TextField label={"タスク名"} sx={TextFieldStyle} value={inputData.title} onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
-            <TextField type={"datetime-local"} label={"開始日時"} sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
-            <TextField type={"datetime-local"} label={"完了期限"} sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
+            <TextField type={"datetime-local"} label={"開始日時"} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
+            <TextField type={"datetime-local"} label={"完了期限"} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
             <TextField label={"タスク詳細"} sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,content:e.target.value})}/>
-            <TextField label={"状態"} sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,status:e.target.value})}/>
+            <TextField label={"状態"} select sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,status:e.target.value})}>
+                {selectStatus.map((item, index) => (
+                 <MenuItem key={index} value={item.value}>
+                    {item.label}
+                 </MenuItem>
+                ))}
+            </TextField>
             
             <Box sx={{justifyContent:'center'}}>
             <CustomButton onClick={editTask} detail={{text:'編集',bgcolor:'#1976d2',}} />
