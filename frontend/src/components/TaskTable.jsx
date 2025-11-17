@@ -2,28 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Edit } from './Edit';
 import axios from "axios";
 
-export const TaskTable = () => {
-
-    const [tasks, setTasks] = useState([]);
-    const API_URL = "http://localhost/api/tasks"
-    
-    useEffect(() => {
-      (async () => {
-        try {
-          const res = await axios.get(API_URL);
-          setTasks(res.data.tasks);
-        } catch (e) {
-            return e;
-        }
-    })();
-}, []);
+export const TaskTable = ({tasks,onChange}) => {
 
   const deleteTask = async (id) => {
     if(window.confirm("本当に削除しますか？")){
       try {
         const API_URL = `http://localhost/api/tasks/${id}`;
         await axios.delete(API_URL);
-        return true;
+        onChange();//タスクリストの更新関数
       } catch (e) {
         console.error('タスク削除エラー:', e);
         throw e;
@@ -52,7 +38,7 @@ export const TaskTable = () => {
                <span style={{margin:"20px"}}>{task.start_date}</span> 
                <span style={{margin:"20px"}}>{task.due_date  == null ? "--" : task.due_date}</span> 
                <span style={{margin:"20px"}}>{task.status}</span> 
-               <Edit task={task} />
+               <Edit task={task} onChange={onChange}/>
                <button onClick={()=>deleteTask(task.id)}>削除</button>
         </div>)}
     </>

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('title', 50)->comment('タスク名');
             $table->string('content', 250)->nullable()->comment('タスク詳細');
             $table->tinyInteger('status')->default(1)->comment('ステータス');
-            $table->date('start_date')->comment('開始日時');                
-            $table->date('due_date')->nullable()->comment('完了期限');
+            $table->dateTime('start_date')->comment('開始日時');                
+            $table->dateTime('due_date')->nullable()->comment('完了期限');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -31,7 +31,7 @@ const TextFieldStyle = {
 
 
 
-export const Create = () => {
+export const Create = ({onAdd}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -51,6 +51,8 @@ export const Create = () => {
       console.log(inputData);
       try {
       await axios.post(API_URL, { ...inputData });
+      onAdd();
+      handleClose();
       } catch (e) {
       console.error(e);
       }

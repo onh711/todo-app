@@ -11,7 +11,7 @@ class TaskCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,7 @@ class TaskCreateRequest extends FormRequest
             'title' => 'required|max:50',
             'content'  => 'max:250',
             'start_date' => 'required|date|after_or_equal:today',
-
+            'start_date' => 'date|after_or_equal:today',
         ];
     }
 

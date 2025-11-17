@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { CustomButton } from './CustomButton';
-import { useEffect } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 
 const style = {
@@ -31,7 +30,7 @@ const TextFieldStyle = {
   padding: "0px",
 };
 
-export const Edit = (props) => {
+export const Edit = ({task,onChange}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -41,10 +40,10 @@ export const Edit = (props) => {
 
   const [inputData, setInputData] = useState({
         user_id:userId,
-        title:props.task.title,
-        start_date:"",
-        due_date:"",
-        content:"",
+        title:task.title,
+        start_date:task.start_date,
+        due_date:task.due_date,
+        content:task.content,
         status:status
   })
 
@@ -56,9 +55,11 @@ export const Edit = (props) => {
     ];
 
   const editTask = async () =>{
-    const API_URL = `http://localhost/api/tasks/${props.task.id}`;
+    const API_URL = `http://localhost/api/tasks/${task.id}`;
       try {
       await axios.put(API_URL, inputData);
+      onChange(); //タスクリストの更新関数
+      handleClose();
       } catch (e) {
       console.error(e);
       }
@@ -80,10 +81,10 @@ export const Edit = (props) => {
           
           <Box component="form"  sx={{textAlign:"center"}}>
             <TextField label={"タスク名"} sx={TextFieldStyle} value={inputData.title} onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
-            <TextField type={"datetime-local"} label={"開始日時"} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
-            <TextField type={"datetime-local"} label={"完了期限"} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
-            <TextField label={"タスク詳細"} sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,content:e.target.value})}/>
-            <TextField label={"状態"} select sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,status:e.target.value})}>
+            <TextField type={"datetime-local"} label={"開始日時"} value={inputData.start_date} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
+            <TextField type={"datetime-local"} label={"完了期限"} value={inputData.due_date} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
+            <TextField label={"タスク詳細"} sx={TextFieldStyle} value={inputData.content}   onChange={(e) =>setInputData({...inputData,content:e.target.value})}/>
+            <TextField label={"状態"} select sx={TextFieldStyle} value={inputData.status} onChange={(e) =>setInputData({...inputData,status:e.target.value})}>
                 {selectStatus.map((item, index) => (
                  <MenuItem key={index} value={item.value}>
                     {item.label}

@@ -51,15 +51,18 @@ class TaskController extends Controller
     //     }
     // }
 
-    public function store(Request $request)
+    public function store(TaskCreateRequest $request)
     {
+        DB::beginTransaction();
         try {
+        $validated = $request->validated();
+
         $task = new Task();
         $task->user_id =$request["user_id"];
-        $task->title = $request["title"];
-        $task->content = $request["content"];
-        $task->start_date = $request["start_date"];
-        $task->due_date = $request["due_date"];
+        $task->title = $validated["title"];
+        $task->content = $validated["content"];
+        $task->start_date = $validated["start_date"];
+        $task->due_date = $validated["due_date"];
         $task->save();
         return response()->json($task, 201);
          } catch (\Exception$e) {
