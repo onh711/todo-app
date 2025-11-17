@@ -24,8 +24,8 @@ class TaskCreateRequest extends FormRequest
         return [
             'title' => 'required|max:50',
             'content'  => 'max:250',
-            'start_date' => 'required|date|after_or_equal:today',
-            'start_date' => 'date|after_or_equal:today',
+            'start_date' => 'required|date',
+            'due_date' => 'date',
         ];
     }
 

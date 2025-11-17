@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Http\Requests\TaskCreateRequest;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -64,9 +66,11 @@ class TaskController extends Controller
         $task->start_date = $validated["start_date"];
         $task->due_date = $validated["due_date"];
         $task->save();
+        DB::commit();
         return response()->json($task, 201);
-         } catch (\Exception$e) {
-                throw $e;
+        } catch (\Exception$e) {
+            DB::rollBack();
+            throw $e;
         }
     }
 
