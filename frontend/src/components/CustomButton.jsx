@@ -8,6 +8,6 @@ const style = {
 
 export const CustomButton = ({detail, onClick}) => {
   return (
-    <Button onClick={onClick} sx={{margin:'10px', width:'150px', backgroundColor:detail.bgcolor}} variant="contained">{detail.text}</Button>
+    <Button type="submit" sx={{margin:'10px', width:'150px', backgroundColor:detail.bgcolor}} variant="contained">{detail.text}</Button>
   )
 }
