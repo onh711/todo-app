@@ -71,11 +71,23 @@ export const Create = ({onAdd}) => {
   //     }
   // }
 
-  const handleSubmit = async () =>{
+  // const handleSubmit = async () =>{
+  //     const API_URL = "http://localhost/api/tasks"
+  //     console.log(inputData);
+  //     try {
+  //     await axios.post(API_URL, { ...inputData });
+  //     onAdd();
+  //     handleClose();
+  //     } catch (e) {
+  //     console.error(e);
+  //   }
+  // }
+
+  const handleSubmit = () =>{
       const API_URL = "http://localhost/api/tasks"
       console.log(inputData);
       try {
-      await axios.post(API_URL, { ...inputData });
+      axios.post(API_URL, { ...inputData });
       onAdd();
       handleClose();
       } catch (e) {
@@ -122,15 +134,16 @@ export const Create = ({onAdd}) => {
     if(inputData.title.length >= 50 ){
       setErrorMessages({...errorMessages,title:"タスク名は50文字以上入力できません。"});
       setValidate({...validate,title:false});
-      console.log({...validate.title});
+      console.log(validate.title)
+    
     }else if(inputData.title.length === 0){
       setErrorMessages({...errorMessages,title:"タスク名を入力してください"});
       setValidate({...validate,title:false});
-      console.log({...validate.title});
+      console.log(validate.title)
     }else{
       setErrorMessages({...errorMessages,title:""});
       setValidate({...validate,title:true});
-      console.log({...validate.title});
+    
     }
   }
 
@@ -139,20 +152,17 @@ export const Create = ({onAdd}) => {
     if(!inputData.start_date){
       setErrorMessages({...errorMessages,start_date:"開始日時を入力してください"});
       setValidate({...validate,start_date:false});
-      console.log(errorMessages.start_date);
     }else{
       setErrorMessages({...errorMessages,start_date:""});
       setValidate({...validate,start_date:true});
     }
   }
-  console.log(validate)
 
   //タスク詳細のバリデーション
   const contentValidate = () =>{
     if(inputData.content.length >= 250){
       setErrorMessages({...errorMessages,content:"タスク詳細は250文字以上入力できません。"});
       setValidate({...validate,content:false});
-      console.log(errorMessages.content);
     }else{
       setErrorMessages({...errorMessages,content:""});
       setValidate({...validate,content:true});
@@ -173,15 +183,11 @@ export const Create = ({onAdd}) => {
             新規タスク登録
           </Typography>
           <Box component="form" onSubmit={handleSubmit}>
-            <div>{inputData.title}</div>
-            <div>{errorMessages.start_date}</div>
-            <div>{inputData.start_date}</div>
-            <div>{errorMessages.start_date}</div>
-            <div>{validate.title}</div>
             <TextField label={"タスク名"} 
               error={errorMessages.title} 
               helperText={errorMessages.title} 
-              sx={TextFieldStyle} value={inputData.title} 
+              sx={TextFieldStyle} value={inputData.title}
+              name="title"
               onChange={(e) =>setInputData({...inputData,title:e.target.value})}
               onBlur={()=>titleValidate()}/>
             <TextField type={"datetime-local"} 

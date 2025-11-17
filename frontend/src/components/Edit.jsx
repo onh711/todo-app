@@ -52,7 +52,7 @@ export const Edit = ({task,onChange}) => {
     { label: "進行中", value: 2 },
     { label: "完了", value: 3 },
     { label: "期限切れ", value: 4 }
-    ];
+  ];
 
   const editTask = async () =>{
     const API_URL = `http://localhost/api/tasks/${task.id}`;
@@ -79,7 +79,7 @@ export const Edit = ({task,onChange}) => {
             タスク編集
           </Typography>
           
-          <Box component="form"  sx={{textAlign:"center"}}>
+          <Box component="form" onSubmit={editTask} sx={{textAlign:"center"}}>
             <TextField label={"タスク名"} sx={TextFieldStyle} value={inputData.title} onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
             <TextField type={"datetime-local"} label={"開始日時"} value={inputData.start_date} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
             <TextField type={"datetime-local"} label={"完了期限"} value={inputData.due_date} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
@@ -93,7 +93,7 @@ export const Edit = ({task,onChange}) => {
             </TextField>
             
             <Box sx={{justifyContent:'center'}}>
-            <CustomButton onClick={editTask} detail={{text:'編集',bgcolor:'#1976d2',}} />
+            <CustomButton detail={{text:'編集',bgcolor:'#1976d2',}} />
             <CustomButton detail={{text:'キャンセル',bgcolor:'#c55858ff'}}/>
             </Box>
           </Box>
