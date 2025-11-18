@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Response;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
 
 // Route::get('/test', function () {
 //     return response()->json(
@@ -18,7 +20,14 @@ use App\Http\Controllers\TaskController;
 // Route::put('/tasks/{id}', [TaskController::class, 'update']);
 // Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
 
-Route::resource('tasks', TaskController::class);
+Route::resource('/tasks', TaskController::class);
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm']);
+Route::post('/register', [RegisterController::class, 'register']);
+
+Route::post('/login', [LoginController::class, 'authenticate']);
+
+
 
 
 

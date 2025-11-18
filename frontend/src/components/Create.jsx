@@ -51,13 +51,6 @@ export const Create = ({onAdd}) => {
     due_date:"",
     content:""
   });
-
-  const [validate, setValidate] = useState({
-    title:false,
-    start_date:false,
-    due_date:false,
-    content:false
-  });
   
   // const addTask = async () =>{
   //     const API_URL = "http://localhost/api/tasks"
@@ -83,11 +76,15 @@ export const Create = ({onAdd}) => {
   //   }
   // }
 
-  const handleSubmit = () =>{
+  const handleSubmit = async(e) =>{
+    e.preventDefault();
+    if(!handleValidate()){
+      return
+    }
       const API_URL = "http://localhost/api/tasks"
       console.log(inputData);
       try {
-      axios.post(API_URL, { ...inputData });
+      await axios.post(API_URL, { ...inputData });
       onAdd();
       handleClose();
       } catch (e) {
@@ -95,79 +92,86 @@ export const Create = ({onAdd}) => {
     }
   }
 
-  // const handleValidate = () => {
+  const handleValidate = () => {
 
-  //   let isValid = true;
+    const errors = {
+      title:"",
+      start_date:"",
+      due_date:"",
+      content:""      
+    }
+    let isValid = true;
 
-  //   //タイトル名のバリデーション 
-  //   if(inputData.title.length >= 50 ){
-  //     setErrorMessages({...errorMessages,title:"タスク名は50文字以上入力できません。"});
-  //     console.log(errorMessages.title);
-  //     isValid = false
-  //   }
-    
-  //   if(inputData.title.length === 0){
-  //     setErrorMessages({...errorMessages,title:"タスク名を入力してください"});
-  //     console.log(errorMessages.title);
-  //     isValid = false
-  //   }
-
-  //   //開始日時のバリデーション
-  //   if(inputData.start_date.length === 0){
-  //     setErrorMessages({...errorMessages,start_date:"開始日時を入力してください"});
-  //     console.log(errorMessages.start_date);
-  //     isValid = false
-  //   }
-    
-  //   //開始日時のバリデーション
-  //   if(inputData.content.length >= 250){
-  //     setErrorMessages({...errorMessages,content:"タスク詳細は250文字以上入力できません。"});
-  //     console.log(errorMessages.content);
-  //     isValid = false
-  //   }
-  //   return isValid;
-  // }
-
-
- //タイトル名のバリデーション 
-  const titleValidate = () =>{
+    //タイトル名のバリデーション 
     if(inputData.title.length >= 50 ){
-      setErrorMessages({...errorMessages,title:"タスク名は50文字以上入力できません。"});
-      setValidate({...validate,title:false});
-      console.log(validate.title)
-    
-    }else if(inputData.title.length === 0){
-      setErrorMessages({...errorMessages,title:"タスク名を入力してください"});
-      setValidate({...validate,title:false});
-      console.log(validate.title)
-    }else{
-      setErrorMessages({...errorMessages,title:""});
-      setValidate({...validate,title:true});
-    
+      errors.title = "タスク名は50文字以上入力できません。";
+      console.log(errorMessages.title);
+      isValid = false
     }
-  }
-
-  //開始日時のバリデーション
-  const startValidate = () =>{
-    if(!inputData.start_date){
-      setErrorMessages({...errorMessages,start_date:"開始日時を入力してください"});
-      setValidate({...validate,start_date:false});
-    }else{
-      setErrorMessages({...errorMessages,start_date:""});
-      setValidate({...validate,start_date:true});
+    
+    if(inputData.title.length === 0){
+      errors.title = "タスク名を入力してください";
+      console.log(errorMessages.title);
+      isValid = false
     }
-  }
 
-  //タスク詳細のバリデーション
-  const contentValidate = () =>{
+    //開始日時のバリデーション
+    if(inputData.start_date.length === 0){
+      errors.start_date = "開始日時を入力してください";
+      console.log(errorMessages.start_date);
+      isValid = false
+    }
+    
+    //タスク詳細のバリデーション
     if(inputData.content.length >= 250){
-      setErrorMessages({...errorMessages,content:"タスク詳細は250文字以上入力できません。"});
-      setValidate({...validate,content:false});
-    }else{
-      setErrorMessages({...errorMessages,content:""});
-      setValidate({...validate,content:true});
+      errors.content = "タスク詳細は250文字以上入力できません。";
+      console.log(errorMessages.content);
+      isValid = false
     }
+    setErrorMessages(errors);
+    return isValid;
   }
+
+
+//  //タイトル名のバリデーション 
+//   const titleValidate = () =>{
+//     if(inputData.title.length >= 50 ){
+//       setErrorMessages({...errorMessages,title:"タスク名は50文字以上入力できません。"});
+//       setValidate({...validate,title:false});
+//       console.log(validate.title)
+    
+//     }else if(inputData.title.length === 0){
+//       setErrorMessages({...errorMessages,title:"タスク名を入力してください"});
+//       setValidate({...validate,title:false});
+//       console.log(validate.title)
+//     }else{
+//       setErrorMessages({...errorMessages,title:""});
+//       setValidate({...validate,title:true});
+    
+//     }
+//   }
+
+//   //開始日時のバリデーション
+//   const startValidate = () =>{
+//     if(!inputData.start_date){
+//       setErrorMessages({...errorMessages,start_date:"開始日時を入力してください"});
+//       setValidate({...validate,start_date:false});
+//     }else{
+//       setErrorMessages({...errorMessages,start_date:""});
+//       setValidate({...validate,start_date:true});
+//     }
+//   }
+
+//   //タスク詳細のバリデーション
+//   const contentValidate = () =>{
+//     if(inputData.content.length >= 250){
+//       setErrorMessages({...errorMessages,content:"タスク詳細は250文字以上入力できません。"});
+//       setValidate({...validate,content:false});
+//     }else{
+//       setErrorMessages({...errorMessages,content:""});
+//       setValidate({...validate,content:true});
+//     }
+//   }
 
   return (
     <div>
@@ -189,7 +193,7 @@ export const Create = ({onAdd}) => {
               sx={TextFieldStyle} value={inputData.title}
               name="title"
               onChange={(e) =>setInputData({...inputData,title:e.target.value})}
-              onBlur={()=>titleValidate()}/>
+            />
             <TextField type={"datetime-local"} 
               error={errorMessages.start_date} 
               helperText={errorMessages.start_date} 
@@ -197,7 +201,6 @@ export const Create = ({onAdd}) => {
               sx={TextFieldStyle} 
               value={inputData.start_date} 
               onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}
-              onBlur={()=>startValidate()}
             />
             <TextField type={"datetime-local"} label={"完了期限"} InputLabelProps={{ shrink: true }}sx={TextFieldStyle} onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
             <TextField label={"タスク詳細"} 
@@ -205,7 +208,6 @@ export const Create = ({onAdd}) => {
               helperText={errorMessages.content} 
               sx={TextFieldStyle} 
               onChange={(e) =>setInputData({...inputData,content:e.target.value})}
-              onBlur={()=>contentValidate()}
             />
             <Box sx={{justifyContent:'center'}}>
             <CustomButton detail={{text:'登録',bgcolor:'#1976d2',}} />
