@@ -1,22 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    /**
-     * 登録フォームを表示する
-     *
-     * @return \Illuminate\View\View
-     */
-    public function showRegistrationForm()
-    {
-        return view('register');
-    }
-
     /**
      * 新しいユーザーインスタンスを作成し、保存する
      *
@@ -38,14 +28,5 @@ class RegisterController extends Controller
             'mail_address' => $request->mail_address,
             'password' => Hash::make($request->password),
         ]);
-
-        // 3. ユーザー登録イベントを発行する
-        event(new Registered($user));
-
-        // 4. ユーザーをログインさせる
-        Auth::login($user);
-
-        // 5. ダッシュボードページにリダイレクトする
-        return redirect()->route('tasks');
     }
 }

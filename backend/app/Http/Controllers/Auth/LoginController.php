@@ -1,8 +1,10 @@
 <?php
 
+namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse; 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -10,18 +12,13 @@ class LoginController extends Controller
     public function authenticate(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'mail_address' => ['required', 'string'],
-            'password' => ['required', 'string']
+            'mail_address' => ['required', 'email'],
+            'password' => ['required']
         ]);
 
         if(Auth::attempt($credentials)){
-            $request->session()->regenerate();
-
-            return redirect()->intended('tasks');
+        return response()->json(['message'=>'ログイン成功'],200);
         }
-
-        return back()->withErrors([
-            'mail_address' => 'ユーザーIDとパスワードが一致しません'
-        ])->onlyInput('mail_address');
+        return response()->json(['message' => 'ログイン失敗'], 401);
     }
 }

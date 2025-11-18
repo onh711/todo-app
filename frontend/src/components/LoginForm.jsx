@@ -24,20 +24,21 @@ const LoginCard = styled('div')({
 });
 
 export const LoginForm = () => {
-
+  
   const [userInfo,setUserInfo] = useState({
     mail_address:"",
     password:""
   })
 
   const handleSubmit = async(e) =>{
-     e.preventDefault();
-      const API_URL = "http://localhost/api/login"
-      try {
+    e.preventDefault();
+    const API_URL = "http://localhost/api/login"
+    try {
       await axios.post(API_URL, { ...userInfo });
-      } catch (e) {
-      console.error(e);
-      }
+      console.log(Response.data);
+    } catch (e) {
+     console.log(Response.data);
+    }
   }
 
   return (

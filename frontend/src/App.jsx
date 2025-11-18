@@ -11,7 +11,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<LoginForm/>}/>
       <Route path="/register" element={<Register/>}/>
-      <Route path="/list" element={<TaskList/>}/>
+      <Route path="/tasks" element={<TaskList/>}/>
     </Routes>
     </>
   )

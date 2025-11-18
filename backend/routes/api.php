@@ -20,10 +20,15 @@ use App\Http\Controllers\Auth\LoginController;
 // Route::put('/tasks/{id}', [TaskController::class, 'update']);
 // Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
 
-Route::resource('/tasks', TaskController::class);
+Route::apiResource('/tasks', TaskController::class);
 
-Route::get('/register', [RegisterController::class, 'showRegistrationForm']);
-Route::post('/register', [RegisterController::class, 'register']);
+
+// Route::post('register', [RegisterController::class, 'register']);
+// Route::resource('register', RegisterController::class);
+
+
+Route::apiResource('/login', LoginController::class);
+// Route::resource('/login', LoginController::class);
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 
