@@ -22,14 +22,10 @@ use App\Http\Controllers\Auth\LoginController;
 
 Route::apiResource('/tasks', TaskController::class);
 
+// Route::apiResource('/register', RegisterController::class);
+Route::post('/register', [RegisterController::class, 'register']);
 
-// Route::post('register', [RegisterController::class, 'register']);
-// Route::resource('register', RegisterController::class);
-
-
-Route::apiResource('/login', LoginController::class);
-// Route::resource('/login', LoginController::class);
-
+// Route::apiResource('/login', LoginController::class);
 Route::post('/login', [LoginController::class, 'authenticate']);
 
 

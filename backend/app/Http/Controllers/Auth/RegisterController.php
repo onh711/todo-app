@@ -1,32 +1,33 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-    /**
-     * 新しいユーザーインスタンスを作成し、保存する
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function register(Request $request)
     {
-        // 1. リクエストのデータを検証する
         $request->validate([
             'name' => ['required', 'string', 'max:40'],
             'mail_address' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'min:8'],
+            'baby_name' => ['string', 'max:40']
         ]);
 
-        // 2. 新しいユーザーを作成する
         $user = User::create([
-            'name' => $request->user_name,
+            'name' => $request->name,
             'mail_address' => $request->mail_address,
             'password' => Hash::make($request->password),
+            'baby_name' => $request->baby_name,
         ]);
+
+        return response()->json([
+            'message' => '作成成功',
+            'user' => $user
+        ], 201);
     }
 }

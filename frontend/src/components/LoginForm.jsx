@@ -4,7 +4,7 @@ import { styled } from '@mui/system';
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { CustomButton } from './CustomButton'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Container = styled('div')({
@@ -29,6 +29,7 @@ export const LoginForm = () => {
     mail_address:"",
     password:""
   })
+  const navigate = useNavigate();
 
   const handleSubmit = async(e) =>{
     e.preventDefault();
@@ -36,6 +37,7 @@ export const LoginForm = () => {
     try {
       await axios.post(API_URL, { ...userInfo });
       console.log(Response.data);
+      navigate('/tasks');
     } catch (e) {
      console.log(Response.data);
     }

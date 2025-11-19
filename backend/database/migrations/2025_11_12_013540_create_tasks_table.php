@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->comment('ユーザーID')->constrained();    //ユーザーID
+            $table->foreignId('user_id')->comment('ユーザーID')->constrained(); 
             $table->string('title', 50)->comment('タスク名');
             $table->string('content', 250)->nullable()->comment('タスク詳細');
             $table->tinyInteger('status')->default(1)->comment('ステータス');

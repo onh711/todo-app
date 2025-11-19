@@ -5,6 +5,8 @@ import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { CustomButton } from './CustomButton'
 import Button from '@mui/material/Button';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Container = styled('div')({
   display: 'flex',
@@ -44,15 +46,20 @@ export const Register = () => {
     password:"",
     baby_name:""
   })
+  const navigate = useNavigate();
 
   const handleSubmit = async(e) =>{
+
     e.preventDefault();
     const API_URL = "http://localhost/api/register"
+    const res = await axios.post(API_URL, { ...registInfo });
     try {
-      await axios.post(API_URL, { ...registInfo });
-      console.log(Response.data);
+      console.log(res.data);
+      alert("会員登録を作成しました")
+      navigate('/login');
     } catch (e) {
-     console.log(Response.data);
+      alert("会員登録の作成に失敗しました")
+      console.log(res.data);
     }
   }
     
@@ -70,7 +77,9 @@ export const Register = () => {
         <TextField variant="outlined" margin="normal" fullWidth label="子供の名前"  onChange={(e) =>setRegistInfo({...registInfo,baby_name:e.target.value})}/>
         <Box sx={{textAlign:'center'}}>
             <CustomButton detail={{text:'登録',bgcolor:'#1976d2',}} />
+            <Link to="/login">
             <CustomButton detail={{text:'キャンセル',bgcolor:'#c55858ff'}}/>
+            </Link>
         </Box>
         </form>
       </LoginCard>
