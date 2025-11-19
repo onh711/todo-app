@@ -16,7 +16,11 @@ class LoginController extends Controller
         ]);
 
         if(Auth::attempt($credentials)){
-        return response()->json(['message'=>'ログイン成功'],200);
+            $user = Auth::user();
+        return response()->json([
+            'message'=>'ログイン成功',
+            'id' => $user->id,
+        ],200);
         }
         return response()->json(['message' => 'ログイン失敗'], 401);
     }
