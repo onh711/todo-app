@@ -5,27 +5,19 @@ import jaLocale from '@fullcalendar/core/locales/ja';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useEffect, useState } from 'react';
 
-export const Calender = () => {
 
-  const [action, setAction] = useState([])
-
-  const featchTasks = async () =>{
-      try {
-        const API_URL = "http://localhost/api/dashbord"
-        const res = await axios.get(API_URL);
-        setAction(res.data.action);
-        console.log(action)
-        } catch (e) {
-          return e;
-        }
-    }
-
-  useEffect(() => {
-  featchTasks();
-  }, []);
-
-
-
+export const Calender = ({actions}) => {
+  const [events, setEvents] = useState();
+  // useEffect(()=>{
+    console.log("値",actions);
+    const eventList = actions.map((action) => {
+      return {id: action.id, title: action.action, start:action.start_date, end:action.due_date, description:action.memo};
+    });
+  //   setEvents(eventList);
+  //   console.log("中",eventList);
+  // },[actions]);
+  
+  // console.log(eventList);
   const handleDateSelect = (args) => {
    const title = prompt('予定のタイトルを入力してください')
    const calendarInstance= args.view.calendar
@@ -54,9 +46,7 @@ export const Calender = () => {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay',
       }}
-      events={[
-          {title:'うんち', start: '2025-11-19T09:00:00', end: '2025-11-19T09:05:00'}
-      ]}
+      events={eventList}
     />
   )
 }

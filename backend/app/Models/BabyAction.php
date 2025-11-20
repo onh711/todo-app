@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class BabyAction extends Model
 {
     protected $fillable = [
-        'action_id',
+        'baby_id',
         'action',
         'cry',
-        'action_date',
+        'start_date',
+        'end_date',
         'milk_amount',
         'memo'
     ];
@@ -37,6 +38,6 @@ class BabyAction extends Model
 
     public function baby()
     {
-        return $this->belongsTo('App\Models\Baby','id');
+        return $this->belongsTo(Baby::class,'id');
     }
 }

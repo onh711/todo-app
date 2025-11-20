@@ -16,7 +16,7 @@ export const TaskTable = ({tasks,onChange}) => {
       }
     }
   }
-
+  console.log(tasks.map((task)=>task.title));
   return (
     <>
         <div style={{display:"flex"}}>

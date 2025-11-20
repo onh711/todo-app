@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Baby;
+use Illuminate\Support\Facades\DB;
+use App\Models\BabyAction;
 
 class BabyActionController extends Controller
 {
@@ -13,12 +15,14 @@ class BabyActionController extends Controller
      */
     public function index()
     {
-        $user = Auth::user(); 
-        $user = Baby::all()->findOrFail(1);//
-        // dd($user);
-        $actions = $user->baby_actions;
-        dd($actions);
-        $actions = ['tasks'=>$actions];
+        $baby = Auth::user(); 
+        $baby = Baby::all()->findOrFail(1);//
+        // // dd($user);
+        // $babys = DB::select('select * from baby_actions');
+        //  dd($babys);
+        $actions = $baby->baby_actions;
+       
+        $actions = ['baby_actions'=>$actions];
         return response()->json($actions, 200);
 
 
@@ -37,7 +41,20 @@ class BabyActionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $actions = BabyAction::create([
+          'action' => $request->action,
+          'cry' => $request->cry,
+          'start_date' => $request->start_date,
+          'end_date' => $request->end_date,
+          'mill_amount' =>$request->mill_amount,
+          'memo' =>$request->memo
+        ]);
+
+        return response()->json([
+            'message' => '作成成功',
+            'action' => $actions
+        ], 201);
+      
     }
 
     /**

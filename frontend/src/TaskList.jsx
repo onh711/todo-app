@@ -13,7 +13,6 @@ export const TaskList = () => {
         const API_URL = "http://localhost/api/tasks"
         const res = await axios.get(API_URL);
         setTasks(res.data.tasks);
-        console.log(res.data)
         } catch (e) {
           return e;
         }

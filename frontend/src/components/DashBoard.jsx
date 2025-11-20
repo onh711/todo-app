@@ -1,11 +1,32 @@
 import React from 'react'
 import { Calender } from './Calender'
-import { TaskTable } from './TaskTable'
+import { useEffect, useState } from 'react';
+import axios from "axios";
+import { BabyActionCreate } from './BabyActionCreate';
 
 export const DashBoard = () => {
+  const [actions, setActions] = useState([])
+
+  const featchTasks = async () =>{
+    const API_URL = "http://localhost/api/dashbord"
+    const res = await axios.get(API_URL);
+      try {
+        console.log(res.data.baby_actions)
+        setActions(res.data.baby_actions);
+      } catch (e) {
+        return e;
+      }
+    }
+    
+    useEffect(() => {
+      featchTasks();
+    }, []);
+    console.log("アクションズ",actions);
+
   return (
     <>
-    <Calender/>
+    <Calender actions={actions}/>
+    <BabyActionCreate/>
     </>
   )
 }

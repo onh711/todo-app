@@ -16,6 +16,6 @@ class Baby extends Model
 
     public function baby_actions()
     {
-        return $this->hasMany('App\Models\BabyAction');
+        return $this->hasMany(BabyAction::class,'id');
     }
 }
