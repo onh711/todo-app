@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('babys_actions', function (Blueprint $table) {
+        Schema::create('baby_actions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('actionid')->comment('アクションID')->constrained(table:'babys', indexName:'id'); 
+            // $table->foreignId('action_id')->comment('アクションID')->constrained('babys','id');
+            $table->unsignedBigInteger('action_id');
+            $table->foreign('action_id')->references('id')->on('babys');  
             $table->tinyInteger('action')->comment('アクション');
             $table->boolean('cry')->default(false)->comment('泣いていたか'); 
             $table->timestamp('action_date')->comment('行動時間');

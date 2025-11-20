@@ -18,7 +18,7 @@ class TaskController extends Controller
     {
         $user = Auth::user(); 
         $user = User::all()->findOrFail(1);//
-
+        
         $tasks = $user->tasks;
         $tasks = ['tasks'=>$tasks];
         return response()->json($tasks, 200);

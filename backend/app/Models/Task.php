@@ -28,4 +28,9 @@ class Task extends Model
                 return '期限切れ';
         }
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

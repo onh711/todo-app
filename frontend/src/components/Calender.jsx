@@ -2,10 +2,31 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import jaLocale from '@fullcalendar/core/locales/ja';
+import interactionPlugin from '@fullcalendar/interaction';
+import { useEffect, useState } from 'react';
 
 export const Calender = () => {
 
-  const handleDateSelect = () => {
+  const [action, setAction] = useState([])
+
+  const featchTasks = async () =>{
+      try {
+        const API_URL = "http://localhost/api/dashbord"
+        const res = await axios.get(API_URL);
+        setAction(res.data.action);
+        console.log(action)
+        } catch (e) {
+          return e;
+        }
+    }
+
+  useEffect(() => {
+  featchTasks();
+  }, []);
+
+
+
+  const handleDateSelect = (args) => {
    const title = prompt('予定のタイトルを入力してください')
    const calendarInstance= args.view.calendar
 

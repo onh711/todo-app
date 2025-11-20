@@ -46,6 +46,8 @@ export const Register = () => {
     password:"",
     baby_name:""
   })
+
+  
   const navigate = useNavigate();
 
   const handleSubmit = async(e) =>{

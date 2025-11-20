@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name', 40)->comment('登録氏名');
             $table->string('mail_address', 255)->unique()->comment('登録メールアドレス');
             $table->string('password')->comment('パスワード');
-            $table->string('baby_name', 40)->comment('子供の名前');
+            // $table->string('baby_name', 40)->comment('子供の名前');
             $table->timestamps();
             $table->softDeletes();
         });

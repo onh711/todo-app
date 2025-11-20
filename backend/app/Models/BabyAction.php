@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class BabyAction extends Model
+{
+    protected $fillable = [
+        'action_id',
+        'action',
+        'cry',
+        'action_date',
+        'milk_amount',
+        'memo'
+    ];
+
+        public function getStatusAttribute()
+    {
+        switch ($this->attributes['action']) {
+            case '1':
+                return '寝る';
+            case '2':
+                return '起きる';
+            case '3':
+                return '授乳';
+            case '4':
+                return 'ご飯';
+            case '5':
+                return 'うんち';
+            case '6':
+                return 'おしっこ';
+            case '7':
+                return 'うんち/おしっこ';
+        }
+    }
+
+    public function baby()
+    {
+        return $this->belongsTo('App\Models\Baby','id');
+    }
+}
