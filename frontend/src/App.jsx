@@ -4,6 +4,8 @@ import { LoginForm } from './components/LoginForm'
 import { Register } from './components/Register'
 import { TaskList } from './TaskList'
 import { Header } from './components/Header'
+import { Calender } from './components/Calender'
+import { DashBoard } from './components/DashBoard'
 
 function App() {
 
@@ -14,6 +16,7 @@ function App() {
       <Route path="/login" element={<LoginForm/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/tasks" element={<TaskList/>}/>
+      <Route path="/dashbord" element={<DashBoard/>}></Route>
     </Routes>
     </>
   )
