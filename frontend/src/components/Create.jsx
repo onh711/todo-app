@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { CustomButton } from './CustomButton';
-import Alert from '@mui/material/Alert';
 
 const style = {
   position: 'absolute',

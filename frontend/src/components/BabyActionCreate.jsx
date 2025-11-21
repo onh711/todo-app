@@ -2,26 +2,24 @@ import axios from "axios";
 
 export const BabyActionCreate = () => {
 
-const now = new Date();
   const baby_actions = {
-      action:1,
-      cry:0,
-      start_date:now,
-      end_date:now.setMinutes(now.getMinutes() + 5)
+
   };
 
+  const babyActionCreate = (actionNum) =>{
+      return{     
+      baby_id:1,
+      action:actionNum,
+      cry:0,
+    }
+  }
 
-  
-//   console.log(baby_actions.start_date);
-//   console.log(new Date().setMinutes(now.getMinutes() + 5));
-
-  const handleSubmit = async(e) =>{
-    e.preventDefault();
-      const API_URL = "http://localhost/api/dashbord"
-      try {
-      await axios.post(API_URL, {baby_actions});
+  const handleSubmit = async(actionNum) =>{
+    const API_URL = "http://localhost/api/dashbord"
+    try {
       console.log(baby_actions);
-      } catch (e) {
+      await axios.post(API_URL, babyActionCreate(actionNum));
+    } catch (e) {
       console.error(e);
     }
   }
@@ -29,7 +27,13 @@ const now = new Date();
   return (
     <>
     <div>
-        <button onClick={handleSubmit}>ねる</button>
+        <button onClick={()=>handleSubmit(1)}>寝る</button>
+        <button onClick={()=>handleSubmit(2)}>起きる</button>
+        <button onClick={()=>handleSubmit(3)}>授乳</button>
+        <button onClick={()=>handleSubmit(4)}>ご飯</button>
+        <button onClick={()=>handleSubmit(5)}>うんち</button>
+        <button onClick={()=>handleSubmit(6)}>おしっこ</button>
+        <button onClick={()=>handleSubmit(7)}>うんち/おしっこ</button>
     </div>
     </>
   )

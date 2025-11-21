@@ -16,7 +16,7 @@ class BabyAction extends Model
         'memo'
     ];
 
-        public function getStatusAttribute()
+    public function getStatusAttribute()
     {
         switch ($this->attributes['action']) {
             case '1':

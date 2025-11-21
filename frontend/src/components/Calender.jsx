@@ -11,42 +11,36 @@ export const Calender = ({actions}) => {
   // useEffect(()=>{
     console.log("値",actions);
     const eventList = actions.map((action) => {
-      return {id: action.id, title: action.action, start:action.start_date, end:action.due_date, description:action.memo};
+      return {id: action.id, title: action.action, start:action.start_date, end:action.end_date, description:action.memo};
     });
   //   setEvents(eventList);
   //   console.log("中",eventList);
   // },[actions]);
   
   // console.log(eventList);
-  const handleDateSelect = (args) => {
-   const title = prompt('予定のタイトルを入力してください')
-   const calendarInstance= args.view.calendar
 
-   calendarInstance.unselect()
-   if (title) {
-     calendarInstance.addEvent({
-       title,
-       start: args.startStr,
-       end: args.endStr,
-       allDay: args.allDay,
-     })
-    }
-  }
   return (
     <FullCalendar
       plugins={[ dayGridPlugin, timeGridPlugin ,interactionPlugin]}
       initialView="timeGridDay"
       locales={jaLocale} 
-      locale='ja' 
+      locale='ja'
+      timeZone='local'
       selectable={true}
-      select={handleDateSelect}
+      // select={handleDateSelect}
+      nowIndicator={true} //現在時刻をラインで表示
 
       headerToolbar={{                         
         left: 'prev,next today',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay',
       }}
-      events={eventList}
+      events={eventList}//カレンダーに渡すイベントのJSON
+      dateClick={(info) => console.log((`日付がクリックされました: ${info.dateStr}`))}
+      eventClick={(info) => alert(`イベント: ${info.event.title}`)}
+      slotDuration={'00:15:00'}
+      slotLabelInterval={'01:00:00'} //時間の表示間隔
+      editable={true}
     />
   )
 }
