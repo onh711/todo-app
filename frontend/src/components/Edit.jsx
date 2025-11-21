@@ -80,7 +80,8 @@ export const Edit = ({task,onChange}) => {
           </Typography>
           
           <Box component="form" onSubmit={editTask} sx={{textAlign:"center"}}>
-            <TextField label={"タスク名"} sx={TextFieldStyle} value={inputData.title} onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
+            <TextField label={"タスク名"} sx={TextFieldStyle} value={inputData.title} 
+            onChange={(e) =>setInputData({...inputData,title:e.target.value})}/>
             <TextField type={"datetime-local"} label={"開始日時"} value={inputData.start_date} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,start_date:e.target.value})}/>
             <TextField type={"datetime-local"} label={"完了期限"} value={inputData.due_date} InputLabelProps={{ shrink: true }}  sx={TextFieldStyle}  onChange={(e) =>setInputData({...inputData,due_date:e.target.value})}/>
             <TextField label={"タスク詳細"} sx={TextFieldStyle} value={inputData.content}   onChange={(e) =>setInputData({...inputData,content:e.target.value})}/>

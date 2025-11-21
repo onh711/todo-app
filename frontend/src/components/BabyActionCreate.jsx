@@ -1,10 +1,6 @@
 import axios from "axios";
 
-export const BabyActionCreate = () => {
-
-  const baby_actions = {
-
-  };
+export const BabyActionCreate = ({fetch}) => {
 
   const babyActionCreate = (actionNum) =>{
       return{     
@@ -17,8 +13,8 @@ export const BabyActionCreate = () => {
   const handleSubmit = async(actionNum) =>{
     const API_URL = "http://localhost/api/dashbord"
     try {
-      console.log(baby_actions);
       await axios.post(API_URL, babyActionCreate(actionNum));
+      fetch();
     } catch (e) {
       console.error(e);
     }

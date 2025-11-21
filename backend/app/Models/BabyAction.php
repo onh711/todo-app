@@ -16,7 +16,7 @@ class BabyAction extends Model
         'memo'
     ];
 
-    public function getStatusAttribute()
+    public function getActionTextAttribute()
     {
         switch ($this->attributes['action']) {
             case '1':
@@ -35,6 +35,8 @@ class BabyAction extends Model
                 return 'うんち/おしっこ';
         }
     }
+
+    protected $appends = ['action_text'];   
 
     public function baby()
     {

@@ -56,12 +56,12 @@ export const Register = () => {
     const API_URL = "http://localhost/api/register"
     const res = await axios.post(API_URL, { ...registInfo });
     try {
-      console.log(res.data);
+      // console.log(res.data);
       alert("会員登録を作成しました")
       navigate('/login');
     } catch (e) {
       alert("会員登録の作成に失敗しました")
-      console.log(res.data);
+      // console.log(res.data);
     }
   }
     
