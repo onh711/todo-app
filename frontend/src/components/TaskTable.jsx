@@ -29,11 +29,8 @@ export const TaskTable = ({ tasks, onChange }) => {
       : tasks.filter((task) => task.title.includes(searchWord));
 
   //フィルター機能
-  // const statusFilter =
-  //   filterStatus === ""
-  //     ? tasks
-  //     : tasks.filter((task) => task.status === filterStatus);
-  const filters = tasks.filter((task) => {
+  const filters = wordFilter.filter((task) => {
+    //ワード検索機能でフィルタリングした配列(wordFilter)を利用
     switch (taskFilters) {
       case "all":
         return task;
@@ -45,14 +42,6 @@ export const TaskTable = ({ tasks, onChange }) => {
         return task.status === 4;
     }
   });
-
-  // const FILTERS = [
-  //   { value: 1, label: "" },
-  //   { value: 2, label: "未着手" },
-  //   { value: 3, label: "進行中" },
-  //   { value: 4, label: "完了" },
-  //   { value: 5, label: "期限切れ" },
-  // ];
 
   return (
     <>
