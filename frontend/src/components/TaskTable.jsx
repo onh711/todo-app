@@ -6,7 +6,8 @@ import MenuItem from "@mui/material/MenuItem";
 
 export const TaskTable = ({ tasks, onChange }) => {
   const [searchWord, setSearchWord] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterWords, setFilterWords] = useState("");
+  const [taskFilters, setTaskFilters] = useState("all");
 
   const deleteTask = async (id) => {
     if (window.confirm("本当に削除しますか？")) {
@@ -28,24 +29,30 @@ export const TaskTable = ({ tasks, onChange }) => {
       : tasks.filter((task) => task.title.includes(searchWord));
 
   //フィルター機能
-  const statusFilter =
-    filterStatus === ""
-      ? tasks
-      : tasks.filter((task) => task.status === filterStatus);
-
-  const searchAndFilters = () => {
-    if (searchWord === "" || filterStatus === "") {
-      return tasks;
+  // const statusFilter =
+  //   filterStatus === ""
+  //     ? tasks
+  //     : tasks.filter((task) => task.status === filterStatus);
+  const filters = tasks.filter((task) => {
+    switch (taskFilters) {
+      case "all":
+        return task;
+      case "checked":
+        return task.status === 3;
+      case "unchecked":
+        return task.status != 3 && task.status != 4;
+      case "expired":
+        return task.status === 4;
     }
-  };
+  });
 
-  const FILTERS = [
-    { value: "", label: "" },
-    { value: 1, label: "未着手" },
-    { value: 2, label: "進行中" },
-    { value: 3, label: "完了" },
-    { value: 4, label: "期限切れ" },
-  ];
+  // const FILTERS = [
+  //   { value: 1, label: "" },
+  //   { value: 2, label: "未着手" },
+  //   { value: 3, label: "進行中" },
+  //   { value: 4, label: "完了" },
+  //   { value: 5, label: "期限切れ" },
+  // ];
 
   return (
     <>
@@ -60,17 +67,18 @@ export const TaskTable = ({ tasks, onChange }) => {
         </p>
         フィルター：
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          label="フィルター"
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
+          value={taskFilters}
+          onChange={(e) => setTaskFilters(e.target.value)}
         >
-          {FILTERS.map((status) => (
-            <MenuItem key={status.value} value={status.value}>
-              {status.label}
-            </MenuItem>
-          ))}
+          {/*           {/* <MenuItem value={1}>未着手</MenuItem>
+          <MenuItem value={2}>進行中</MenuItem>
+          <MenuItem value={3}>完了</MenuItem>
+          <MenuItem value={4}>期限切れ</MenuItem> */}
+          <MenuItem value="all">すべてのタスク</MenuItem>
+          <MenuItem value="checked">完了したタスク</MenuItem>
+          <MenuItem value="unchecked">現在の（未完了の）タスク</MenuItem>
+          <MenuItem value="expired">期限切れのタスク</MenuItem>
+          {/* <MenuItem value="removed">削除済みのタスク</MenuItem> */}
         </Select>
       </div>
       <thead>
@@ -81,7 +89,7 @@ export const TaskTable = ({ tasks, onChange }) => {
           <th>状態</th>
         </tr>
       </thead>
-      {statusFilter.map((task) => (
+      {filters.map((task) => (
         <div
           key={task.id}
           style={{

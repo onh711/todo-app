@@ -136,15 +136,6 @@ export const CalenderModal = ({ showFlag, events, onCloseModal, fetch }) => {
                 </MenuItem>
               ))}
             </Select>
-            {/* <TextField
-              label={"タイトル"}
-              sx={TextFieldStyle}
-              name="title"
-              value={inputActions.action}
-              onChange={(e) =>
-                setInputActions({ ...inputActions, action: e.target.value })
-              }
-            /> */}
             <TextField
               type={"datetime-local"}
               label={"開始時刻"}
