@@ -11,7 +11,6 @@ export const DashBoard = () => {
     const API_URL = "http://localhost/api/dashbord"
     const res = await axios.get(API_URL);
       try {
-        // console.log(res.data.baby_actions)
         setActions(res.data.baby_actions);
       } catch (e) {
         return e;
@@ -21,7 +20,6 @@ export const DashBoard = () => {
     useEffect(() => {
       featchTasks();
     }, []);
-    // console.log("アクションズ",actions);
 
   return (
     <>

@@ -100,6 +100,12 @@ class BabyActionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+        $task = BabyAction::find($id);
+        $task->delete();
+        return response()->json($task, 200);
+        } catch (\Exception$e) {
+            throw $e;
+        }
     }
 }

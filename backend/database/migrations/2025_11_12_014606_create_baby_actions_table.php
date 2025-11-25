@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('cry')->default(false)->comment('泣いていたか'); 
             $table->timestamp('start_date')->comment('行動時間');
             $table->timestamp('end_date')->comment('行動終了時間');
-            $table->tinyInteger('milk_amount')->nullable()->comment('ミルクを飲んだ量');
+            $table->smallInteger('milk_amount')->nullable()->comment('ミルクを飲んだ量');
             $table->string('memo', 250)->nullable()->comment('メモ');
             $table->timestamps();
             $table->softDeletes();

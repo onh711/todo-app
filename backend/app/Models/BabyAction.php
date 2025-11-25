@@ -22,16 +22,14 @@ class BabyAction extends Model
             case '1':
                 return '寝る';
             case '2':
-                return '起きる';
-            case '3':
                 return '授乳';
-            case '4':
+            case '3':
                 return 'ご飯';
-            case '5':
+            case '4':
                 return 'うんち';
-            case '6':
+            case '5':
                 return 'おしっこ';
-            case '7':
+            case '6':
                 return 'うんち/おしっこ';
         }
     }
