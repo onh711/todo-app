@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Edit } from "./Edit";
 import axios from "axios";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 export const TaskTable = ({ tasks, onChange }) => {
+  const [searchWord, setSearchWord] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+
   const deleteTask = async (id) => {
     if (window.confirm("本当に削除しますか？")) {
       try {
@@ -16,24 +21,57 @@ export const TaskTable = ({ tasks, onChange }) => {
     }
   };
 
-  const findTitle = () => {};
+  //ワード検索機能
+  const wordFilter =
+    searchWord === ""
+      ? tasks
+      : tasks.filter((task) => task.title.includes(searchWord));
 
-  console.log(tasks.map((task) => task.title));
+  //フィルター機能
+  const statusFilter =
+    filterStatus === ""
+      ? tasks
+      : tasks.filter((task) => task.status === filterStatus);
+
+  const searchAndFilters = () => {
+    if (searchWord === "" || filterStatus === "") {
+      return tasks;
+    }
+  };
+
+  const FILTERS = [
+    { value: "", label: "" },
+    { value: 1, label: "未着手" },
+    { value: 2, label: "進行中" },
+    { value: 3, label: "完了" },
+    { value: 4, label: "期限切れ" },
+  ];
+
   return (
     <>
       <div style={{ display: "flex" }}>
         <p>
           検索：
-          <input type="text" />
+          <input type="text" onChange={(e) => setSearchWord(e.target.value)} />
         </p>
         <p>
           並べ替え：
           <input type="text" />
         </p>
-        <p>
-          フィルター：
-          <input type="text" />
-        </p>
+        フィルター：
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          label="フィルター"
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+        >
+          {FILTERS.map((status) => (
+            <MenuItem key={status.value} value={status.value}>
+              {status.label}
+            </MenuItem>
+          ))}
+        </Select>
       </div>
       <thead>
         <tr>
@@ -43,7 +81,7 @@ export const TaskTable = ({ tasks, onChange }) => {
           <th>状態</th>
         </tr>
       </thead>
-      {tasks.map((task) => (
+      {statusFilter.map((task) => (
         <div
           key={task.id}
           style={{
@@ -58,7 +96,7 @@ export const TaskTable = ({ tasks, onChange }) => {
           <span style={{ margin: "20px" }}>
             {task.due_date == null ? "--" : task.due_date}
           </span>
-          <span style={{ margin: "20px" }}>{task.status}</span>
+          <span style={{ margin: "20px" }}>{task.status_text}</span>
           <Edit task={task} onChange={onChange} />
           <button onClick={() => deleteTask(task.id)}>削除</button>
         </div>

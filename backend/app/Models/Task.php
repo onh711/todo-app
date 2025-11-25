@@ -15,7 +15,7 @@ class Task extends Model
         'due_date',
     ];
 
-    public function getStatusAttribute()
+    public function getStatusTextAttribute()
     {
         switch ($this->attributes['status']) {
             case '1':
@@ -28,6 +28,8 @@ class Task extends Model
                 return '期限切れ';
         }
     }
+
+    protected $appends = ['status_text'];   
 
     public function user()
     {

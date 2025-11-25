@@ -49,6 +49,7 @@ export const CalenderModal = ({ showFlag, events, onCloseModal, fetch }) => {
   ];
 
   const findId = (label) => {
+    //labelを渡してリスト内のlabelのIDを返す関数
     const found = ACTION_ID.find((id) => id.label === label);
     return found ? found.id : "";
   };
