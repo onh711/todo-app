@@ -90,6 +90,46 @@ export const Calender = ({ actions, fetch }) => {
         editable={true}
       />
 
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView="timeGridDay"
+        locales={jaLocale}
+        locale="ja"
+        timeZone="local"
+        selectable={true}
+        // select={handleDateSelect}
+        nowIndicator={true} //現在時刻をラインで表示
+        eventMinHeight={25} //イベントの表示幅の指定
+        headerToolbar={{
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
+        }}
+        // scrollTime={dayjs(new Date()).format("hh:mm:ss")} //初期表示の時間
+        events={eventList} //カレンダーに渡すイベントのJSON
+        // dateClick={(info) => console.log((`日付がクリックされました: ${info.dateStr}`))}
+        dateClick={(info) =>
+          console.log(`日付がクリックされました: ${info.dateStr}`)
+        }
+        eventClick={(e) => {
+          // alert(`イベント: ${e.event.extendedProps.description}`)
+          // alert(`イベント: ${e.event.id}`)
+          setIsOpen(true);
+          setEvents({
+            ...events,
+            id: e.event.id,
+            title: e.event.title,
+            cry: e.event.extendedProps.cry,
+            start: e.event.startStr,
+            end: e.event.endStr,
+            milk_amount: e.event.extendedProps.milk_amount,
+            description: e.event.extendedProps.description,
+          });
+        }}
+        slotDuration={"00:15:00"}
+        slotLabelInterval={"01:00:00"} //時間の表示間隔
+        editable={true}
+      />
       <CalenderModal
         showFlag={isOpen}
         events={events}

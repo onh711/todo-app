@@ -8,8 +8,9 @@ import { TaskTable } from "./TaskTable";
 
 export const DashBoard = () => {
   const [actions, setActions] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
-  const featchTasks = async () => {
+  const featchActions = async () => {
     const API_URL = "http://localhost/api/dashbord";
     const res = await axios.get(API_URL);
     try {
@@ -19,16 +20,30 @@ export const DashBoard = () => {
     }
   };
 
+  const featchTasks = async () => {
+    try {
+      const API_URL = "http://localhost/api/tasks";
+      const res = await axios.get(API_URL);
+      setTasks(res.data.tasks);
+      console.log(res.data.tasks);
+    } catch (e) {
+      return e;
+    }
+  };
+
   useEffect(() => {
+    featchActions();
     featchTasks();
   }, []);
 
   return (
     <>
-      <Box>
-        <Calender actions={actions} fetch={featchTasks} />
-        <BabyActionCreate fetch={featchTasks} />
-        {/* <TaskTable /> */}
+      <Box sx={{ display: "flex", gap: "0" }}>
+        <Calender actions={actions} fetch={featchActions} />
+        <Box sx={{ flexGrow: 1 }}>
+          <BabyActionCreate fetch={featchActions} />
+          <TaskTable tasks={tasks} onChange={featchTasks} />
+        </Box>
       </Box>
     </>
   );
