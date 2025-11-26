@@ -3,8 +3,8 @@ import axios from "axios";
 import { Create } from "./components/Create";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { TaskTable } from "./components/TaskTable";
 import Container from "@mui/material/Container";
+import { TaskFilter } from "./components/TaskFilter";
 
 export const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -27,12 +27,12 @@ export const TaskList = () => {
   return (
     <>
       <Box sx={{ margin: "0 auto", textAlign: "center" }}>
-        <Container>
+        <Container sx={{ marginBottom: "30px" }}>
           <Typography variant="h1" fontSize={40} sx={{ padding: "35px" }}>
             タスク一覧
           </Typography>
           <Create onAdd={featchTasks} />
-          <TaskTable tasks={tasks} onChange={featchTasks} />
+          <TaskFilter tasks={tasks} onChange={featchTasks} />
         </Container>
       </Box>
     </>
