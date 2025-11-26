@@ -6,22 +6,28 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: (theme.vars ?? theme).palette.text.secondary,
-  ...theme.applyStyles("dark", {
-    backgroundColor: "#1A2027",
-  }),
-}));
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import NativeSelect from "@mui/material/NativeSelect";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 
 export const TaskTable = ({ tasks, onChange }) => {
   const [searchWord, setSearchWord] = useState("");
   const [taskFilters, setTaskFilters] = useState("all");
   const [taskSorts, setTaskSorts] = useState("start_asc");
+  const [filter, setFilter] = useState("");
+
+  const handleChange = (e) => {
+    setFilter(e.target.value);
+  };
 
   const deleteTask = async (id) => {
     if (window.confirm("本当に削除しますか？")) {
@@ -80,12 +86,17 @@ export const TaskTable = ({ tasks, onChange }) => {
 
   return (
     <>
-      <Stack direction="row" spacing={2}>
-        <p>
-          検索：
+      <Container sx={{ display: "flex", justifyContent: "space-around" }}>
+        <TextField
+          id="outlined-basic"
+          label="タスク名で検索"
+          variant="outlined"
+          onChange={(e) => setSearchWord(e.target.value)}
+        />
+        {/* <p>
           <input type="text" onChange={(e) => setSearchWord(e.target.value)} />
-        </p>
-        並べ替え：
+        </p> */}
+        {/* 並べ替え：
         <Select
           value={taskSorts}
           onChange={(e) => setTaskSorts(e.target.value)}
@@ -96,48 +107,75 @@ export const TaskTable = ({ tasks, onChange }) => {
           <MenuItem value="due_desc">期限日降順</MenuItem>
           <MenuItem value="status_asc">状態昇順</MenuItem>
           <MenuItem value="status_desc">状態降順</MenuItem>
-        </Select>
-        フィルター：
-        <Select
-          value={taskFilters}
-          onChange={(e) => setTaskFilters(e.target.value)}
-        >
-          <MenuItem value="all">すべてのタスク</MenuItem>
-          <MenuItem value="checked">完了したタスク</MenuItem>
-          <MenuItem value="unchecked">現在の（未完了の）タスク</MenuItem>
-          <MenuItem value="expired">期限切れのタスク</MenuItem>
-          {/* <MenuItem value="removed">削除済みのタスク</MenuItem> */}
-        </Select>
-      </Stack>
-      <div style={{ display: "flex" }}></div>
-      <thead>
-        <tr>
-          <th>タスク名</th>
-          <th>登録日</th>
-          <th>期限</th>
-          <th>状態</th>
-        </tr>
-      </thead>
-      {taskSortingResults.map((task) => (
-        <div
-          key={task.id}
-          style={{
-            borderRadius: "10px",
-            border: "solid, thin",
-            margin: "20px",
-            display: "flex",
-          }}
-        >
-          <span style={{ margin: "20px" }}>{task.title}</span>
-          <span style={{ margin: "20px" }}>{task.start_date}</span>
-          <span style={{ margin: "20px" }}>
-            {task.due_date == null ? "--" : task.due_date}
-          </span>
-          <span style={{ margin: "20px" }}>{task.status_text}</span>
-          <Edit task={task} onChange={onChange} />
-          <button onClick={() => deleteTask(task.id)}>削除</button>
-        </div>
-      ))}
+        </Select> */}
+        <FormControl sx={{ width: 1 / 4 }}>
+          <InputLabel id="demo-simple-select-label">並べ替え</InputLabel>
+          <Select
+            value={taskSorts}
+            label="並べ替え"
+            onChange={(e) => {
+              setTaskSorts(e.target.value);
+              handleChange;
+            }}
+          >
+            <MenuItem value="start_asc">開始日昇順</MenuItem>
+            <MenuItem value="start_desc">開始日降順</MenuItem>
+            <MenuItem value="due_asc">期限日昇順</MenuItem>
+            <MenuItem value="due_desc">期限日降順</MenuItem>
+            <MenuItem value="status_asc">状態昇順</MenuItem>
+            <MenuItem value="status_desc">状態降順</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl sx={{ width: 1 / 4 }}>
+          <InputLabel id="demo-simple-select-label">フィルター</InputLabel>
+          <Select
+            value={taskFilters}
+            label="フィルター"
+            onChange={(e) => {
+              setTaskFilters(e.target.value);
+              handleChange;
+            }}
+          >
+            <MenuItem value="all">すべてのタスク</MenuItem>
+            <MenuItem value="checked">完了したタスク</MenuItem>
+            <MenuItem value="unchecked">現在の（未完了の）タスク</MenuItem>
+            <MenuItem value="expired">期限切れのタスク</MenuItem>
+          </Select>
+        </FormControl>
+      </Container>
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="task table">
+          <TableHead>
+            <TableRow>
+              <TableCell>タスク名</TableCell>
+              <TableCell align="center">開始日</TableCell>
+              <TableCell align="center">期日</TableCell>
+              <TableCell align="center">状態</TableCell>
+              <TableCell align="left"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {taskSortingResults.map((task) => (
+              <TableRow key={task.id}>
+                <TableCell component="th" scope="row">
+                  {task.title}
+                </TableCell>
+
+                <TableCell align="center">{task.start_date}</TableCell>
+                <TableCell align="center">
+                  {task.due_date == null ? "--" : task.due_date}
+                </TableCell>
+                <TableCell align="center">{task.status_text}</TableCell>
+                <TableCell align="left">
+                  <Edit task={task} onChange={onChange} />
+                  <button onClick={() => deleteTask(task.id)}>削除</button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

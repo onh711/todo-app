@@ -4,6 +4,7 @@ import { Create } from "./components/Create";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { TaskTable } from "./components/TaskTable";
+import Container from "@mui/material/Container";
 
 export const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -25,12 +26,14 @@ export const TaskList = () => {
 
   return (
     <>
-      <Box>
-        <Typography variant="h1" component="h2">
-          タスク一覧
-        </Typography>
-        <Create onAdd={featchTasks} />
-        <TaskTable tasks={tasks} onChange={featchTasks} />
+      <Box sx={{ margin: "0 auto", textAlign: "center" }}>
+        <Container>
+          <Typography sx={{ marginTop: "50px" }} variant="h1" fontSize={40}>
+            タスク一覧
+          </Typography>
+          <Create onAdd={featchTasks} />
+          <TaskTable tasks={tasks} onChange={featchTasks} />
+        </Container>
       </Box>
     </>
   );

@@ -66,7 +66,7 @@ export const Edit = ({ task, onChange }) => {
   };
 
   return (
-    <div>
+    <>
       <Button onClick={handleOpen}>編集</Button>
       <Modal
         open={open}
@@ -150,6 +150,6 @@ export const Edit = ({ task, onChange }) => {
           </Box>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 };
