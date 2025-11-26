@@ -15,14 +15,14 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import dayjs from "dayjs";
-import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
 import Tooltip from "@mui/material/Tooltip";
+import Box from "@mui/material/Box";
 
 export const TaskTable = ({ tasks, onChange }) => {
   const [searchWord, setSearchWord] = useState("");
   const [taskFilters, setTaskFilters] = useState("all");
-  const [taskSorts, setTaskSorts] = useState("start_asc");
+  const [taskSorts, setTaskSorts] = useState("");
 
   const deleteTask = async (id) => {
     if (window.confirm("本当に削除しますか？")) {
@@ -78,6 +78,19 @@ export const TaskTable = ({ tasks, onChange }) => {
         return b.status - a.status;
     }
   });
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "未着手":
+        return "#C9E6EE";
+      case "進行中":
+        return "#FFD4B8";
+      case "完了":
+        return "#A8E6CF";
+      case "期限切れ":
+        return "#FF667D";
+    }
+  };
 
   return (
     <>
@@ -141,14 +154,24 @@ export const TaskTable = ({ tasks, onChange }) => {
                 <TableCell component="th" scope="row">
                   {task.title}
                 </TableCell>
-
                 <TableCell align="center">
                   {dayjs(task.start_date).format("YYYY年MM月DD HH:mm")}
                 </TableCell>
                 <TableCell align="center">
                   {dayjs(task.due_date).format("YYYY年MM月DD HH:mm")}
                 </TableCell>
-                <TableCell align="center">{task.status_text}</TableCell>
+                <TableCell align="center">
+                  <Box
+                    sx={{
+                      background: getStatusColor(task.status_text),
+                      color: "#333333",
+                      borderRadius: "20px",
+                      boxShadow: "1",
+                    }}
+                  >
+                    {task.status_text}
+                  </Box>
+                </TableCell>
                 <TableCell align="center">
                   <Edit task={task} onChange={onChange} />
                   <Tooltip title="削除">

@@ -31,7 +31,7 @@ export const TaskList = () => {
           <Typography variant="h1" fontSize={40} sx={{ padding: "35px" }}>
             タスク一覧
           </Typography>
-          {/* <Create onAdd={featchTasks} /> */}
+          <Create onAdd={featchTasks} />
           <TaskTable tasks={tasks} onChange={featchTasks} />
         </Container>
       </Box>

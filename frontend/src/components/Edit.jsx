@@ -18,6 +18,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "50%",
   height: "70%",
+  overflowY: "auto",
   bgcolor: "background.paper",
   border: "1px solid #000",
   borderRadius: "15px",
@@ -56,7 +57,8 @@ export const Edit = ({ task, onChange }) => {
     { label: "期限切れ", value: 4 },
   ];
 
-  const editTask = async () => {
+  const editTask = async (e) => {
+    e.preventDefault();
     const API_URL = `http://localhost/api/tasks/${task.id}`;
     try {
       await axios.put(API_URL, inputData);
