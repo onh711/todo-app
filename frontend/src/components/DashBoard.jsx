@@ -3,6 +3,8 @@ import { Calender } from "./Calender";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BabyActionCreate } from "./BabyActionCreate";
+import Box from "@mui/material/Box";
+import { TaskTable } from "./TaskTable";
 
 export const DashBoard = () => {
   const [actions, setActions] = useState([]);
@@ -23,8 +25,11 @@ export const DashBoard = () => {
 
   return (
     <>
-      <Calender actions={actions} fetch={featchTasks} />
-      <BabyActionCreate fetch={featchTasks} />
+      <Box>
+        <Calender actions={actions} fetch={featchTasks} />
+        <BabyActionCreate fetch={featchTasks} />
+        {/* <TaskTable /> */}
+      </Box>
     </>
   );
 };

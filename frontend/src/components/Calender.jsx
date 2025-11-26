@@ -5,6 +5,19 @@ import jaLocale from "@fullcalendar/core/locales/ja";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useEffect, useState } from "react";
 import { CalenderModal } from "./CalenderModal ";
+import dayjs from "dayjs";
+import "dayjs/locale/ja";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+
+// UTCプラグインを読み込み
+dayjs.extend(utc);
+// timezoneプラグインを読み込み
+dayjs.extend(timezone);
+// 日本語化
+dayjs.locale("ja");
+// タイムゾーンのデフォルトをJST化
+dayjs.tz.setDefault("Asia/Tokyo");
 
 export const Calender = ({ actions, fetch }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,6 +46,7 @@ export const Calender = ({ actions, fetch }) => {
 
   // console.log(eventList);
 
+  // console.log(dayjs(new Date()).tz("Asia/Tokyo")).format("hh:mm:ss");
   return (
     <>
       <FullCalendar
@@ -50,6 +64,7 @@ export const Calender = ({ actions, fetch }) => {
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
+        // scrollTime={dayjs(new Date()).format("hh:mm:ss")} //初期表示の時間
         events={eventList} //カレンダーに渡すイベントのJSON
         // dateClick={(info) => console.log((`日付がクリックされました: ${info.dateStr}`))}
         dateClick={(info) =>
