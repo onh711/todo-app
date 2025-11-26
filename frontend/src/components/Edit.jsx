@@ -8,6 +8,8 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import { CustomButton } from "./CustomButton";
 import MenuItem from "@mui/material/MenuItem";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import Tooltip from "@mui/material/Tooltip";
 
 const style = {
   position: "absolute",
@@ -67,7 +69,21 @@ export const Edit = ({ task, onChange }) => {
 
   return (
     <>
-      <Button onClick={handleOpen}>編集</Button>
+      <Tooltip title="編集">
+        <EditOutlinedIcon
+          sx={{
+            marginRight: "20px",
+            fontSize: 30,
+            transition: "0.5s",
+            "&:hover": {
+              color: "#00bfa5",
+            },
+          }}
+          onClick={handleOpen}
+        >
+          編集
+        </EditOutlinedIcon>
+      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}

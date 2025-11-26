@@ -3,8 +3,6 @@ import { Edit } from "./Edit";
 import axios from "axios";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
@@ -12,22 +10,19 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
-import NativeSelect from "@mui/material/NativeSelect";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import dayjs from "dayjs";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
+import Tooltip from "@mui/material/Tooltip";
 
 export const TaskTable = ({ tasks, onChange }) => {
   const [searchWord, setSearchWord] = useState("");
   const [taskFilters, setTaskFilters] = useState("all");
   const [taskSorts, setTaskSorts] = useState("start_asc");
-  const [filter, setFilter] = useState("");
-
-  const handleChange = (e) => {
-    setFilter(e.target.value);
-  };
 
   const deleteTask = async (id) => {
     if (window.confirm("本当に削除しますか？")) {
@@ -86,37 +81,25 @@ export const TaskTable = ({ tasks, onChange }) => {
 
   return (
     <>
-      <Container sx={{ display: "flex", justifyContent: "space-around" }}>
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          marginBottom: "40px",
+        }}
+      >
         <TextField
-          id="outlined-basic"
           label="タスク名で検索"
           variant="outlined"
           onChange={(e) => setSearchWord(e.target.value)}
+          sx={{ width: 1 / 4 }}
         />
-        {/* <p>
-          <input type="text" onChange={(e) => setSearchWord(e.target.value)} />
-        </p> */}
-        {/* 並べ替え：
-        <Select
-          value={taskSorts}
-          onChange={(e) => setTaskSorts(e.target.value)}
-        >
-          <MenuItem value="start_asc">開始日昇順</MenuItem>
-          <MenuItem value="start_desc">開始日降順</MenuItem>
-          <MenuItem value="due_asc">期限日昇順</MenuItem>
-          <MenuItem value="due_desc">期限日降順</MenuItem>
-          <MenuItem value="status_asc">状態昇順</MenuItem>
-          <MenuItem value="status_desc">状態降順</MenuItem>
-        </Select> */}
         <FormControl sx={{ width: 1 / 4 }}>
-          <InputLabel id="demo-simple-select-label">並べ替え</InputLabel>
+          <InputLabel>並べ替え</InputLabel>
           <Select
             value={taskSorts}
             label="並べ替え"
-            onChange={(e) => {
-              setTaskSorts(e.target.value);
-              handleChange;
-            }}
+            onChange={(e) => setTaskSorts(e.target.value)}
           >
             <MenuItem value="start_asc">開始日昇順</MenuItem>
             <MenuItem value="start_desc">開始日降順</MenuItem>
@@ -127,14 +110,11 @@ export const TaskTable = ({ tasks, onChange }) => {
           </Select>
         </FormControl>
         <FormControl sx={{ width: 1 / 4 }}>
-          <InputLabel id="demo-simple-select-label">フィルター</InputLabel>
+          <InputLabel>フィルター</InputLabel>
           <Select
             value={taskFilters}
             label="フィルター"
-            onChange={(e) => {
-              setTaskFilters(e.target.value);
-              handleChange;
-            }}
+            onChange={(e) => setTaskFilters(e.target.value)}
           >
             <MenuItem value="all">すべてのタスク</MenuItem>
             <MenuItem value="checked">完了したタスク</MenuItem>
@@ -144,7 +124,7 @@ export const TaskTable = ({ tasks, onChange }) => {
         </FormControl>
       </Container>
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
         <Table sx={{ minWidth: 650 }} aria-label="task table">
           <TableHead>
             <TableRow>
@@ -152,7 +132,7 @@ export const TaskTable = ({ tasks, onChange }) => {
               <TableCell align="center">開始日</TableCell>
               <TableCell align="center">期日</TableCell>
               <TableCell align="center">状態</TableCell>
-              <TableCell align="left"></TableCell>
+              <TableCell align="center">編集/削除</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -162,14 +142,29 @@ export const TaskTable = ({ tasks, onChange }) => {
                   {task.title}
                 </TableCell>
 
-                <TableCell align="center">{task.start_date}</TableCell>
                 <TableCell align="center">
-                  {task.due_date == null ? "--" : task.due_date}
+                  {dayjs(task.start_date).format("YYYY年MM月DD HH:mm")}
+                </TableCell>
+                <TableCell align="center">
+                  {dayjs(task.due_date).format("YYYY年MM月DD HH:mm")}
                 </TableCell>
                 <TableCell align="center">{task.status_text}</TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   <Edit task={task} onChange={onChange} />
-                  <button onClick={() => deleteTask(task.id)}>削除</button>
+                  <Tooltip title="削除">
+                    <DeleteOutlineSharpIcon
+                      sx={{
+                        fontSize: 30,
+                        transition: "0.5s",
+                        "&:hover": {
+                          color: "#ba000d",
+                        },
+                      }}
+                      onClick={() => deleteTask(task.id)}
+                    >
+                      削除
+                    </DeleteOutlineSharpIcon>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}

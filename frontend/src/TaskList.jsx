@@ -28,10 +28,10 @@ export const TaskList = () => {
     <>
       <Box sx={{ margin: "0 auto", textAlign: "center" }}>
         <Container>
-          <Typography sx={{ marginTop: "50px" }} variant="h1" fontSize={40}>
+          <Typography variant="h1" fontSize={40} sx={{ padding: "35px" }}>
             タスク一覧
           </Typography>
-          <Create onAdd={featchTasks} />
+          {/* <Create onAdd={featchTasks} /> */}
           <TaskTable tasks={tasks} onChange={featchTasks} />
         </Container>
       </Box>
