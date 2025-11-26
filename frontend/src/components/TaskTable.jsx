@@ -3,11 +3,25 @@ import { Edit } from "./Edit";
 import axios from "axios";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: (theme.vars ?? theme).palette.text.secondary,
+  ...theme.applyStyles("dark", {
+    backgroundColor: "#1A2027",
+  }),
+}));
 
 export const TaskTable = ({ tasks, onChange }) => {
   const [searchWord, setSearchWord] = useState("");
-  const [filterWords, setFilterWords] = useState("");
   const [taskFilters, setTaskFilters] = useState("all");
+  const [taskSorts, setTaskSorts] = useState("start_asc");
 
   const deleteTask = async (id) => {
     if (window.confirm("本当に削除しますか？")) {
@@ -42,34 +56,60 @@ export const TaskTable = ({ tasks, onChange }) => {
         return task.status === 4;
     }
   });
+  //ソート機能
+  const taskSortingResults = filters.toSorted((a, b) => {
+    switch (taskSorts) {
+      case "start_asc":
+        return (
+          new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
+        );
+      case "start_desc":
+        return (
+          new Date(b.start_date).getTime() - new Date(a.start_date).getTime()
+        );
+      case "due_asc":
+        return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+      case "due_desc":
+        return new Date(b.due_date).getTime() - new Date(a.due_date).getTime();
+      case "status_asc":
+        return a.status - b.status;
+      case "status_desc":
+        return b.status - a.status;
+    }
+  });
 
   return (
     <>
-      <div style={{ display: "flex" }}>
+      <Stack direction="row" spacing={2}>
         <p>
           検索：
           <input type="text" onChange={(e) => setSearchWord(e.target.value)} />
         </p>
-        <p>
-          並べ替え：
-          <input type="text" />
-        </p>
+        並べ替え：
+        <Select
+          value={taskSorts}
+          onChange={(e) => setTaskSorts(e.target.value)}
+        >
+          <MenuItem value="start_asc">開始日昇順</MenuItem>
+          <MenuItem value="start_desc">開始日降順</MenuItem>
+          <MenuItem value="due_asc">期限日昇順</MenuItem>
+          <MenuItem value="due_desc">期限日降順</MenuItem>
+          <MenuItem value="status_asc">状態昇順</MenuItem>
+          <MenuItem value="status_desc">状態降順</MenuItem>
+        </Select>
         フィルター：
         <Select
           value={taskFilters}
           onChange={(e) => setTaskFilters(e.target.value)}
         >
-          {/*           {/* <MenuItem value={1}>未着手</MenuItem>
-          <MenuItem value={2}>進行中</MenuItem>
-          <MenuItem value={3}>完了</MenuItem>
-          <MenuItem value={4}>期限切れ</MenuItem> */}
           <MenuItem value="all">すべてのタスク</MenuItem>
           <MenuItem value="checked">完了したタスク</MenuItem>
           <MenuItem value="unchecked">現在の（未完了の）タスク</MenuItem>
           <MenuItem value="expired">期限切れのタスク</MenuItem>
           {/* <MenuItem value="removed">削除済みのタスク</MenuItem> */}
         </Select>
-      </div>
+      </Stack>
+      <div style={{ display: "flex" }}></div>
       <thead>
         <tr>
           <th>タスク名</th>
@@ -78,7 +118,7 @@ export const TaskTable = ({ tasks, onChange }) => {
           <th>状態</th>
         </tr>
       </thead>
-      {filters.map((task) => (
+      {taskSortingResults.map((task) => (
         <div
           key={task.id}
           style={{

@@ -67,6 +67,7 @@ class TaskController extends Controller
         $task->content = $validated["content"];
         $task->start_date = $validated["start_date"];
         $task->due_date = $validated["due_date"];
+        $task->status = 1;
         $task->save();
         DB::commit();
         return response()->json($task, 201);
