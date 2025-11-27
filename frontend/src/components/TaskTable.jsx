@@ -60,10 +60,10 @@ export const TaskTable = ({ onChange, tasks }) => {
                   {task.title}
                 </TableCell>
                 <TableCell align="center">
-                  {dayjs(task.start_date).format("YYYY年MM月DD HH:mm")}
+                  {dayjs(task.start_date).format("YYYY年MM月DD日 HH:mm")}
                 </TableCell>
                 <TableCell align="center">
-                  {dayjs(task.due_date).format("YYYY年MM月DD HH:mm")}
+                  {dayjs(task.due_date).format("YYYY年MM月DD日 HH:mm")}
                 </TableCell>
                 <TableCell align="center">
                   <Box

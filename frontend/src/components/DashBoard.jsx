@@ -5,6 +5,15 @@ import axios from "axios";
 import { BabyActionCreate } from "./BabyActionCreate";
 import Box from "@mui/material/Box";
 import { TaskTable } from "./TaskTable";
+import { Create } from "./Create";
+import Typography from "@mui/material/Typography";
+import dayjs from "dayjs";
+import "dayjs/locale/ja";
+import isBetween from "dayjs/plugin/isBetween";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import { Link } from "react-router-dom";
+dayjs.extend(isBetween);
 
 export const DashBoard = () => {
   const [actions, setActions] = useState([]);
@@ -36,13 +45,49 @@ export const DashBoard = () => {
     featchTasks();
   }, []);
 
+  const todayTaskFilter = tasks.filter((task) => {
+    return (
+      (task.status === 1 || task.status === 2) &&
+      // !dayjs(task.due_date).isBefore(dayjs(), "day")
+      dayjs().isBetween(task.start_date, task.due_date, "day", "[]")
+    );
+  });
+
   return (
     <>
-      <Box sx={{ display: "flex", gap: "0" }}>
-        <Calender actions={actions} fetch={featchActions} />
-        <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ display: "flex", height: "95vh", background: "#F9F9F9 " }}>
+        <Box sx={{ width: "50%", margin: "20px 20px 0 20px" }}>
+          <Calender actions={actions} fetch={featchActions} />
+        </Box>
+        <Box
+          sx={{
+            width: "50%",
+            height: "95vh",
+            textAlign: "center",
+            overflow: "auto",
+            margin: "20px",
+          }}
+        >
+          <Typography sx={{ fontSize: "20px", margin: "20px 0 0 0" }}>
+            赤ちゃん記録
+          </Typography>
           <BabyActionCreate fetch={featchActions} />
-          <TaskTable tasks={tasks} onChange={featchTasks} />
+          <Stack
+            direction={"row"}
+            spacing={2}
+            sx={{ justifyContent: "space-evenly" }}
+          >
+            <Button variant="contained" color="#00000099" sx={{ width: "40%" }}>
+              <Create onAdd={featchTasks} />
+            </Button>
+            <Button variant="contained" color="#00000099" sx={{ width: "40%" }}>
+              <Link to="/tasks">タスク一覧</Link>
+            </Button>
+          </Stack>
+          <Typography sx={{ fontSize: "20px", margin: "20px" }}>
+            今日のタスク
+          </Typography>
+          <TaskTable sx={{}} tasks={todayTaskFilter} onChange={featchTasks} />
         </Box>
       </Box>
     </>
