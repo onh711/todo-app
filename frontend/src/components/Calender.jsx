@@ -3,12 +3,13 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import jaLocale from "@fullcalendar/core/locales/ja";
 import interactionPlugin from "@fullcalendar/interaction";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CalenderModal } from "./CalenderModal ";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import axios from "axios";
 
 // UTCプラグインを読み込み
 dayjs.extend(utc);
@@ -22,14 +23,67 @@ dayjs.tz.setDefault("Asia/Tokyo");
 export const Calender = ({ actions, fetch }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [events, setEvents] = useState([]);
+  // const [drugEvent, setDrugEvent] = useState([]);
 
   const onCloseModal = () => {
     setIsOpen(false);
   };
 
+  const ACTION_ID = [
+    { id: 1, label: "寝る" },
+    { id: 2, label: "授乳" },
+    { id: 3, label: "ご飯" },
+    { id: 4, label: "うんち" },
+    { id: 5, label: "おしっこ" },
+    { id: 6, label: "うんち/おしっこ" },
+  ];
+
+  const findId = (label) => {
+    //labelを渡してリスト内のlabelのIDを返す関数
+    const found = ACTION_ID.find((id) => id.label === label);
+    return found ? found.id : "";
+  };
+
+  const handleEventDrop = async (info) => {
+    const { event } = info;
+    const updatedEventData = {
+      id: event.id,
+      action: findId(event.title),
+      start_date: dayjs(event.start).format("YYYY-MM-DD HH:mm:ss"),
+      end_date: dayjs(event.end).format("YYYY-MM-DD HH:mm:ss"),
+    };
+
+    const API_URL = `http://localhost/api/drop/${event.id}`;
+    try {
+      await axios.put(API_URL, updatedEventData);
+      fetch();
+    } catch (e) {
+      console.error(e);
+      console.log(updatedEventData);
+    }
+  };
+
   // useEffect(()=>{
   // console.log("値",actions);
   const eventList = actions.map((action) => {
+    const eventColors = (action) => {
+      switch (action.action_text) {
+        case "寝る":
+          return "#a3ffa3";
+        case "授乳":
+          return "#ffa3d1";
+        case "ご飯":
+          return "#a3ffff";
+        case "うんち":
+          return "#ffc184";
+        case "おしっこ":
+          return "#ffffa3";
+        case "うんち/おしっこ":
+          return "#bf7fff";
+      }
+      // console.log(action.action_text);
+    };
+
     return {
       id: action.id,
       title: action.action_text,
@@ -38,15 +92,14 @@ export const Calender = ({ actions, fetch }) => {
       end: action.end_date,
       milk_amount: action.milk_amount,
       description: action.memo,
+      color: eventColors(action),
+      textColor: "rgba(0, 0, 0, 0.7)",
     };
   });
   //   setEvents(eventList);
   //   console.log("中",eventList);
   // },[actions]);
 
-  // console.log(eventList);
-
-  // console.log(dayjs(new Date()).tz("Asia/Tokyo")).format("hh:mm:ss");
   return (
     <>
       <FullCalendar
@@ -56,6 +109,9 @@ export const Calender = ({ actions, fetch }) => {
         locale="ja"
         timeZone="local"
         selectable={true}
+        height={"100%"}
+        allDaySlot={false}
+        eventBackgroundColor={"#FFFFFF"}
         // select={handleDateSelect}
         nowIndicator={true} //現在時刻をラインで表示
         eventMinHeight={25} //イベントの表示幅の指定
@@ -64,15 +120,15 @@ export const Calender = ({ actions, fetch }) => {
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
-        scrollTime={dayjs(new Date().getTime()).format("hh:mm:ss")} //初期表示の時間
+        scrollTime={dayjs(new Date().getTime()).format("HH:mm:ss")} //初期表示の時間
         events={eventList} //カレンダーに渡すイベントのJSON
         // dateClick={(info) => console.log((`日付がクリックされました: ${info.dateStr}`))}
-        dateClick={(info) =>
-          console.log(`日付がクリックされました: ${info.dateStr}`)
-        }
+        eventDrop={handleEventDrop}
+        eventResize={handleEventDrop}
+        // dateClick={(info) =>
+        //   console.log(`日付がクリックされました: ${info.dateStr}`)
+        // }
         eventClick={(e) => {
-          // alert(`イベント: ${e.event.extendedProps.description}`)
-          // alert(`イベント: ${e.event.id}`)
           setIsOpen(true);
           setEvents({
             ...events,

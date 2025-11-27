@@ -8,12 +8,14 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
+import isBetween from "dayjs/plugin/isBetween";
+dayjs.extend(isBetween);
 
 export const TaskFilter = ({ tasks, onChange }) => {
   const [searchWord, setSearchWord] = useState("");
   const [taskFilters, setTaskFilters] = useState("all");
   const [taskSorts, setTaskSorts] = useState("");
-  console.log(dayjs(new Date()).format("YYYY-MM-DD"));
+  console.log("dayjs()", dayjs());
   //   console.log(
   //     dayjs(new Date()).format("YYYY-MM-DD") <=
   //       dayjs({ ...tasks.due_date }).format("YYYY-MM-DD")
@@ -39,10 +41,9 @@ export const TaskFilter = ({ tasks, onChange }) => {
         return task.status === 4;
       case "today":
         return (
-          task.status === 1 ||
-          (task.status === 2 &&
-            dayjs(task.due_date).format("YYYY-MM-DD") ==
-              dayjs(new Date()).format("YYYY-MM-DD"))
+          (task.status === 1 || task.status === 2) &&
+          // !dayjs(task.due_date).isBefore(dayjs(), "day")
+          dayjs().isBetween(task.start_date, task.due_date, "day", "[]")
         );
     }
   });

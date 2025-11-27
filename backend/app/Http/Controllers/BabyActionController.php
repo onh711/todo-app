@@ -95,6 +95,19 @@ class BabyActionController extends Controller
         }
     }
 
+
+    public function updateEventToDrop(Request $request, string $id)
+    {
+        try{
+        $action = BabyAction::find($id);
+        $action->start_date = $request["start_date"];
+        $action->end_date = $request["end_date"];
+        $action->save();
+        return response()->json($action, 200);
+        } catch (\Exception$e) {
+            throw $e;
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */

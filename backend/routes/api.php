@@ -20,6 +20,7 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::post('/logout',[LogoutController::class, 'logout']);
 
+Route::put('/drop/{id}', [BabyActionController::class,'updateEventToDrop']);
 Route::apiResource('/dashbord', BabyActionController::class);
 
 
