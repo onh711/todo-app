@@ -13,6 +13,7 @@ import isBetween from "dayjs/plugin/isBetween";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
+import Grid from "@mui/material/Grid";
 dayjs.extend(isBetween);
 
 export const DashBoard = () => {
@@ -55,19 +56,81 @@ export const DashBoard = () => {
 
   return (
     <>
+      {/* <Grid container spacing={2} sx={{ position: "relative" }}>
+        <Grid
+          size={{ sm: 12, md: 6 }}
+          sx={{
+            height: "100vh",
+            "@media screen and (max-width:900px)": {
+              marginTop: "200px",
+            },
+          }}
+        >
+          <Calender actions={actions} fetch={featchActions} />
+        </Grid>
+        <Grid
+          size={{ sm: 0, md: 6 }}
+          sx={{
+            position: "relative",
+            textAlign: "center",
+            "@media screen and (max-width:900px)": {
+              position: "absolute",
+              width: "100%",
+            },
+          }}
+        >
+          <Box>
+            <Typography sx={{ fontSize: "20px", margin: "20px 0 0 0" }}>
+              赤ちゃん記録
+            </Typography>
+            <BabyActionCreate fetch={featchActions} />
+          </Box>
+          <Stack
+            direction={"row"}
+            spacing={2}
+            sx={{
+              justifyContent: "space-evenly",
+              "@media screen and (max-width:900px)": {
+                position: "absolute",
+                width: "100%",
+              },
+            }}
+          >
+            <Box sx={{ width: "40%" }}>
+              <Create onAdd={featchTasks} />
+            </Box>
+            <Button
+              component={Link}
+              to="/tasks"
+              variant="contained"
+              color="#00000099"
+              sx={{ width: "40%" }}
+            >
+              タスク一覧
+            </Button>
+          </Stack>
+          <Typography sx={{ fontSize: "20px", margin: "20px" }}>
+            今日のタスク
+          </Typography>
+          <TaskTable sx={{}} tasks={todayTaskFilter} onChange={featchTasks} />
+        </Grid>
+      </Grid> */}
       <Box sx={{ display: "flex", height: "100vh", background: "#F9F9F9 " }}>
-        <Box sx={{ width: "50%", margin: "20px" }}>
+        <Box sx={{ width: "50%", margin: "20px", height: "90%" }}>
           <Calender actions={actions} fetch={featchActions} />
         </Box>
         <Box
           sx={{
             width: "50%",
-            height: "95vh",
+            height: "90%",
             textAlign: "center",
             overflow: "auto",
             margin: "20px",
           }}
         >
+          <Typography sx={{ fontSize: "20px", margin: "20px 0 0 0" }}>
+            赤ちゃん記録
+          </Typography>
           <BabyActionCreate fetch={featchActions} />
           <Stack
             direction={"row"}
