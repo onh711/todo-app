@@ -68,10 +68,13 @@ export const TaskTable = ({ onChange, tasks }) => {
                 <TableCell align="center">
                   <Box
                     sx={{
+                      width: "100%",
                       background: getStatusColor(task.status_text),
                       color: "#333333",
                       borderRadius: "20px",
                       boxShadow: "1",
+                      paddingLeft: "8px",
+                      paddingRight: "8px",
                     }}
                   >
                     {task.status_text}

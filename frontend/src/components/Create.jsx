@@ -51,30 +51,6 @@ export const Create = ({ onAdd, sx }) => {
     content: "",
   });
 
-  // const addTask = async () =>{
-  //     const API_URL = "http://localhost/api/tasks"
-  //     console.log(inputData);
-  //     try {
-  //     await axios.post(API_URL, { ...inputData });
-  //     onAdd();
-  //     handleClose();
-  //     } catch (e) {
-  //     console.error(e);
-  //     }
-  // }
-
-  // const handleSubmit = async () =>{
-  //     const API_URL = "http://localhost/api/tasks"
-  //     console.log(inputData);
-  //     try {
-  //     await axios.post(API_URL, { ...inputData });
-  //     onAdd();
-  //     handleClose();
-  //     } catch (e) {
-  //     console.error(e);
-  //   }
-  // }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!handleValidate()) {
@@ -117,6 +93,13 @@ export const Create = ({ onAdd, sx }) => {
     if (inputData.start_date.length === 0) {
       errors.start_date = "開始日時を入力してください";
       console.log(errorMessages.start_date);
+      isValid = false;
+    }
+
+    //完了期限のバリデーション
+    if (inputData.due_date.length === 0) {
+      errors.due_date = "完了期限を入力してください";
+      console.log(errorMessages.due_date);
       isValid = false;
     }
 
@@ -172,7 +155,14 @@ export const Create = ({ onAdd, sx }) => {
 
   return (
     <Box>
-      <Box onClick={handleOpen}>新規タスク登録</Box>
+      <Button
+        sx={{ width: "100%" }}
+        variant="contained"
+        color="#00000099"
+        onClick={handleOpen}
+      >
+        新規タスク登録
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -214,18 +204,27 @@ export const Create = ({ onAdd, sx }) => {
             />
             <TextField
               type={"datetime-local"}
+              error={errorMessages.due_date}
+              helperText={errorMessages.due_date}
               label={"完了期限"}
               InputLabelProps={{ shrink: true }}
               sx={TextFieldStyle}
-              onChange={(e) =>
-                setInputData({ ...inputData, due_date: e.target.value })
-              }
+              value={inputData.due_date}
+              inputProps={{
+                min: inputData.start_date,
+              }}
+              onChange={(e) => {
+                setInputData({ ...inputData, due_date: e.target.value });
+                console.log(inputData.start_date);
+              }}
             />
             <TextField
               label={"タスク詳細"}
               error={errorMessages.content}
               helperText={errorMessages.content}
               sx={TextFieldStyle}
+              minDateTime={inputData.due_date}
+              min={inputData.due_date}
               onChange={(e) =>
                 setInputData({ ...inputData, content: e.target.value })
               }
@@ -233,6 +232,7 @@ export const Create = ({ onAdd, sx }) => {
             <Box sx={{ justifyContent: "center" }}>
               <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
               <CustomButton
+                onClick={handleClose}
                 detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
               />
             </Box>

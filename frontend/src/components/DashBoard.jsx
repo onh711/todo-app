@@ -77,11 +77,19 @@ export const DashBoard = () => {
             spacing={2}
             sx={{ justifyContent: "space-evenly" }}
           >
-            <Button variant="contained" color="#00000099" sx={{ width: "40%" }}>
+            {/* <Button variant="contained" color="#00000099" sx={{ width: "40%" }}> */}
+            <Box sx={{ width: "40%" }}>
               <Create onAdd={featchTasks} />
-            </Button>
-            <Button variant="contained" color="#00000099" sx={{ width: "40%" }}>
-              <Link to="/tasks">タスク一覧</Link>
+            </Box>
+            {/* </Button> */}
+            <Button
+              component={Link}
+              to="/tasks"
+              variant="contained"
+              color="#00000099"
+              sx={{ width: "40%" }}
+            >
+              タスク一覧
             </Button>
           </Stack>
           <Typography sx={{ fontSize: "20px", margin: "20px" }}>

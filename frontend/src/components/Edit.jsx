@@ -74,7 +74,6 @@ export const Edit = ({ task, onChange }) => {
       <Tooltip title="編集">
         <EditOutlinedIcon
           sx={{
-            marginRight: "20px",
             fontSize: 30,
             transition: "0.5s",
             "&:hover": {
