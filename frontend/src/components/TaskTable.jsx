@@ -43,7 +43,7 @@ export const TaskTable = ({ onChange, tasks }) => {
   return (
     <>
       <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
-        <Table sx={{ minWidth: 650 }} aria-label="task table">
+        <Table aria-label="task table">
           <TableHead>
             <TableRow>
               <TableCell>タスク名</TableCell>
@@ -62,9 +62,19 @@ export const TaskTable = ({ onChange, tasks }) => {
                 <TableCell align="center">
                   {dayjs(task.start_date).format("YYYY年MM月DD日 HH:mm")}
                 </TableCell>
-                <TableCell align="center">
+                {/* {dayjs() >= dayjs(task.due_date) ? ( */}
+                {dayjs().isSame(task.due_date, "day") ? (
+                  <TableCell sx={{ color: "red" }} align="center">
+                    {dayjs(task.due_date).format("YYYY年MM月DD日 HH:mm")}
+                  </TableCell>
+                ) : (
+                  <TableCell align="center">
+                    {dayjs(task.due_date).format("YYYY年MM月DD日 HH:mm")}
+                  </TableCell>
+                )}
+                {/* <TableCell align="center">
                   {dayjs(task.due_date).format("YYYY年MM月DD日 HH:mm")}
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="center">
                   <Box
                     sx={{

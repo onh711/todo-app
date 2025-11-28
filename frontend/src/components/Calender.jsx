@@ -130,6 +130,7 @@ export const Calender = ({ actions, fetch }) => {
         // select={handleDateSelect}
         nowIndicator={true} //現在時刻をラインで表示
         eventMinHeight={25} //イベントの表示幅の指定
+        eventShortHeight={40}
         headerToolbar={{
           left: "prev,next today",
           center: "title",
