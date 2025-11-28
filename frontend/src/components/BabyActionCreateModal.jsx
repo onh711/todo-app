@@ -55,7 +55,6 @@ export const BabyActionCreateModal = ({
 
   const handleClose = () => onCloseCreateModal();
   const BABY_ID = 1;
-  //   console.log("クリック時間：", clickDate);
 
   const [inputActions, setInputActions] = useState({
     baby_id: BABY_ID,

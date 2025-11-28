@@ -55,8 +55,8 @@ export const DashBoard = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", height: "95vh", background: "#F9F9F9 " }}>
-        <Box sx={{ width: "50%", margin: "20px 20px 0 20px" }}>
+      <Box sx={{ display: "flex", height: "100vh", background: "#F9F9F9 " }}>
+        <Box sx={{ width: "50%", margin: "20px" }}>
           <Calender actions={actions} fetch={featchActions} />
         </Box>
         <Box
@@ -68,20 +68,15 @@ export const DashBoard = () => {
             margin: "20px",
           }}
         >
-          <Typography sx={{ fontSize: "20px", margin: "20px 0 0 0" }}>
-            赤ちゃん記録
-          </Typography>
           <BabyActionCreate fetch={featchActions} />
           <Stack
             direction={"row"}
             spacing={2}
             sx={{ justifyContent: "space-evenly" }}
           >
-            {/* <Button variant="contained" color="#00000099" sx={{ width: "40%" }}> */}
             <Box sx={{ width: "40%" }}>
               <Create onAdd={featchTasks} />
             </Box>
-            {/* </Button> */}
             <Button
               component={Link}
               to="/tasks"

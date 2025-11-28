@@ -213,10 +213,9 @@ export const Create = ({ onAdd, sx }) => {
               inputProps={{
                 min: inputData.start_date,
               }}
-              onChange={(e) => {
-                setInputData({ ...inputData, due_date: e.target.value });
-                console.log(inputData.start_date);
-              }}
+              onChange={(e) =>
+                setInputData({ ...inputData, due_date: e.target.value })
+              }
             />
             <TextField
               label={"タスク詳細"}
