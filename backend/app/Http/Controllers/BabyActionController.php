@@ -45,8 +45,10 @@ class BabyActionController extends Controller
           'baby_id' => $request->baby_id,
           'action' => $request->action,
           'cry' => $request->cry,
-          'start_date' => Carbon::now(),
-          'end_date' => Carbon::now()->addMinutes(5),
+        //   'start_date' => Carbon::now(),
+        //   'end_date' => Carbon::now()->addMinutes(5),
+          'start_date' => $request->start_date,
+          'end_date' => $request->end_date,
           'mill_amount' =>$request->mill_amount,
           'memo' =>$request->memo
         ]);

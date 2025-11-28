@@ -10,6 +10,7 @@ import "dayjs/locale/ja";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import axios from "axios";
+import { BabyActionCreateModal } from "./BabyActionCreateModal";
 
 // UTCプラグインを読み込み
 dayjs.extend(utc);
@@ -22,11 +23,16 @@ dayjs.tz.setDefault("Asia/Tokyo");
 
 export const Calender = ({ actions, fetch }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+  const [calenderClickDate, setCalenderClickDate] = useState("");
   const [events, setEvents] = useState([]);
-  // const [drugEvent, setDrugEvent] = useState([]);
 
   const onCloseModal = () => {
     setIsOpen(false);
+  };
+
+  const onCloseCreateModal = () => {
+    setCreateModalOpen(false);
   };
 
   const ACTION_ID = [
@@ -62,6 +68,15 @@ export const Calender = ({ actions, fetch }) => {
       console.log(updatedEventData);
     }
   };
+
+  //   const createAction = async  (info) =>{
+  //     setCalenderClickDate(info.dateStr)
+  //   try{
+  //     await setCreateModalOpen(true);
+  //         console.log(calenderClickDate);
+  //         // ;
+  //   }
+  // }
 
   // useEffect(()=>{
   // console.log("値",actions);
@@ -125,9 +140,11 @@ export const Calender = ({ actions, fetch }) => {
         // dateClick={(info) => console.log((`日付がクリックされました: ${info.dateStr}`))}
         eventDrop={handleEventDrop}
         eventResize={handleEventDrop}
-        // dateClick={(info) =>
-        //   console.log(`日付がクリックされました: ${info.dateStr}`)
-        // }
+        // dateClick={(info) => console.log(info.dateStr)}
+        dateClick={(info) => {
+          setCalenderClickDate(info.dateStr);
+          setCreateModalOpen(true);
+        }}
         eventClick={(e) => {
           setIsOpen(true);
           setEvents({
@@ -150,6 +167,13 @@ export const Calender = ({ actions, fetch }) => {
         events={events}
         onCloseModal={onCloseModal}
         fetch={fetch}
+      />
+
+      <BabyActionCreateModal
+        showFlag={isCreateModalOpen}
+        fetch={fetch}
+        onCloseCreateModal={onCloseCreateModal}
+        clickDate={calenderClickDate}
       />
     </>
   );

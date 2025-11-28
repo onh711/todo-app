@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { TaskFilter } from "./components/TaskFilter";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 export const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -31,7 +33,6 @@ export const TaskList = () => {
           <Typography variant="h1" fontSize={40} sx={{ padding: "35px" }}>
             タスク一覧
           </Typography>
-          <Create onAdd={featchTasks} />
           <TaskFilter tasks={tasks} onChange={featchTasks} />
         </Container>
       </Box>

@@ -38,7 +38,12 @@ const TextFieldStyle = {
   padding: "0px",
 };
 
-export const CalenderModal = ({ showFlag, events, onCloseModal, fetch }) => {
+export const BabyActionCreateModal = ({
+  showFlag,
+  fetch,
+  clickDate,
+  onCloseCreateModal,
+}) => {
   const ACTION_ID = [
     { id: 1, label: "寝る" },
     { id: 2, label: "授乳" },
@@ -48,59 +53,37 @@ export const CalenderModal = ({ showFlag, events, onCloseModal, fetch }) => {
     { id: 6, label: "うんち/おしっこ" },
   ];
 
-  const findId = (label) => {
-    //labelを渡してリスト内のlabelのIDを返す関数
-    const found = ACTION_ID.find((id) => id.label === label);
-    return found ? found.id : "";
-  };
+  const handleClose = () => onCloseCreateModal();
+  const BABY_ID = 1;
+  //   console.log("クリック時間：", clickDate);
 
-  const handleClose = () => onCloseModal();
+  const [inputActions, setInputActions] = useState({
+    baby_id: BABY_ID,
+    action: 1,
+    cry: 0,
+    start_date: dayjs(clickDate).format("YYYY-MM-DD HH:mm:ss"),
+    end_date: dayjs(clickDate).add(5, "m").format("YYYY-MM-DD HH:mm:ss"),
+    milk_amount: "",
+    memo: "",
+  });
 
   useEffect(() => {
     setInputActions({
       ...inputActions,
-      baby_id: events.id,
-      action: findId(events.title),
-      cry: events.cry,
-      start_date: dayjs(events.start).format("YYYY-MM-DD HH:mm:ss"),
-      end_date: dayjs(events.end).format("YYYY-MM-DD HH:mm:ss"),
-      milk_amount: events.milk_amount,
-      memo: events.description,
+      start_date: dayjs(clickDate).format("YYYY-MM-DD HH:mm:ss"),
+      end_date: dayjs(clickDate).add(5, "m").format("YYYY-MM-DD HH:mm:ss"),
     });
   }, [showFlag]);
 
-  const [inputActions, setInputActions] = useState({
-    baby_id: events.id,
-    action: findId(events.title),
-    cry: events.cry,
-    start_date: dayjs(events.start).format("YYYY-MM-DD HH:mm:ss"),
-    end_date: dayjs(events.end).format("YYYY-MM-DD HH:mm:ss"),
-    milk_amount: events.milk_amount,
-    memo: events.description,
-  });
-
-  const editAction = async (e) => {
+  const createAction = async (e) => {
     e.preventDefault();
-    const API_URL = `http://localhost/api/dashbord/${events.id}`;
+    const API_URL = `http://localhost/api/dashbord`;
     try {
-      await axios.put(API_URL, inputActions);
+      await axios.post(API_URL, inputActions);
       handleClose();
       fetch();
     } catch (e) {
       console.error(e);
-    }
-  };
-
-  const deleteAction = async () => {
-    if (window.confirm("本当に削除しますか？")) {
-      try {
-        const API_URL = `http://localhost/api/dashbord/${events.id}`;
-        await axios.delete(API_URL);
-        handleClose();
-        fetch(); //タスクリストの更新関数
-      } catch (e) {
-        console.error(e);
-      }
     }
   };
 
@@ -119,9 +102,9 @@ export const CalenderModal = ({ showFlag, events, onCloseModal, fetch }) => {
             variant="h6"
             component="h2"
           >
-            編集
+            新規赤ちゃん記録
           </Typography>
-          <Box component="form" onSubmit={editAction}>
+          <Box component="form" onSubmit={createAction}>
             <Select
               sx={TextFieldStyle}
               value={inputActions.action}
@@ -203,10 +186,6 @@ export const CalenderModal = ({ showFlag, events, onCloseModal, fetch }) => {
               />
               <Box>
                 <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
-                <CustomButton
-                  onClick={deleteAction}
-                  detail={{ text: "削除", bgcolor: "#595c5fff" }}
-                />
                 <CustomButton
                   onClick={handleClose}
                   detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
