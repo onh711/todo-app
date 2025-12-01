@@ -13,17 +13,18 @@ export const TaskDrawer = ({ onAdd, tasks }) => {
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => {
-    console.log(123);
     setOpen(newOpen);
   };
 
   const DrawerList = (
     <Box sx={{ textAlign: "center" }} role="presentation">
       <Button
-        sx={{ fontSize: "20px", margin: "20px" }}
+        variant="contained"
+        color="#00000099"
+        sx={{ fontSize: "15px", margin: "25px 20px 20px 20px" }}
         onClick={() => toggleDrawer(false)}
       >
-        閉じる
+        画面を閉じる
       </Button>
       <Stack
         direction={"row"}
@@ -51,13 +52,18 @@ export const TaskDrawer = ({ onAdd, tasks }) => {
   );
 
   return (
-    <div>
-      <Button sx={{ fontSize: "20px" }} onClick={() => toggleDrawer(true)}>
+    <>
+      <Button
+        variant="contained"
+        sx={{ fontSize: "15px" }}
+        color="#00000099"
+        onClick={() => toggleDrawer(true)}
+      >
         今日のタスク一覧
       </Button>
       <Drawer open={open} anchor={"right"}>
         {DrawerList}
       </Drawer>
-    </div>
+    </>
   );
 };

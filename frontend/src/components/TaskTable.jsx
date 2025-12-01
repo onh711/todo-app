@@ -72,9 +72,6 @@ export const TaskTable = ({ onChange, tasks }) => {
                     {dayjs(task.due_date).format("YYYY年MM月DD日 HH:mm")}
                   </TableCell>
                 )}
-                {/* <TableCell align="center">
-                  {dayjs(task.due_date).format("YYYY年MM月DD日 HH:mm")}
-                </TableCell> */}
                 <TableCell align="center">
                   <Box
                     sx={{

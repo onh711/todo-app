@@ -55,6 +55,10 @@ export const DashBoard = () => {
     );
   });
 
+  const todayTaskSortingResults = todayTaskFilter.toSorted((a, b) => {
+    return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+  });
+
   return (
     <>
       {/* <Grid container spacing={2} sx={{ position: "relative" }}>
@@ -130,17 +134,21 @@ export const DashBoard = () => {
         }}
       >
         <Box sx={{ margin: "10px" }}>
-          <TaskDrawer tasks={todayTaskFilter} onAdd={featchTasks} />
+          <TaskDrawer tasks={todayTaskSortingResults} onAdd={featchTasks} />
         </Box>
         <Box
           sx={{
             width: "100%",
             height: "calc(100vh - 210px)",
             "& .fc .fc-toolbar-title": {
-              fontSize: "1.3rem",
+              fontSize: "1rem",
               fontWeight: "bold",
             },
             "& .fc .fc-button": {
+              fontSize: "0.6rem",
+            },
+
+            "& .fc .fc-col-header-cell-cushion": {
               fontSize: "0.7rem",
             },
           }}
@@ -153,20 +161,41 @@ export const DashBoard = () => {
       <Box
         sx={{
           display: { xs: "none", sm: "flex", md: "flex", lg: "flex" },
-          height: "100vh",
-          background: "#F9F9F9 ",
+
+          height: "calc(100vh - 64px)",
         }}
       >
-        <Box sx={{ width: "50%", margin: "20px", height: "90%" }}>
+        <Box
+          sx={{
+            width: "50%",
+            margin: "20px",
+            padding: "20px",
+            height: "95%",
+            "& .fc .fc-toolbar-title": {
+              fontSize: "1.3rem",
+              fontWeight: "bold",
+            },
+            "& .fc .fc-button": {
+              fontSize: "0.7rem",
+            },
+            "@media screen and (max-width:760px)": {
+              "& .fc .fc-toolbar-title": {
+                fontSize: "1rem",
+                fontWeight: "bold",
+              },
+              "& .fc .fc-button": {
+                fontSize: "0.6rem",
+              },
+            },
+          }}
+        >
           <Calender actions={actions} fetch={featchActions} />
         </Box>
         <Box
           sx={{
             width: "50%",
-            height: "90%",
+            height: "calc(100vh - 180px)",
             textAlign: "center",
-            overflow: "auto",
-            margin: "20px",
           }}
         >
           <Typography sx={{ fontSize: "20px", margin: "20px 0 0 0" }}>
@@ -194,7 +223,9 @@ export const DashBoard = () => {
           <Typography sx={{ fontSize: "20px", margin: "20px" }}>
             今日のタスク
           </Typography>
-          <TaskTable sx={{}} tasks={todayTaskFilter} onChange={featchTasks} />
+          <Box sx={{ height: "78%", overflowY: "auto", boxShadow: 3 }}>
+            <TaskTable tasks={todayTaskSortingResults} onChange={featchTasks} />
+          </Box>
         </Box>
       </Box>
     </>
