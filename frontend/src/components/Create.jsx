@@ -30,7 +30,7 @@ const TextFieldStyle = {
   padding: "0px",
 };
 
-export const Create = ({ onAdd, sx }) => {
+export const Create = ({ onAdd }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -222,8 +222,7 @@ export const Create = ({ onAdd, sx }) => {
               error={errorMessages.content}
               helperText={errorMessages.content}
               sx={TextFieldStyle}
-              minDateTime={inputData.due_date}
-              min={inputData.due_date}
+              value={inputData.content}
               onChange={(e) =>
                 setInputData({ ...inputData, content: e.target.value })
               }

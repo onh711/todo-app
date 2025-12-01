@@ -56,6 +56,16 @@ export const BabyActionCreate = ({ fetch }) => {
           borderRadius: 3,
           alignItems: "center",
           boxShadow: 3,
+          "@media screen and (max-width:600px)": {
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            margin: "0 auto",
+            width: "100%",
+            borderRadius: 0,
+            backgroundColor: "#F9F9F9",
+          },
         }}
       >
         <Box

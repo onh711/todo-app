@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import { TaskDrawer } from "./TaskDrawer";
 dayjs.extend(isBetween);
 
 export const DashBoard = () => {
@@ -115,7 +116,47 @@ export const DashBoard = () => {
           <TaskTable sx={{}} tasks={todayTaskFilter} onChange={featchTasks} />
         </Grid>
       </Grid> */}
-      <Box sx={{ display: "flex", height: "100vh", background: "#F9F9F9 " }}>
+
+      <Box
+        sx={{
+          display: { xs: "flex", sm: "none", md: "none", lg: "none" },
+          height: "100%",
+          background: "#F9F9F9 ",
+          flexDirection: "column",
+          justifyContent: "center",
+          textAlign: "center",
+          margin: "10px",
+          overflow: "hidden",
+        }}
+      >
+        <Box sx={{ margin: "10px" }}>
+          <TaskDrawer tasks={todayTaskFilter} onAdd={featchTasks} />
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            height: "calc(100vh - 210px)",
+            "& .fc .fc-toolbar-title": {
+              fontSize: "1.3rem",
+              fontWeight: "bold",
+            },
+            "& .fc .fc-button": {
+              fontSize: "0.7rem",
+            },
+          }}
+        >
+          <Calender actions={actions} fetch={featchActions} />
+        </Box>
+        <BabyActionCreate fetch={featchActions} />
+      </Box>
+
+      <Box
+        sx={{
+          display: { xs: "none", sm: "flex", md: "flex", lg: "flex" },
+          height: "100vh",
+          background: "#F9F9F9 ",
+        }}
+      >
         <Box sx={{ width: "50%", margin: "20px", height: "90%" }}>
           <Calender actions={actions} fetch={featchActions} />
         </Box>
