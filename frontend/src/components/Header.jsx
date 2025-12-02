@@ -14,12 +14,10 @@ export const Header = () => {
     const API_URL = "http://localhost/api/logout";
     const res = await axios.post(API_URL);
     try {
-      console.log(res.data);
       alert("ログアウトしました");
       navigate("/login");
     } catch (e) {
       alert("ログアウトに失敗しました");
-      console.log(res.data);
     }
   };
 
