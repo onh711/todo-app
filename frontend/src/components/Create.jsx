@@ -57,7 +57,6 @@ export const Create = ({ onAdd }) => {
       return;
     }
     const API_URL = "http://localhost/api/tasks";
-    console.log(inputData);
     try {
       await axios.post(API_URL, { ...inputData });
       onAdd();
@@ -79,34 +78,29 @@ export const Create = ({ onAdd }) => {
     //タイトル名のバリデーション
     if (inputData.title.length >= 50) {
       errors.title = "タスク名は50文字以上入力できません。";
-      console.log(errorMessages.title);
       isValid = false;
     }
 
     if (inputData.title.length === 0) {
       errors.title = "タスク名を入力してください";
-      console.log(errorMessages.title);
       isValid = false;
     }
 
     //開始日時のバリデーション
     if (inputData.start_date.length === 0) {
       errors.start_date = "開始日時を入力してください";
-      console.log(errorMessages.start_date);
       isValid = false;
     }
 
     //完了期限のバリデーション
     if (inputData.due_date.length === 0) {
       errors.due_date = "完了期限を入力してください";
-      console.log(errorMessages.due_date);
       isValid = false;
     }
 
     //タスク詳細のバリデーション
     if (inputData.content.length >= 250) {
       errors.content = "タスク詳細は250文字以上入力できません。";
-      console.log(errorMessages.content);
       isValid = false;
     }
     setErrorMessages(errors);

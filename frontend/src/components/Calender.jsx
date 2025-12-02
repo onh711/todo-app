@@ -65,21 +65,9 @@ export const Calender = ({ actions, fetch }) => {
       fetch();
     } catch (e) {
       console.error(e);
-      console.log(updatedEventData);
     }
   };
 
-  //   const createAction = async  (info) =>{
-  //     setCalenderClickDate(info.dateStr)
-  //   try{
-  //     await setCreateModalOpen(true);
-  //         console.log(calenderClickDate);
-  //         // ;
-  //   }
-  // }
-
-  // useEffect(()=>{
-  // console.log("値",actions);
   const eventList = actions.map((action) => {
     const eventColors = (action) => {
       switch (action.action_text) {
@@ -96,7 +84,6 @@ export const Calender = ({ actions, fetch }) => {
         case "うんち/おしっこ":
           return "#bf7fff";
       }
-      // console.log(action.action_text);
     };
 
     return {
@@ -111,9 +98,6 @@ export const Calender = ({ actions, fetch }) => {
       textColor: "rgba(0, 0, 0, 0.7)",
     };
   });
-  //   setEvents(eventList);
-  //   console.log("中",eventList);
-  // },[actions]);
 
   return (
     <>
@@ -127,7 +111,6 @@ export const Calender = ({ actions, fetch }) => {
         height={"100%"}
         allDaySlot={false}
         eventBackgroundColor={"#FFFFFF"}
-        // select={handleDateSelect}
         nowIndicator={true} //現在時刻をラインで表示
         eventMinHeight={25} //イベントの表示幅の指定
         eventShortHeight={40}
@@ -138,10 +121,8 @@ export const Calender = ({ actions, fetch }) => {
         }}
         scrollTime={dayjs(new Date().getTime()).format("HH:mm:ss")} //初期表示の時間
         events={eventList} //カレンダーに渡すイベントのJSON
-        // dateClick={(info) => console.log((`日付がクリックされました: ${info.dateStr}`))}
         eventDrop={handleEventDrop}
         eventResize={handleEventDrop}
-        // dateClick={(info) => console.log(info.dateStr)}
         dateClick={(info) => {
           setCalenderClickDate(info.dateStr);
           setCreateModalOpen(true);

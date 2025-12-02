@@ -15,12 +15,7 @@ export const TaskFilter = ({ tasks, onChange }) => {
   const [searchWord, setSearchWord] = useState("");
   const [taskFilters, setTaskFilters] = useState("all");
   const [taskSorts, setTaskSorts] = useState("");
-  console.log("dayjs()", dayjs());
-  //   console.log(
-  //     dayjs(new Date()).format("YYYY-MM-DD") <=
-  //       dayjs({ ...tasks.due_date }).format("YYYY-MM-DD")
-  //   );
-  //   console.log("A", dayjs({ ...tasks.due_date }).format("YYYY-MM-DD"));
+
   //ワード検索機能
   const wordFilter =
     searchWord === ""

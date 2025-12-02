@@ -36,7 +36,6 @@ export const DashBoard = () => {
       const API_URL = "http://localhost/api/tasks";
       const res = await axios.get(API_URL);
       setTasks(res.data.tasks);
-      console.log(res.data.tasks);
     } catch (e) {
       return e;
     }
