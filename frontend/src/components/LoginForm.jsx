@@ -35,7 +35,7 @@ export const LoginForm = () => {
     const API_URL = "http://localhost/api/login";
     try {
       await axios.post(API_URL, { ...userInfo });
-      navigate("/tasks");
+      navigate("/dashbord");
     } catch (e) {}
   };
 
