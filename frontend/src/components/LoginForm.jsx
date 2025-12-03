@@ -35,6 +35,7 @@ export const LoginForm = () => {
     // const API_URL = 'http://localhost/api/login';
     try {
       axios.defaults.withCredentials = true;
+      axios.defaults.withXSRFToken = true;
       axios.defaults.baseURL = 'http://localhost';
 
       await axios.get('/sanctum/csrf-cookie');
