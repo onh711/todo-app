@@ -29,7 +29,7 @@ export const Header = () => {
         <AppBar position="fixed">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Todo
+              BabyCalendar
             </Typography>
             <Button component={Link} to="/dashbord" color="inherit">
               ダッシュボード

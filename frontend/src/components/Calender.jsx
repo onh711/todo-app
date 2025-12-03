@@ -95,7 +95,7 @@ export const Calender = ({ actions, fetch }) => {
       milk_amount: action.milk_amount,
       description: action.memo,
       color: eventColors(action),
-      textColor: "rgba(0, 0, 0, 0.7)",
+      textColor: "rgb(0, 0, 0)",
     };
   });
 
