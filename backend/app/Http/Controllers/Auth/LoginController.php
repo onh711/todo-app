@@ -11,16 +11,21 @@ class LoginController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
-            'mail_address' => ['required', 'email'],
-            'password' => ['required']
+            'mail_address' => ['required', 'string', 'email'],
+            'password' => ['required', 'string']
         ]);
 
-        if(Auth::attempt($credentials)){
-            $user = Auth::user();
-        return response()->json([
-            'message'=>'ログイン成功',
-            'id' => $user->id,
-        ],200);
+        $authCredentials = [
+            'mail_address' => $credentials['mail_address'],
+            'password' => $credentials['password'],
+        ];
+
+        if(Auth::attempt($authCredentials)){
+            $request->session()->regenerate();
+            return response()->json([
+                'message'=>'ログイン成功',
+                'user' => Auth::user(),
+            ],200);
         }
         return response()->json(['message' => 'ログイン失敗'], 401);
     }
