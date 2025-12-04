@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class LogoutController extends Controller
 {
-   public function logout(){
-     Auth::logout();
-    //  Session::invalidate();
-    //  Session::regenerateToken();
+   public function logout(Request $request){
+     Auth::guard('web')->logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
      return response()->json([
             'message' => 'ログアウト完了',
