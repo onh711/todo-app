@@ -17,7 +17,7 @@ class TaskController extends Controller
     public function index()
     {
         $user = Auth::user(); 
-        $user = User::all()->findOrFail(1);//
+        // $user = User::all()->findOrFail(1);//
         
         $tasks = $user->tasks;
         $tasks = ['tasks'=>$tasks];
