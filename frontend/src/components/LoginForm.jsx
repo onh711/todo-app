@@ -5,7 +5,7 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { CustomButton } from './CustomButton';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api/axios';
 
 const Container = styled('div')({
   display: 'flex',
@@ -34,21 +34,42 @@ export const LoginForm = () => {
     e.preventDefault();
     // const API_URL = 'http://localhost/api/login';
     try {
-      axios.defaults.withCredentials = true;
-      axios.defaults.withXSRFToken = true;
-      axios.defaults.baseURL = 'http://localhost';
-
       await axios.get('/sanctum/csrf-cookie');
 
-      await axios.post('/login', {
+      const res = await axios.post('/login', {
         mail_address: userInfo.mail_address,
         password: userInfo.password,
       });
+      console.log(res);
 
-      navigate('/dashbord');
+      navigate('/dashboard');
     } catch (e) {
       console.error(e);
     }
+    // try {
+    //   const API_URL = 'http://localhost/api/login';
+    //   axios.defaults.baseURL = 'http://localhost';
+    //   axios.defaults.withCredentials = true;
+
+    //   // 1) CSRF-cookie取得
+    //   await axios.get('/sanctum/csrf-cookie');
+
+    //   // 2) ログイン（withCredentialsつける）
+    //   await axios.post(
+    //     API_URL,
+    //     {
+    //       mail_address: userInfo.mail_address,
+    //       password: userInfo.password,
+    //     },
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   );
+
+    //   navigate('/dashboard');
+    // } catch (e) {
+    //   console.error(e);
+    // }
   };
 
   return (

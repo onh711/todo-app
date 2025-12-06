@@ -17,7 +17,6 @@ class BabyActionController extends Controller
     public function index()
     {
         $baby = Auth::user(); 
-        $baby = Baby::all()->findOrFail(1);//
       
         $actions = BabyAction::where('baby_id',$baby->id)->get();
 
