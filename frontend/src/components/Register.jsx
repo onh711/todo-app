@@ -1,26 +1,26 @@
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/system";
-import { Box } from "@mui/system";
-import React, { useState } from "react";
-import { CustomButton } from "./CustomButton";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/system';
+import { Box } from '@mui/system';
+import React, { useState } from 'react';
+import { CustomButton } from './CustomButton';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Container = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "100vh",
-  backgroundColor: "#f0f0f0",
+const Container = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100vh',
+  backgroundColor: '#f0f0f0',
 });
 
-const LoginCard = styled("div")({
-  backgroundColor: "#fff",
-  padding: "20px",
-  borderRadius: "10px",
-  boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+const LoginCard = styled('div')({
+  backgroundColor: '#fff',
+  padding: '20px',
+  borderRadius: '10px',
+  boxShadow: '0 0 10px rgba(0,0,0,0.1)',
 });
 
 // useEffect(() => {
@@ -37,23 +37,23 @@ const LoginCard = styled("div")({
 
 export const Register = () => {
   const [registInfo, setRegistInfo] = useState({
-    name: "",
-    mail_address: "",
-    password: "",
-    baby_name: "",
+    name: '',
+    mail_address: '',
+    password: '',
+    baby_name: '',
   });
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const API_URL = "http://localhost/api/register";
+    const API_URL = 'http://localhost/api/register';
     const res = await axios.post(API_URL, { ...registInfo });
     try {
-      alert("会員登録を作成しました");
-      navigate("/login");
+      alert('会員登録を作成しました');
+      navigate('/');
     } catch (e) {
-      alert("会員登録の作成に失敗しました");
+      alert('会員登録の作成に失敗しました');
     }
   };
 
@@ -61,7 +61,7 @@ export const Register = () => {
     <>
       <Container>
         <LoginCard>
-          <Typography variant="h5" gutterBottom sx={{ textAlign: "center" }}>
+          <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
             新規登録
           </Typography>
           <form onSubmit={handleSubmit}>
@@ -102,11 +102,11 @@ export const Register = () => {
                 setRegistInfo({ ...registInfo, baby_name: e.target.value })
               }
             />
-            <Box sx={{ textAlign: "center" }}>
-              <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
+            <Box sx={{ textAlign: 'center' }}>
+              <CustomButton detail={{ text: '登録', bgcolor: '#1976d2' }} />
               <Link to="/login">
                 <CustomButton
-                  detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
+                  detail={{ text: 'キャンセル', bgcolor: '#c55858ff' }}
                 />
               </Link>
             </Box>
