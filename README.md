@@ -49,55 +49,66 @@
 
 #### 1. リポジトリをクローン
 
+```bash
 git clone <repository-url>
 cd todo-app
+```
 
 #### 2. Docker コンテナを起動
 
+```bash
 docker-compose up -d
+```
+
 ビルドに数分かかる場合があります。
 
 #### 3. バックエンド（Laravel）のセットアップ
 
 コンテナが起動したら、バックエンド コンテナ内で以下を実行：
+
+```bash
 docker-compose exec backend sh
+```
 
 コンテナ内で以下を実行：
 
+```bash
 # 依存関係のインストール
-
 composer install
 
 # .env ファイルを生成（.env.example をコピー）
-
 cp .env.example .env
 
 # アプリケーションキーを生成
-
 php artisan key:generate
 
 # データベース マイグレーション
-
 php artisan migrate
 
 # データベース シード（オプション：初期データ投入）
-
 php artisan db:seed
+```
 
 #### 4. フロントエンド（React）のセットアップ
 
 ターミナルで以下を実行（ホストマシン側）：
+
+```bash
 cd frontend
 npm install
+```
 
 または、フロントエンド コンテナ内で実行：
+
+```bash
 docker-compose exec frontend npm install
+```
 
 ### アプリケーション起動
 
-#### Docker Compose を使用する場合（推奨）
-
+```bash
 docker-compose up -d
+```
 
 - **フロントエンド**：http://localhost:5173
 - **バックエンド API**：http://localhost/api
