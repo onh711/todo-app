@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Baby;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BabyController extends Controller
@@ -32,7 +33,7 @@ class BabyController extends Controller
       DB::beginTransaction();
         try {
         $baby = new Baby();
-        $baby->user_id =$request["user_id"];
+        $baby->user_id = Auth::id();
         $baby->baby_name =$request["baby_name"];
         $baby->save();
         DB::commit();

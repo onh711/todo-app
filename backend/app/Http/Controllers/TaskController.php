@@ -60,7 +60,7 @@ class TaskController extends Controller
         $validated = $request->validated();
 
         $task = new Task();
-        $task->user_id =$request["user_id"];
+        $task->user_id = Auth::id();
         $task->title = $validated["title"];
         $task->content = $validated["content"];
         $task->start_date = $validated["start_date"];

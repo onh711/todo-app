@@ -1,54 +1,52 @@
-import * as React from "react";
-import axios from "axios";
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import { CustomButton } from "./CustomButton";
+import * as React from 'react';
+import axios from 'axios';
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import { CustomButton } from './CustomButton';
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  textAlign: "center",
-  width: "50%",
-  height: "70%",
-  bgcolor: "background.paper",
-  border: "1px solid #000",
-  borderRadius: "15px",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  textAlign: 'center',
+  width: '50%',
+  height: '70%',
+  bgcolor: 'background.paper',
+  border: '1px solid #000',
+  borderRadius: '15px',
   boxShadow: 24,
   p: 4,
 };
 
 const TextFieldStyle = {
-  textAlign: "center",
-  margin: "15px",
-  width: "80%",
-  padding: "0px",
+  textAlign: 'center',
+  margin: '15px',
+  width: '80%',
+  padding: '0px',
 };
 
 export const Create = ({ onAdd }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const userId = 1; //ログイン機能作成後にログインユーザの情報を渡すように変更する
 
   const [inputData, setInputData] = useState({
-    user_id: userId,
-    title: "",
-    start_date: "",
-    due_date: "",
-    content: "",
+    title: '',
+    start_date: '',
+    due_date: '',
+    content: '',
   });
 
   const [errorMessages, setErrorMessages] = useState({
-    title: "",
-    start_date: "",
-    due_date: "",
-    content: "",
+    title: '',
+    start_date: '',
+    due_date: '',
+    content: '',
   });
 
   const handleSubmit = async (e) => {
@@ -56,7 +54,7 @@ export const Create = ({ onAdd }) => {
     if (!handleValidate()) {
       return;
     }
-    const API_URL = "http://localhost/api/tasks";
+    const API_URL = 'http://localhost/api/tasks';
     try {
       await axios.post(API_URL, { ...inputData });
       onAdd();
@@ -68,39 +66,39 @@ export const Create = ({ onAdd }) => {
 
   const handleValidate = () => {
     const errors = {
-      title: "",
-      start_date: "",
-      due_date: "",
-      content: "",
+      title: '',
+      start_date: '',
+      due_date: '',
+      content: '',
     };
     let isValid = true;
 
     //タイトル名のバリデーション
     if (inputData.title.length >= 50) {
-      errors.title = "タスク名は50文字以上入力できません。";
+      errors.title = 'タスク名は50文字以上入力できません。';
       isValid = false;
     }
 
     if (inputData.title.length === 0) {
-      errors.title = "タスク名を入力してください";
+      errors.title = 'タスク名を入力してください';
       isValid = false;
     }
 
     //開始日時のバリデーション
     if (inputData.start_date.length === 0) {
-      errors.start_date = "開始日時を入力してください";
+      errors.start_date = '開始日時を入力してください';
       isValid = false;
     }
 
     //完了期限のバリデーション
     if (inputData.due_date.length === 0) {
-      errors.due_date = "完了期限を入力してください";
+      errors.due_date = '完了期限を入力してください';
       isValid = false;
     }
 
     //タスク詳細のバリデーション
     if (inputData.content.length >= 250) {
-      errors.content = "タスク詳細は250文字以上入力できません。";
+      errors.content = 'タスク詳細は250文字以上入力できません。';
       isValid = false;
     }
     setErrorMessages(errors);
@@ -150,7 +148,7 @@ export const Create = ({ onAdd }) => {
   return (
     <Box>
       <Button
-        sx={{ width: "100%" }}
+        sx={{ width: '100%' }}
         variant="contained"
         color="#00000099"
         onClick={handleOpen}
@@ -165,7 +163,7 @@ export const Create = ({ onAdd }) => {
       >
         <Box sx={style}>
           <Typography
-            sx={{ margin: "10px" }}
+            sx={{ margin: '10px' }}
             id="modal-modal-title"
             variant="h6"
             component="h2"
@@ -174,7 +172,7 @@ export const Create = ({ onAdd }) => {
           </Typography>
           <Box component="form" onSubmit={handleSubmit}>
             <TextField
-              label={"タスク名"}
+              label={'タスク名'}
               error={errorMessages.title}
               helperText={errorMessages.title}
               sx={TextFieldStyle}
@@ -185,10 +183,10 @@ export const Create = ({ onAdd }) => {
               }
             />
             <TextField
-              type={"datetime-local"}
+              type={'datetime-local'}
               error={errorMessages.start_date}
               helperText={errorMessages.start_date}
-              label={"開始日時"}
+              label={'開始日時'}
               InputLabelProps={{ shrink: true }}
               sx={TextFieldStyle}
               value={inputData.start_date}
@@ -197,10 +195,10 @@ export const Create = ({ onAdd }) => {
               }
             />
             <TextField
-              type={"datetime-local"}
+              type={'datetime-local'}
               error={errorMessages.due_date}
               helperText={errorMessages.due_date}
-              label={"完了期限"}
+              label={'完了期限'}
               InputLabelProps={{ shrink: true }}
               sx={TextFieldStyle}
               value={inputData.due_date}
@@ -212,7 +210,7 @@ export const Create = ({ onAdd }) => {
               }
             />
             <TextField
-              label={"タスク詳細"}
+              label={'タスク詳細'}
               error={errorMessages.content}
               helperText={errorMessages.content}
               sx={TextFieldStyle}
@@ -221,11 +219,11 @@ export const Create = ({ onAdd }) => {
                 setInputData({ ...inputData, content: e.target.value })
               }
             />
-            <Box sx={{ justifyContent: "center" }}>
-              <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
+            <Box sx={{ justifyContent: 'center' }}>
+              <CustomButton detail={{ text: '登録', bgcolor: '#1976d2' }} />
               <CustomButton
                 onClick={handleClose}
-                detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
+                detail={{ text: 'キャンセル', bgcolor: '#c55858ff' }}
               />
             </Box>
           </Box>
