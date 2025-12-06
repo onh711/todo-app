@@ -37,7 +37,7 @@ export const Header = () => {
         }
       );
       setUser(null);
-      navigate('/login');
+      navigate('/');
     } catch (e) {
       console.error(e);
     }
