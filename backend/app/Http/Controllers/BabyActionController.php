@@ -41,7 +41,7 @@ class BabyActionController extends Controller
     public function store(Request $request)
     {
         $actions = BabyAction::create([
-          'baby_id' => $request->baby_id,
+          'baby_id' => Auth::id(),
           'action' => $request->action,
           'cry' => $request->cry,
         //   'start_date' => Carbon::now(),

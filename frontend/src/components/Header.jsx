@@ -7,9 +7,24 @@ import axios from '../api/axios';
 import { Link, useNavigate } from 'react-router-dom';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
+import { useEffect, useState } from 'react';
 
 export const Header = () => {
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get('/user', { withCredentials: true });
+      setUser(res.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const logout = async (e) => {
     e.preventDefault();
@@ -21,6 +36,7 @@ export const Header = () => {
           withCredentials: true,
         }
       );
+      setUser(null);
       navigate('/login');
     } catch (e) {
       console.error(e);
@@ -37,7 +53,11 @@ export const Header = () => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               BabyCalendar
             </Typography>
-            <Typography component="div">ようこそ〇〇さん</Typography>
+            {user && (
+              <Typography sx={{ marginRight: 2 }}>
+                ようこそ {user.name} さん
+              </Typography>
+            )}
             <Button component={Link} to="/dashboard" color="inherit">
               ダッシュボード
             </Button>

@@ -27,7 +27,7 @@ export const BabyActionCreate = ({ fetch }) => {
 
   const babyActionCreate = (actionNum) => {
     return {
-      baby_id: 1,
+      // baby_id: 1,
       action: actionNum,
       cry: 0,
       start_date: nowFormat,
