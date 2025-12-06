@@ -3,18 +3,24 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import axios from '../api/axios';
+import { Link, useNavigate } from 'react-router-dom';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
 
 export const Header = () => {
+  const navigate = useNavigate();
+
   const logout = async (e) => {
     e.preventDefault();
     try {
-      const API_URL = 'http://localhost/api/logout';
-      await axios.post(API_URL, { withCredentials: true });
-
+      await axios.post(
+        '/logout',
+        {},
+        {
+          withCredentials: true,
+        }
+      );
       navigate('/login');
     } catch (e) {
       console.error(e);
@@ -31,7 +37,8 @@ export const Header = () => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               BabyCalendar
             </Typography>
-            <Button component={Link} to="/dashbord" color="inherit">
+            <Typography component="div">ようこそ〇〇さん</Typography>
+            <Button component={Link} to="/dashboard" color="inherit">
               ダッシュボード
             </Button>
             <Button component={Link} to="/tasks" color="inherit">

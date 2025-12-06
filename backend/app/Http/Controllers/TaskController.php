@@ -7,7 +7,6 @@ use App\Models\Task;
 use App\Http\Requests\TaskCreateRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class TaskController extends Controller
 {
@@ -17,7 +16,6 @@ class TaskController extends Controller
     public function index()
     {
         $user = Auth::user(); 
-        // $user = User::all()->findOrFail(1);//
         
         $tasks = $user->tasks;
         $tasks = ['tasks'=>$tasks];

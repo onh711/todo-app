@@ -1,39 +1,39 @@
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import { CustomButton } from "./CustomButton";
-import Checkbox from "@mui/material/Checkbox";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import axios from "axios";
-import dayjs from "dayjs";
-import ja from "dayjs/locale/ja";
-import InputAdornment from "@mui/material/InputAdornment";
+import React, { useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import { CustomButton } from './CustomButton';
+import Checkbox from '@mui/material/Checkbox';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import ja from 'dayjs/locale/ja';
+import InputAdornment from '@mui/material/InputAdornment';
 dayjs.locale(ja);
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  textAlign: "center",
-  width: "50%",
-  height: "70%",
-  overflowY: "auto",
-  bgcolor: "background.paper",
-  border: "1px solid #000",
-  borderRadius: "15px",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  textAlign: 'center',
+  width: '50%',
+  height: '70%',
+  overflowY: 'auto',
+  bgcolor: 'background.paper',
+  border: '1px solid #000',
+  borderRadius: '15px',
   boxShadow: 24,
   p: 4,
 };
 
 const TextFieldStyle = {
-  textAlign: "center",
-  margin: "15px",
-  width: "80%",
-  padding: "0px",
+  textAlign: 'center',
+  margin: '15px',
+  width: '80%',
+  padding: '0px',
 };
 
 export const BabyActionCreateModal = ({
@@ -43,12 +43,12 @@ export const BabyActionCreateModal = ({
   onCloseCreateModal,
 }) => {
   const ACTION_ID = [
-    { id: 1, label: "寝る" },
-    { id: 2, label: "授乳" },
-    { id: 3, label: "ご飯" },
-    { id: 4, label: "うんち" },
-    { id: 5, label: "おしっこ" },
-    { id: 6, label: "うんち/おしっこ" },
+    { id: 1, label: '寝る' },
+    { id: 2, label: '授乳' },
+    { id: 3, label: 'ご飯' },
+    { id: 4, label: 'うんち' },
+    { id: 5, label: 'おしっこ' },
+    { id: 6, label: 'うんち/おしっこ' },
   ];
 
   const handleClose = () => onCloseCreateModal();
@@ -58,23 +58,23 @@ export const BabyActionCreateModal = ({
     baby_id: BABY_ID,
     action: 1,
     cry: 0,
-    start_date: dayjs(clickDate).format("YYYY-MM-DD HH:mm:ss"),
-    end_date: dayjs(clickDate).add(5, "m").format("YYYY-MM-DD HH:mm:ss"),
-    milk_amount: "",
-    memo: "",
+    start_date: dayjs(clickDate).format('YYYY-MM-DD HH:mm:ss'),
+    end_date: dayjs(clickDate).add(5, 'm').format('YYYY-MM-DD HH:mm:ss'),
+    milk_amount: '',
+    memo: '',
   });
 
   useEffect(() => {
     setInputActions({
       ...inputActions,
-      start_date: dayjs(clickDate).format("YYYY-MM-DD HH:mm:ss"),
-      end_date: dayjs(clickDate).add(5, "m").format("YYYY-MM-DD HH:mm:ss"),
+      start_date: dayjs(clickDate).format('YYYY-MM-DD HH:mm:ss'),
+      end_date: dayjs(clickDate).add(5, 'm').format('YYYY-MM-DD HH:mm:ss'),
     });
   }, [showFlag]);
 
   const createAction = async (e) => {
     e.preventDefault();
-    const API_URL = `http://localhost/api/dashbord`;
+    const API_URL = `http://localhost/api/dashboard`;
     try {
       await axios.post(API_URL, inputActions);
       handleClose();
@@ -94,7 +94,7 @@ export const BabyActionCreateModal = ({
       >
         <Box sx={style}>
           <Typography
-            sx={{ margin: "5px" }}
+            sx={{ margin: '5px' }}
             id="modal-modal-title"
             variant="h6"
             component="h2"
@@ -116,8 +116,8 @@ export const BabyActionCreateModal = ({
               ))}
             </Select>
             <TextField
-              type={"datetime-local"}
-              label={"開始時刻"}
+              type={'datetime-local'}
+              label={'開始時刻'}
               InputLabelProps={{ shrink: true }}
               sx={TextFieldStyle}
               value={inputActions.start_date}
@@ -126,8 +126,8 @@ export const BabyActionCreateModal = ({
               }
             />
             <TextField
-              type={"datetime-local"}
-              label={"終了時刻"}
+              type={'datetime-local'}
+              label={'終了時刻'}
               InputLabelProps={{ shrink: true }}
               sx={TextFieldStyle}
               value={inputActions.end_date}
@@ -136,9 +136,9 @@ export const BabyActionCreateModal = ({
               }
             />
             <TextField
-              label={"メモ"}
+              label={'メモ'}
               sx={TextFieldStyle}
-              value={inputActions.memo ? inputActions.memo : ""}
+              value={inputActions.memo ? inputActions.memo : ''}
               onChange={(e) =>
                 setInputActions({
                   ...inputActions,
@@ -149,7 +149,7 @@ export const BabyActionCreateModal = ({
             {inputActions.action === 2 ? (
               <TextField
                 type="number"
-                label={"飲んだ量"}
+                label={'飲んだ量'}
                 InputLabelProps={{ shrink: true }}
                 sx={TextFieldStyle}
                 inputProps={{
@@ -168,9 +168,9 @@ export const BabyActionCreateModal = ({
                 }
               />
             ) : (
-              ""
+              ''
             )}
-            <Box sx={{ justifyContent: "center" }}>
+            <Box sx={{ justifyContent: 'center' }}>
               泣いてた？
               <Checkbox
                 checked={Boolean(inputActions.cry)}
@@ -182,10 +182,10 @@ export const BabyActionCreateModal = ({
                 }
               />
               <Box>
-                <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
+                <CustomButton detail={{ text: '登録', bgcolor: '#1976d2' }} />
                 <CustomButton
                   onClick={handleClose}
-                  detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
+                  detail={{ text: 'キャンセル', bgcolor: '#c55858ff' }}
                 />
               </Box>
             </Box>

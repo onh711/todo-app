@@ -31,7 +31,6 @@ class RegisterController extends Controller
             'baby_name' => $request->baby_name,
         ]);
 
-
         return response()->json([
             'message' => '作成成功',
             'user' => $user,
