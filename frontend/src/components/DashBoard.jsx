@@ -57,66 +57,6 @@ export const DashBoard = () => {
 
   return (
     <>
-      {/* <Grid container spacing={2} sx={{ position: "relative" }}>
-        <Grid
-          size={{ sm: 12, md: 6 }}
-          sx={{
-            height: "100vh",
-            "@media screen and (max-width:900px)": {
-              marginTop: "200px",
-            },
-          }}
-        >
-          <Calender actions={actions} fetch={featchActions} />
-        </Grid>
-        <Grid
-          size={{ sm: 0, md: 6 }}
-          sx={{
-            position: "relative",
-            textAlign: "center",
-            "@media screen and (max-width:900px)": {
-              position: "absolute",
-              width: "100%",
-            },
-          }}
-        >
-          <Box>
-            <Typography sx={{ fontSize: "20px", margin: "20px 0 0 0" }}>
-              赤ちゃん記録
-            </Typography>
-            <BabyActionCreate fetch={featchActions} />
-          </Box>
-          <Stack
-            direction={"row"}
-            spacing={2}
-            sx={{
-              justifyContent: "space-evenly",
-              "@media screen and (max-width:900px)": {
-                position: "absolute",
-                width: "100%",
-              },
-            }}
-          >
-            <Box sx={{ width: "40%" }}>
-              <Create onAdd={featchTasks} />
-            </Box>
-            <Button
-              component={Link}
-              to="/tasks"
-              variant="contained"
-              color="#00000099"
-              sx={{ width: "40%" }}
-            >
-              タスク一覧
-            </Button>
-          </Stack>
-          <Typography sx={{ fontSize: "20px", margin: "20px" }}>
-            今日のタスク
-          </Typography>
-          <TaskTable sx={{}} tasks={todayTaskFilter} onChange={featchTasks} />
-        </Grid>
-      </Grid> */}
-
       <Box
         sx={{
           display: { xs: 'flex', sm: 'none', md: 'none', lg: 'none' },
