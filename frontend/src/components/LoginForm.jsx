@@ -70,6 +70,7 @@ export const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setServerError('');
 
     if (!validateForm()) {
       return;
