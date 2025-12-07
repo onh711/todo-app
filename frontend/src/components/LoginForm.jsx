@@ -78,11 +78,10 @@ export const LoginForm = () => {
     try {
       await axios.get('/sanctum/csrf-cookie');
 
-      const res = await axios.post('/login', {
+      await axios.post('/login', {
         mail_address: userInfo.mail_address,
         password: userInfo.password,
       });
-      console.log(res);
 
       navigate('/dashboard');
     } catch (e) {
