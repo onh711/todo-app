@@ -74,24 +74,22 @@ export const Create = ({ onAdd }) => {
     let isValid = true;
 
     //タイトル名のバリデーション
-    if (inputData.title.length >= 50) {
+    if (!inputData.title) {
+      errors.title = 'タスク名を入力してください';
+      isValid = false;
+    } else if (inputData.title.length >= 50) {
       errors.title = 'タスク名は50文字以上入力できません。';
       isValid = false;
     }
 
-    if (inputData.title.length === 0) {
-      errors.title = 'タスク名を入力してください';
-      isValid = false;
-    }
-
     //開始日時のバリデーション
-    if (inputData.start_date.length === 0) {
+    if (!inputData.start_date) {
       errors.start_date = '開始日時を入力してください';
       isValid = false;
     }
 
     //完了期限のバリデーション
-    if (inputData.due_date.length === 0) {
+    if (!inputData.due_date) {
       errors.due_date = '完了期限を入力してください';
       isValid = false;
     }
