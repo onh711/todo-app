@@ -32,7 +32,7 @@
 - **DB**：MySQL 8.0
 - **API 形式**：REST API（JSON）
 
-### インフラ
+### 環境構築 (または 開発・実行環境)
 
 - **コンテナ化**：Docker & Docker Compose
 - **ウェブサーバー**：Nginx
