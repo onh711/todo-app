@@ -186,7 +186,9 @@ export const Create = ({ onAdd }) => {
               error={errorMessages.start_date}
               helperText={errorMessages.start_date}
               label={"開始日時"}
-              InputLabelProps={{ shrink: true }}
+              slotProps={{
+                inputLabel: { shrink: true },
+              }}
               sx={TextFieldStyle}
               value={inputData.start_date}
               onChange={(e) =>
@@ -198,12 +200,12 @@ export const Create = ({ onAdd }) => {
               error={errorMessages.due_date}
               helperText={errorMessages.due_date}
               label={"完了期限"}
-              InputLabelProps={{ shrink: true }}
-              sx={TextFieldStyle}
-              value={inputData.due_date}
-              inputProps={{
+              slotProps={{
+                inputLabel: { shrink: true },
                 min: inputData.start_date,
               }}
+              sx={TextFieldStyle}
+              value={inputData.due_date}
               onChange={(e) =>
                 setInputData({ ...inputData, due_date: e.target.value })
               }

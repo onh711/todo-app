@@ -11,6 +11,12 @@ import axios from "axios";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import InputAdornment from "@mui/material/InputAdornment";
+import { GiNightSleep } from "react-icons/gi";
+import { GiBabyBottle } from "react-icons/gi";
+import { FaUtensilSpoon } from "react-icons/fa";
+import { FaPoop } from "react-icons/fa";
+import { IoIosWater } from "react-icons/io";
+import { FaBaby } from "react-icons/fa";
 dayjs.locale(ja);
 
 const style = {
@@ -43,12 +49,12 @@ export const BabyActionCreateModal = ({
   onCloseCreateModal,
 }) => {
   const ACTION_ID = [
-    { id: 1, label: "寝る" },
-    { id: 2, label: "授乳" },
-    { id: 3, label: "ご飯" },
-    { id: 4, label: "うんち" },
-    { id: 5, label: "おしっこ" },
-    { id: 6, label: "うんち/おしっこ" },
+    { id: 1, label: "寝る", icon: <GiNightSleep /> },
+    { id: 2, label: "授乳", icon: <GiBabyBottle /> },
+    { id: 3, label: "ご飯", icon: <FaUtensilSpoon /> },
+    { id: 4, label: "うんち", icon: <FaPoop /> },
+    { id: 5, label: "おしっこ", icon: <IoIosWater /> },
+    { id: 6, label: "うんち/おしっこ", icon: <FaBaby /> },
   ];
 
   const handleClose = () => onCloseCreateModal();
@@ -111,6 +117,7 @@ export const BabyActionCreateModal = ({
             >
               {ACTION_ID.map((action) => (
                 <MenuItem key={action.id} value={action.id}>
+                  {action.icon}
                   {action.label}
                 </MenuItem>
               ))}
@@ -118,7 +125,9 @@ export const BabyActionCreateModal = ({
             <TextField
               type={"datetime-local"}
               label={"開始時刻"}
-              InputLabelProps={{ shrink: true }}
+              slotProps={{
+                inputLabel: { shrink: true },
+              }}
               sx={TextFieldStyle}
               value={inputActions.start_date}
               onChange={(e) =>
@@ -128,7 +137,9 @@ export const BabyActionCreateModal = ({
             <TextField
               type={"datetime-local"}
               label={"終了時刻"}
-              InputLabelProps={{ shrink: true }}
+              slotProps={{
+                inputLabel: { shrink: true },
+              }}
               sx={TextFieldStyle}
               value={inputActions.end_date}
               onChange={(e) =>
@@ -150,14 +161,16 @@ export const BabyActionCreateModal = ({
               <TextField
                 type="number"
                 label={"飲んだ量"}
-                InputLabelProps={{ shrink: true }}
                 sx={TextFieldStyle}
-                inputProps={{
-                  min: 0,
-                  max: 300,
-                  endAdornment: (
-                    <InputAdornment position="end">ml</InputAdornment>
-                  ),
+                slotProps={{
+                  inputLabel: { shrink: true },
+                  input: {
+                    min: 0,
+                    max: 300,
+                    endAdornment: (
+                      <InputAdornment position="end">ml</InputAdornment>
+                    ),
+                  },
                 }}
                 value={inputActions.milk_amount}
                 onChange={(e) =>
