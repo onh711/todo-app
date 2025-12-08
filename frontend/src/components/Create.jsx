@@ -15,7 +15,8 @@ const style = {
   transform: 'translate(-50%, -50%)',
   textAlign: 'center',
   width: '50%',
-  height: '70%',
+  height: '50%',
+  overflowY: 'auto',
   bgcolor: 'background.paper',
   border: '1px solid #000',
   borderRadius: '15px',
@@ -217,7 +218,7 @@ export const Create = ({ onAdd }) => {
                 setInputData({ ...inputData, content: e.target.value })
               }
             />
-            <Box sx={{ justifyContent: 'center' }}>
+            <Box sx={{ justifyContent: 'center', height: '100%' }}>
               <CustomButton detail={{ text: '登録', bgcolor: '#1976d2' }} />
               <CustomButton
                 onClick={handleClose}

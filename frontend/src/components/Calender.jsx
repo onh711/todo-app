@@ -4,7 +4,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import jaLocale from '@fullcalendar/core/locales/ja';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useState } from 'react';
-import { CalenderModal } from './CalenderModal ';
+import { BabyActionEditModal } from './BabyActionEditModal ';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import timezone from 'dayjs/plugin/timezone';
@@ -22,13 +22,13 @@ dayjs.locale('ja');
 dayjs.tz.setDefault('Asia/Tokyo');
 
 export const Calender = ({ actions, fetch }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [calenderClickDate, setCalenderClickDate] = useState('');
   const [events, setEvents] = useState([]);
 
-  const onCloseModal = () => {
-    setIsOpen(false);
+  const onCloseEditModal = () => {
+    setEditModalOpen(false);
   };
 
   const onCloseCreateModal = () => {
@@ -128,7 +128,7 @@ export const Calender = ({ actions, fetch }) => {
           setCreateModalOpen(true);
         }}
         eventClick={(e) => {
-          setIsOpen(true);
+          setEditModalOpen(true);
           setEvents({
             ...events,
             id: e.event.id,
@@ -144,10 +144,10 @@ export const Calender = ({ actions, fetch }) => {
         slotLabelInterval={'01:00:00'} //時間の表示間隔
         editable={true}
       />
-      <CalenderModal
-        showFlag={isOpen}
+      <BabyActionEditModal
+        showFlag={isEditModalOpen}
         events={events}
-        onCloseModal={onCloseModal}
+        onCloseEditModal={onCloseEditModal}
         fetch={fetch}
       />
 
