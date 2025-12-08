@@ -1,36 +1,36 @@
-import * as React from 'react';
-import axios from 'axios';
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import { CustomButton } from './CustomButton';
-import MenuItem from '@mui/material/MenuItem';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import Tooltip from '@mui/material/Tooltip';
+import * as React from "react";
+import axios from "axios";
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import { CustomButton } from "./CustomButton";
+import MenuItem from "@mui/material/MenuItem";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import Tooltip from "@mui/material/Tooltip";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '50%',
-  height: '50%',
-  overflowY: 'auto',
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  borderRadius: '15px',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "50%",
+  height: "50%",
+  overflowY: "auto",
+  bgcolor: "background.paper",
+  border: "1px solid #000",
+  borderRadius: "15px",
   boxShadow: 24,
   p: 4,
 };
 
 const TextFieldStyle = {
-  textAlign: 'center',
-  margin: '15px',
-  width: '80%',
-  padding: '0px',
+  textAlign: "center",
+  margin: "15px",
+  width: "80%",
+  padding: "0px",
 };
 
 export const Edit = ({ task, onChange }) => {
@@ -51,10 +51,10 @@ export const Edit = ({ task, onChange }) => {
   });
 
   const selectStatus = [
-    { label: '未着手', value: 1 },
-    { label: '進行中', value: 2 },
-    { label: '完了', value: 3 },
-    { label: '期限切れ', value: 4 },
+    { label: "未着手", value: 1 },
+    { label: "進行中", value: 2 },
+    { label: "完了", value: 3 },
+    { label: "期限切れ", value: 4 },
   ];
 
   const editTask = async (e) => {
@@ -75,9 +75,9 @@ export const Edit = ({ task, onChange }) => {
         <EditOutlinedIcon
           sx={{
             fontSize: 30,
-            transition: '0.5s',
-            '&:hover': {
-              color: '#00bfa5',
+            transition: "0.5s",
+            "&:hover": {
+              color: "#00bfa5",
             },
           }}
           onClick={handleOpen}
@@ -93,7 +93,7 @@ export const Edit = ({ task, onChange }) => {
       >
         <Box sx={style}>
           <Typography
-            sx={{ textAlign: 'center', margin: '10px' }}
+            sx={{ textAlign: "center", margin: "10px" }}
             id="modal-modal-title"
             variant="h6"
             component="h2"
@@ -104,10 +104,10 @@ export const Edit = ({ task, onChange }) => {
           <Box
             component="form"
             onSubmit={editTask}
-            sx={{ textAlign: 'center' }}
+            sx={{ textAlign: "center" }}
           >
             <TextField
-              label={'タスク名'}
+              label={"タスク名"}
               sx={TextFieldStyle}
               value={inputData.title}
               onChange={(e) =>
@@ -115,27 +115,31 @@ export const Edit = ({ task, onChange }) => {
               }
             />
             <TextField
-              type={'datetime-local'}
-              label={'開始日時'}
+              type={"datetime-local"}
+              label={"開始日時"}
               value={inputData.start_date}
-              InputLabelProps={{ shrink: true }}
+              slotProps={{
+                inputLabel: { shrink: true },
+              }}
               sx={TextFieldStyle}
               onChange={(e) =>
                 setInputData({ ...inputData, start_date: e.target.value })
               }
             />
             <TextField
-              type={'datetime-local'}
-              label={'完了期限'}
+              type={"datetime-local"}
+              label={"完了期限"}
               value={inputData.due_date}
-              InputLabelProps={{ shrink: true }}
+              slotProps={{
+                inputLabel: { shrink: true },
+              }}
               sx={TextFieldStyle}
               onChange={(e) =>
                 setInputData({ ...inputData, due_date: e.target.value })
               }
             />
             <TextField
-              label={'タスク詳細'}
+              label={"タスク詳細"}
               sx={TextFieldStyle}
               value={inputData.content}
               onChange={(e) =>
@@ -143,7 +147,7 @@ export const Edit = ({ task, onChange }) => {
               }
             />
             <TextField
-              label={'状態'}
+              label={"状態"}
               select
               sx={TextFieldStyle}
               value={inputData.status}
@@ -158,10 +162,10 @@ export const Edit = ({ task, onChange }) => {
               ))}
             </TextField>
 
-            <Box sx={{ justifyContent: 'center' }}>
-              <CustomButton detail={{ text: '編集', bgcolor: '#1976d2' }} />
+            <Box sx={{ justifyContent: "center" }}>
+              <CustomButton detail={{ text: "編集", bgcolor: "#1976d2" }} />
               <CustomButton
-                detail={{ text: 'キャンセル', bgcolor: '#c55858ff' }}
+                detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
               />
             </Box>
           </Box>

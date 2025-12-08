@@ -141,7 +141,9 @@ export const BabyActionEditModal = ({
             <TextField
               type={"datetime-local"}
               label={"開始時刻"}
-              InputLabelProps={{ shrink: true }}
+              slotProps={{
+                inputLabel: { shrink: true },
+              }}
               sx={TextFieldStyle}
               value={inputActions.start_date}
               onChange={(e) =>
@@ -151,7 +153,9 @@ export const BabyActionEditModal = ({
             <TextField
               type={"datetime-local"}
               label={"終了時刻"}
-              InputLabelProps={{ shrink: true }}
+              slotProps={{
+                inputLabel: { shrink: true },
+              }}
               sx={TextFieldStyle}
               value={inputActions.end_date}
               onChange={(e) =>
@@ -173,14 +177,16 @@ export const BabyActionEditModal = ({
               <TextField
                 type="number"
                 label={"飲んだ量"}
-                InputLabelProps={{ shrink: true }}
                 sx={TextFieldStyle}
-                inputProps={{
-                  min: 0,
-                  max: 300,
-                  endAdornment: (
-                    <InputAdornment position="end">ml</InputAdornment>
-                  ),
+                slotProps={{
+                  inputLabel: { shrink: true },
+                  input: {
+                    min: 0,
+                    max: 300,
+                    endAdornment: (
+                      <InputAdornment position="end">ml</InputAdornment>
+                    ),
+                  },
                 }}
                 value={inputActions.milk_amount}
                 onChange={(e) =>
