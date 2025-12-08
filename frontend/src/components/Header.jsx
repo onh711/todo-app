@@ -1,13 +1,13 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import axios from '../api/axios';
-import { Link, useNavigate } from 'react-router-dom';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Slide from '@mui/material/Slide';
-import { useEffect, useState } from 'react';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import axios from "../api/axios";
+import { Link, useNavigate } from "react-router-dom";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
+import Slide from "@mui/material/Slide";
+import { useEffect, useState } from "react";
 
 export const Header = () => {
   // const [user, setUser] = useState(null);
@@ -30,13 +30,13 @@ export const Header = () => {
     e.preventDefault();
     try {
       await axios.post(
-        '/logout',
+        "/logout",
         {},
         {
           withCredentials: true,
         }
       );
-      navigate('/');
+      navigate("/");
     } catch (e) {
       console.error(e);
     }
@@ -45,7 +45,7 @@ export const Header = () => {
   const trigger = useScrollTrigger();
 
   return (
-    <Box sx={{ flexGrow: 1, marginBottom: '64px' }}>
+    <Box sx={{ flexGrow: 1, marginBottom: "64px" }}>
       <Slide in={!trigger}>
         <AppBar position="fixed">
           <Toolbar>

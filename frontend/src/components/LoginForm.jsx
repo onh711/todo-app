@@ -1,66 +1,66 @@
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/system';
-import { Box } from '@mui/system';
-import React, { useState } from 'react';
-import { CustomButton } from './CustomButton';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from '../api/axios';
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/system";
+import { Box } from "@mui/system";
+import React, { useState } from "react";
+import { CustomButton } from "./CustomButton";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 
-const Container = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100vh',
-  backgroundColor: '#f0f0f0',
+const Container = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "100vh",
+  backgroundColor: "#f0f0f0",
 });
 
-const LoginCard = styled('div')({
-  backgroundColor: '#fff',
-  padding: '20px',
-  borderRadius: '10px',
-  boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+const LoginCard = styled("div")({
+  backgroundColor: "#fff",
+  padding: "20px",
+  borderRadius: "10px",
+  boxShadow: "0 0 10px rgba(0,0,0,0.1)",
 });
 
 export const LoginForm = () => {
   const [userInfo, setUserInfo] = useState({
-    mail_address: '',
-    password: '',
+    mail_address: "",
+    password: "",
   });
   const [errors, setErrors] = useState({
-    mail_address: '',
-    password: '',
+    mail_address: "",
+    password: "",
   });
-  const [serverError, setServerError] = useState('');
+  const [serverError, setServerError] = useState("");
 
   const navigate = useNavigate();
 
   //バリデーション関数
   const validateForm = () => {
     const newErrors = {
-      mail_address: '',
-      password: '',
+      mail_address: "",
+      password: "",
     };
     let isValid = true;
 
     //メールアドレスのバリデーション
     if (!userInfo.mail_address) {
-      newErrors.mail_address = 'メールアドレスを入力してください';
+      newErrors.mail_address = "メールアドレスを入力してください";
       isValid = false;
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(userInfo.mail_address)
     ) {
-      newErrors.mail_address = 'メールアドレスの形式が正しくありません';
+      newErrors.mail_address = "メールアドレスの形式が正しくありません";
       isValid = false;
     }
 
     //パスワードのバリデーション
     if (!userInfo.password) {
-      newErrors.password = 'パスワードを入力してください';
+      newErrors.password = "パスワードを入力してください";
       isValid = false;
     } else if (userInfo.password.length < 8) {
-      newErrors.password = 'パスワードは8文字以上で入力してください';
+      newErrors.password = "パスワードは8文字以上で入力してください";
       isValid = false;
     }
 
@@ -70,29 +70,29 @@ export const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setServerError('');
+    setServerError("");
 
     if (!validateForm()) {
       return;
     }
     try {
-      await axios.get('/sanctum/csrf-cookie');
+      await axios.get("/sanctum/csrf-cookie");
 
-      await axios.post('/login', {
+      await axios.post("/login", {
         mail_address: userInfo.mail_address,
         password: userInfo.password,
       });
 
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (e) {
       console.error(e);
 
       // サーバーエラーの処理
       if (e.response) {
         if (e.response.status === 401) {
-          setServerError('メールアドレスまたはパスワードが正しくありません');
+          setServerError("メールアドレスまたはパスワードが正しくありません");
         } else {
-          setServerError('ログインに失敗しました。もう一度お試しください');
+          setServerError("ログインに失敗しました。もう一度お試しください");
         }
       }
     }
@@ -102,14 +102,14 @@ export const LoginForm = () => {
     <>
       <Container>
         <LoginCard>
-          <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
+          <Typography variant="h5" gutterBottom sx={{ textAlign: "center" }}>
             ログイン
           </Typography>
           <form onSubmit={handleSubmit}>
             {serverError && (
               <Typography
                 color="error"
-                sx={{ mb: 2, textAlign: 'center', fontSize: '0.9rem' }}
+                sx={{ mb: 2, textAlign: "center", fontSize: "0.9rem" }}
               >
                 {serverError}
               </Typography>
@@ -137,11 +137,11 @@ export const LoginForm = () => {
               error={!!errors.password}
               helperText={errors.password}
             />
-            <Box sx={{ textAlign: 'center' }}>
-              <CustomButton detail={{ text: 'ログイン', bgcolor: '#1976d2' }} />
+            <Box sx={{ textAlign: "center" }}>
+              <CustomButton detail={{ text: "ログイン", bgcolor: "#1976d2" }} />
               <Link to="/register">
                 <CustomButton
-                  detail={{ text: '新規登録', bgcolor: '#1976d2' }}
+                  detail={{ text: "新規登録", bgcolor: "#1976d2" }}
                 />
               </Link>
             </Box>
