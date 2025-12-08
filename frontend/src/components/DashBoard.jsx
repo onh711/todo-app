@@ -159,7 +159,14 @@ export const DashBoard = () => {
           <Typography sx={{ fontSize: "20px", margin: "20px" }}>
             今日のタスク
           </Typography>
-          <Box sx={{ height: "78%", overflowY: "auto", boxShadow: 3 }}>
+          <Box
+            sx={{
+              height: "78%",
+              overflowY: "auto",
+              boxShadow: 3,
+              marginRight: "10px",
+            }}
+          >
             <TaskTable tasks={todayTaskSortingResults} onChange={featchTasks} />
           </Box>
         </Box>
