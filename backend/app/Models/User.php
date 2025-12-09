@@ -52,4 +52,8 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Task');
     }
+    public function baby()
+    {
+        return $this->hasOne(Baby::class);
+    }
 }
