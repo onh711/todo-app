@@ -59,7 +59,7 @@ export const DashBoard = () => {
     <>
       <Box
         sx={{
-          display: { xs: "flex", sm: "none", md: "none", lg: "none" },
+          display: { xs: "flex", sm: "flex", md: "none", lg: "none" },
           height: "100%",
           background: "#F9F9F9 ",
           flexDirection: "column",
@@ -96,8 +96,7 @@ export const DashBoard = () => {
 
       <Box
         sx={{
-          display: { xs: "none", sm: "flex", md: "flex", lg: "flex" },
-
+          display: { xs: "none", sm: "none", md: "flex", lg: "flex" },
           height: "calc(100vh - 64px)",
         }}
       >
@@ -110,6 +109,9 @@ export const DashBoard = () => {
             "& .fc .fc-toolbar-title": {
               fontSize: "1.3rem",
               fontWeight: "bold",
+            },
+            "& .fc .fc-col-header-cell-cushion": {
+              fontSize: "0.7rem",
             },
             "& .fc .fc-button": {
               fontSize: "0.7rem",
