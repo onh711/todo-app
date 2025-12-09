@@ -60,7 +60,7 @@
 #### 1. リポジトリをクローン
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/onh711/todo-app
 cd todo-app
 ```
 
