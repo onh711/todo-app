@@ -58,10 +58,8 @@ export const BabyActionCreateModal = ({
   ];
 
   const handleClose = () => onCloseCreateModal();
-  const BABY_ID = 1;
 
   const [inputActions, setInputActions] = useState({
-    baby_id: BABY_ID,
     action: 1,
     cry: 0,
     start_date: dayjs(clickDate).format("YYYY-MM-DD HH:mm"),
