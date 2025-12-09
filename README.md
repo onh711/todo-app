@@ -82,7 +82,7 @@ docker-compose exec backend sh
 
 コンテナ内で以下を実行：
 
-```bash
+````bash
 # 依存関係のインストール
 composer install
 
@@ -95,10 +95,6 @@ php artisan key:generate
 # データベース マイグレーション
 php artisan migrate
 
-# データベース シード（オプション：初期データ投入）
-php artisan db:seed
-```
-
 #### 4. フロントエンド（React）のセットアップ
 
 ターミナルで以下を実行（ホストマシン側）：
@@ -106,7 +102,7 @@ php artisan db:seed
 ```bash
 cd frontend
 npm install
-```
+````
 
 または、フロントエンド コンテナ内で実行：
 
