@@ -4,7 +4,7 @@ import { styled } from "@mui/system";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { CustomButton } from "./CustomButton";
-import axios from "axios";
+import axios from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
@@ -108,8 +108,9 @@ export const Register = () => {
       return;
     }
     try {
-      const API_URL = "http://localhost/api/register";
-      await axios.post(API_URL, { ...registInfo });
+      await axios.get("/sanctum/csrf-cookie");
+
+      await axios.post("/api/register", { ...registInfo });
       alert("会員登録を作成しました");
       navigate("/");
     } catch (e) {
