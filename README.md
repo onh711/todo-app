@@ -97,8 +97,8 @@ php artisan migrate
 ````
 
 #### 4. フロントエンド（React）のセットアップ
-```bash
 ターミナルで以下を実行（ホストマシン側）：
+```bash
 cd frontend
 npm install
 ````
