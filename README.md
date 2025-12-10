@@ -94,12 +94,11 @@ php artisan key:generate
 
 # データベース マイグレーション
 php artisan migrate
+````
 
 #### 4. フロントエンド（React）のセットアップ
-
-ターミナルで以下を実行（ホストマシン側）：
-
 ```bash
+ターミナルで以下を実行（ホストマシン側）：
 cd frontend
 npm install
 ````
