@@ -44,6 +44,15 @@ export const BabyActionCreate = ({ fetch }) => {
     }
   };
 
+  const ACTION_ID = [
+    { id: 1, label: "寝る", icon: <GiNightSleep /> },
+    { id: 2, label: "授乳", icon: <GiBabyBottle /> },
+    { id: 3, label: "ご飯", icon: <FaUtensilSpoon /> },
+    { id: 4, label: "うんち", icon: <FaPoop /> },
+    { id: 5, label: "おしっこ", icon: <IoIosWater /> },
+    { id: 6, label: "うんち/おしっこ", icon: <FaBaby /> },
+  ];
+
   return (
     <>
       <Box
@@ -75,53 +84,22 @@ export const BabyActionCreate = ({ fetch }) => {
             alignItems: "center",
           }}
         >
-          <Box sx={babyIconStyle}>
-            <IconContext.Provider value={{ color: "#00000099", size: "40px" }}>
-              <Tooltip title="寝る">
-                <GiNightSleep onClick={() => fetchAction(1)} />
-              </Tooltip>
-            </IconContext.Provider>
-          </Box>
-
-          <Box sx={babyIconStyle}>
-            <IconContext.Provider value={{ color: "#00000099", size: "40px" }}>
-              <Tooltip title="授乳">
-                <GiBabyBottle onClick={() => fetchAction(2)} />
-              </Tooltip>
-            </IconContext.Provider>
-          </Box>
-
-          <Box sx={babyIconStyle}>
-            <IconContext.Provider value={{ color: "#00000099", size: "40px" }}>
-              <Tooltip title="ご飯">
-                <FaUtensilSpoon onClick={() => fetchAction(3)} />
-              </Tooltip>
-            </IconContext.Provider>
-          </Box>
-
-          <Box sx={babyIconStyle}>
-            <IconContext.Provider value={{ color: "#00000099", size: "40px" }}>
-              <Tooltip title="うんち">
-                <FaPoop onClick={() => fetchAction(4)} />
-              </Tooltip>
-            </IconContext.Provider>
-          </Box>
-
-          <Box sx={babyIconStyle}>
-            <IconContext.Provider value={{ color: "#00000099", size: "40px" }}>
-              <Tooltip title="おしっこ">
-                <IoIosWater onClick={() => fetchAction(5)} />
-              </Tooltip>
-            </IconContext.Provider>
-          </Box>
-
-          <Box sx={babyIconStyle}>
-            <IconContext.Provider value={{ color: "#00000099", size: "40px" }}>
-              <Tooltip title="うんち/おしっこ">
-                <FaBaby onClick={() => fetchAction(6)} />
-              </Tooltip>
-            </IconContext.Provider>
-          </Box>
+          {ACTION_ID.map((action) => (
+            <Box
+              sx={babyIconStyle}
+              key={action.id}
+              onClick={() => fetchAction(action.id)}
+            >
+              <IconContext.Provider
+                value={{ color: "#00000099", size: "40px" }}
+              >
+                <Tooltip title={action.label}>
+                  {action.icon}
+                  {/* <FaBaby onClick={() => fetchAction(6)} /> */}
+                </Tooltip>
+              </IconContext.Provider>
+            </Box>
+          ))}
         </Box>
       </Box>
     </>

@@ -11,6 +11,12 @@ import axios from "axios";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import InputAdornment from "@mui/material/InputAdornment";
+import { GiNightSleep } from "react-icons/gi";
+import { GiBabyBottle } from "react-icons/gi";
+import { FaUtensilSpoon } from "react-icons/fa";
+import { FaPoop } from "react-icons/fa";
+import { IoIosWater } from "react-icons/io";
+import { FaBaby } from "react-icons/fa";
 dayjs.locale(ja);
 
 const style = {
@@ -43,12 +49,12 @@ export const BabyActionEditModal = ({
   fetch,
 }) => {
   const ACTION_ID = [
-    { id: 1, label: "寝る" },
-    { id: 2, label: "授乳" },
-    { id: 3, label: "ご飯" },
-    { id: 4, label: "うんち" },
-    { id: 5, label: "おしっこ" },
-    { id: 6, label: "うんち/おしっこ" },
+    { id: 1, label: "寝る", icon: <GiNightSleep /> },
+    { id: 2, label: "授乳", icon: <GiBabyBottle /> },
+    { id: 3, label: "ご飯", icon: <FaUtensilSpoon /> },
+    { id: 4, label: "うんち", icon: <FaPoop /> },
+    { id: 5, label: "おしっこ", icon: <IoIosWater /> },
+    { id: 6, label: "うんち/おしっこ", icon: <FaBaby /> },
   ];
 
   const findId = (label) => {
@@ -134,6 +140,7 @@ export const BabyActionEditModal = ({
             >
               {ACTION_ID.map((action) => (
                 <MenuItem key={action.id} value={action.id}>
+                  {action.icon}
                   {action.label}
                 </MenuItem>
               ))}
