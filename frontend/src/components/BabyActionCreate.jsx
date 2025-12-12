@@ -93,10 +93,7 @@ export const BabyActionCreate = ({ fetch }) => {
               <IconContext.Provider
                 value={{ color: "#00000099", size: "40px" }}
               >
-                <Tooltip title={action.label}>
-                  {action.icon}
-                  {/* <FaBaby onClick={() => fetchAction(6)} /> */}
-                </Tooltip>
+                <Tooltip title={action.label}>{action.icon}</Tooltip>
               </IconContext.Provider>
             </Box>
           ))}
