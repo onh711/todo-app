@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BabyActionCreateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\BabyAction;
+use Illuminate\Support\Facades\DB;
 
 class BabyActionController extends Controller
 {
@@ -34,24 +36,49 @@ class BabyActionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-  
-    public function store(Request $request)
-    {
-        $actions = BabyAction::create([
-          'baby_id' => Auth::user()->baby->id,
-          'action' => $request->action,
-          'cry' => $request->cry,
-          'start_date' => $request->start_date,
-          'end_date' => $request->end_date,
-          'mill_amount' =>$request->mill_amount,
-          'memo' =>$request->memo
-        ]);
 
+    // public function store(Request $request)
+    // {
+    //     $actions = BabyAction::create([
+    //       'baby_id' => Auth::user()->baby->id,
+    //       'action' => $request->action,
+    //       'cry' => $request->cry,
+    //       'start_date' => $request->start_date,
+    //       'end_date' => $request->end_date,
+    //       'milk_amount' =>$request->milk_amount,
+    //       'memo' =>$request->memo
+    //     ]);
+
+    //     return response()->json([
+    //         'message' => '作成成功',
+    //         'action' => $actions
+    //     ], 201);
+      
+    // }
+
+      public function store(BabyActionCreateRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+        $validated = $request->validated();
+
+        $action = new BabyAction();
+        $action->baby_id = Auth::user()->baby->id;
+        $action->action = $validated['action'];
+        $action->cry = $validated['cry'];
+        $action->start_date = $validated['start_date'];
+        $action->end_date = $validated['end_date'];
+        $action->milk_amount = $request['milk_amount'];
+        $action->memo = $request['memo'];
+        $action->save();
+        DB::commit();
         return response()->json([
             'message' => '作成成功',
-            'action' => $actions
         ], 201);
-      
+        } catch (\Exception$e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**
