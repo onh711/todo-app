@@ -3,30 +3,15 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import axios from "../api/axios";
+import axios from "../api/axios.js";
 import { Link, useNavigate } from "react-router-dom";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Slide from "@mui/material/Slide";
-import { useEffect, useState } from "react";
 
-export const Header = () => {
-  // const [user, setUser] = useState(null);
+export const Header: React.FC = () => {
   const navigate = useNavigate();
 
-  // const fetchUser = async () => {
-  //   try {
-  //     const res = await axios.get('/user', { withCredentials: true });
-  //     setUser(res.data);
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchUser();
-  // }, []);
-
-  const logout = async (e) => {
+  const logout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       await axios.post(

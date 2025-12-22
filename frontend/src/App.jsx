@@ -1,11 +1,11 @@
-import { Route, Routes } from 'react-router-dom';
-import './App.css';
-import { LoginForm } from './components/LoginForm';
-import { Register } from './components/Register';
-import { TaskList } from './components/TaskList';
-import { Header } from './components/Header';
-import { DashBoard } from './components/DashBoard';
-import { ProtectedRoute } from './components/ProtectedRoute';
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import { LoginForm } from "./components/LoginForm.jsx";
+import { Register } from "./components/Register.jsx";
+import { TaskList } from "./components/TaskList.jsx";
+import { Header } from "./components/Header.tsx";
+import { DashBoard } from "./components/DashBoard.jsx";
+import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 
 function App() {
   return (

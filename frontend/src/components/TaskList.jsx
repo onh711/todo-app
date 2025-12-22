@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "../api/axios";
+import axios from "../api/axios.js";
 
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { TaskFilter } from "./TaskFilter";
+import { TaskFilter } from "./TaskFilter.jsx";
 
 export const TaskList = () => {
   const [tasks, setTasks] = useState([]);
