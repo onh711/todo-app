@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Slide from "@mui/material/Slide";
 
-export const Header: React.FC = () => {
+export const Header = () => {
   const navigate = useNavigate();
 
   const logout = async (e: React.MouseEvent<HTMLButtonElement>) => {
