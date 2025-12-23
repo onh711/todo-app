@@ -12,6 +12,7 @@
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     // "types": ["node"],
     // and npm install -D @types/node
     "allowJs": true,
@@ -41,5 +42,6 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*"]
 }
