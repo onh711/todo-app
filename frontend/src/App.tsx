@@ -1,9 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
 import { LoginForm } from "./components/LoginForm.jsx";
 import { Register } from "./components/Register.jsx";
-import { TaskList } from "./components/TaskList.tsx";
-import { Header } from "./components/Header.tsx";
+import { TaskList } from "./components/TaskList.js";
+import { Header } from "./components/Header.js";
 import { DashBoard } from "./components/DashBoard.jsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 

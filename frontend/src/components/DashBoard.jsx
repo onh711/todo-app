@@ -1,11 +1,11 @@
 import React from "react";
-import { Calender } from "./Calender";
+import { Calender } from "./Calender.jsx";
 import { useEffect, useState } from "react";
-import axios from "../api/axios";
-import { BabyActionCreate } from "./BabyActionCreate";
+import axios from "../api/axios.js";
+import { BabyActionCreate } from "./BabyActionCreate.jsx";
 import Box from "@mui/material/Box";
-import { TaskTable } from "./TaskTable";
-import { Create } from "./Create";
+import { TaskTable } from "./TaskTable.jsx";
+import { Create } from "./Create.jsx";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
@@ -13,7 +13,7 @@ import isBetween from "dayjs/plugin/isBetween";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
-import { TaskDrawer } from "./TaskDrawer";
+import { TaskDrawer } from "./TaskDrawer.jsx";
 dayjs.extend(isBetween);
 
 export const DashBoard = () => {

@@ -34,7 +34,7 @@ export const TaskList = () => {
   useEffect(() => {
     fetchTasks();
   }, []);
-  console.log(tasks);
+
   return (
     <>
       <Box sx={{ margin: "0 auto", textAlign: "center" }}>
