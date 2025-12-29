@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "../api/axios.js";
 import { BabyActionCreate } from "./BabyActionCreate.jsx";
 import Box from "@mui/material/Box";
-import { TaskTable } from "./TaskTable.jsx";
+import { TaskTable } from "./TaskTable";
 import { Create } from "./Create.jsx";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";

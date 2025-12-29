@@ -13,8 +13,21 @@ import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 
-export const TaskTable = ({ onChange, tasks }) => {
-  const deleteTask = async (id) => {
+type Task = {
+  id: number;
+  title: string;
+  start_date: string;
+  due_date: string;
+  status_text: string;
+};
+
+type TaskTableProps = {
+  tasks: Task[];
+  onChange: () => Promise<void>;
+};
+
+export const TaskTable = ({ onChange, tasks }: TaskTableProps) => {
+  const deleteTask = async (id: number) => {
     if (window.confirm("本当に削除しますか？")) {
       try {
         const API_URL = `http://localhost/api/tasks/${id}`;
@@ -27,7 +40,7 @@ export const TaskTable = ({ onChange, tasks }) => {
     }
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case "未着手":
         return "#C9E6EE";
