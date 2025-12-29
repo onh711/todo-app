@@ -13,7 +13,7 @@ import isBetween from "dayjs/plugin/isBetween";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
-import { TaskDrawer } from "./TaskDrawer.jsx";
+import { TaskDrawer } from "./TaskDrawer";
 dayjs.extend(isBetween);
 
 export const DashBoard = () => {
