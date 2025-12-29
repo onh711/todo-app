@@ -2,9 +2,9 @@ import React from "react";
 import { Calender } from "./Calender.jsx";
 import { useEffect, useState } from "react";
 import axios from "../api/axios.js";
-import { BabyActionCreate } from "./BabyActionCreate";
+import { BabyActionCreate } from "./BabyActionCreate.js";
 import Box from "@mui/material/Box";
-import { TaskTable } from "./TaskTable";
+import { TaskTable } from "./TaskTable.js";
 import { Create } from "./Create.jsx";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
@@ -13,28 +13,41 @@ import isBetween from "dayjs/plugin/isBetween";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
-import { TaskDrawer } from "./TaskDrawer";
+import { TaskDrawer } from "./TaskDrawer.js";
+import type { Task } from "../types/task.js";
 dayjs.extend(isBetween);
 
-export const DashBoard = () => {
-  const [actions, setActions] = useState([]);
-  const [tasks, setTasks] = useState([]);
+type Action = {
+  id: number;
+  baby_id: number;
+  action: number;
+  cry: boolean;
+  start_date: string;
+  end_date: string;
+  milk_amount: number | null;
+  memo: string | null;
+};
 
-  const featchActions = async () => {
+export const DashBoard = () => {
+  const [actions, setActions] = useState<Action[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const featchActions = async (): Promise<void> => {
     const res = await axios.get("/api/dashboard");
     try {
       setActions(res.data.baby_actions);
+      console.log(res.data.baby_actions);
     } catch (e) {
-      return e;
+      console.error(e);
     }
   };
 
-  const featchTasks = async () => {
+  const featchTasks = async (): Promise<void> => {
     try {
       const res = await axios.get("/api/tasks");
       setTasks(res.data.tasks);
     } catch (e) {
-      return e;
+      console.error(e);
     }
   };
 
@@ -152,8 +165,7 @@ export const DashBoard = () => {
               component={Link}
               to="/tasks"
               variant="contained"
-              color="#00000099"
-              sx={{ width: "40%" }}
+              sx={{ width: "40%", color: "#00000099" }}
             >
               タスク一覧
             </Button>

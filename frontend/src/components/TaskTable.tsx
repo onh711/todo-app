@@ -12,14 +12,7 @@ import dayjs from "dayjs";
 import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
-
-type Task = {
-  id: number;
-  title: string;
-  start_date: string;
-  due_date: string;
-  status_text: string;
-};
+import type { Task } from "../types/task";
 
 type TaskTableProps = {
   tasks: Task[];

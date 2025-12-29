@@ -3,7 +3,7 @@ import { LoginForm } from "./components/LoginForm.jsx";
 import { Register } from "./components/Register.jsx";
 import { TaskList } from "./components/TaskList.js";
 import { Header } from "./components/Header.js";
-import { DashBoard } from "./components/DashBoard.jsx";
+import { DashBoard } from "./components/DashBoard";
 import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 
 function App() {

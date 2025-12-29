@@ -4,15 +4,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { TaskFilter } from "./TaskFilter.jsx";
-
-type Task = {
-  id: number;
-  title: string;
-  content: string;
-  status: number;
-  start_date: string;
-  due_date: string;
-};
+import type { Task } from "../types/task.js";
 
 type TasksResponse = {
   tasks: Task[];

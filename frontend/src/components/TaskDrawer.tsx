@@ -8,14 +8,7 @@ import { Link } from "react-router-dom";
 import { Create } from "./Create";
 import Typography from "@mui/material/Typography";
 import { TaskTable } from "./TaskTable";
-
-type Task = {
-  id: number;
-  title: string;
-  start_date: string;
-  due_date: string;
-  status_text: string;
-};
+import type { Task } from "../types/task";
 
 type TaskDrawerProps = {
   tasks: Task[];
