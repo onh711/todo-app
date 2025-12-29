@@ -28,10 +28,12 @@ export const LoginForm = () => {
     mail_address: "",
     password: "",
   });
+
   const [errors, setErrors] = useState({
     mail_address: "",
     password: "",
   });
+
   const [serverError, setServerError] = useState("");
 
   const navigate = useNavigate();
@@ -68,7 +70,7 @@ export const LoginForm = () => {
     return isValid;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setServerError("");
 
@@ -84,7 +86,7 @@ export const LoginForm = () => {
       });
 
       navigate("/dashboard");
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
 
       // サーバーエラーの処理
