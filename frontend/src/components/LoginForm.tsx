@@ -23,24 +23,29 @@ const LoginCard = styled("div")({
   boxShadow: "0 0 10px rgba(0,0,0,0.1)",
 });
 
+type FormInfo = {
+  mail_address: string;
+  password: string;
+};
+
 export const LoginForm = () => {
-  const [userInfo, setUserInfo] = useState({
+  const [userInfo, setUserInfo] = useState<FormInfo>({
     mail_address: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<FormInfo>({
     mail_address: "",
     password: "",
   });
 
-  const [serverError, setServerError] = useState("");
+  const [serverError, setServerError] = useState<string>("");
 
   const navigate = useNavigate();
 
   //バリデーション関数
   const validateForm = () => {
-    const newErrors = {
+    const newErrors: FormInfo = {
       mail_address: "",
       password: "",
     };
@@ -100,6 +105,14 @@ export const LoginForm = () => {
     }
   };
 
+  const handleInputChange =
+    (key: keyof FormInfo) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setUserInfo((prev) => ({
+        ...prev,
+        [key]: e.target.value,
+      }));
+    };
+
   return (
     <>
       <Container>
@@ -121,9 +134,7 @@ export const LoginForm = () => {
               margin="normal"
               fullWidth
               label="メールアドレス"
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, mail_address: e.target.value })
-              }
+              onChange={handleInputChange("mail_address")}
               error={!!errors.mail_address}
               helperText={errors.mail_address}
             />
@@ -133,9 +144,7 @@ export const LoginForm = () => {
               fullWidth
               label="パスワード"
               type="password"
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, password: e.target.value })
-              }
+              onChange={handleInputChange("password")}
               error={!!errors.password}
               helperText={errors.password}
             />

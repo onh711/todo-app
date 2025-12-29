@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { LoginForm } from "./components/LoginForm.jsx";
+import { LoginForm } from "./components/LoginForm";
 import { Register } from "./components/Register.jsx";
 import { TaskList } from "./components/TaskList.js";
 import { Header } from "./components/Header.js";
