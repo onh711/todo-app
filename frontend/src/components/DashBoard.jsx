@@ -2,7 +2,7 @@ import React from "react";
 import { Calender } from "./Calender.jsx";
 import { useEffect, useState } from "react";
 import axios from "../api/axios.js";
-import { BabyActionCreate } from "./BabyActionCreate.jsx";
+import { BabyActionCreate } from "./BabyActionCreate";
 import Box from "@mui/material/Box";
 import { TaskTable } from "./TaskTable";
 import { Create } from "./Create.jsx";

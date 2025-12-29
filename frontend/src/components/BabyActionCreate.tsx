@@ -10,7 +10,18 @@ import { IoIosWater } from "react-icons/io";
 import { FaBaby } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import Box from "@mui/material/Box";
+
 dayjs.locale(ja);
+
+type BabyActionCreateProp = {
+  fetch: () => Promise<void>;
+};
+
+type IconItem = {
+  id: number;
+  label: string;
+  icon: React.ReactElement;
+};
 
 const babyIconStyle = {
   transition: "0.3s ease",
@@ -19,13 +30,13 @@ const babyIconStyle = {
   },
 };
 
-export const BabyActionCreate = ({ fetch }) => {
+export const BabyActionCreate = ({ fetch }: BabyActionCreateProp) => {
   const date = dayjs();
   const nowFormat = date.format("YYYY-MM-DD HH:mm:ss"); //フォーマット済みの現在時刻
   const fiveMinLater = date.add(5, "m");
   const fiveMinFormat = fiveMinLater.format("YYYY-MM-DD HH:mm:ss"); //フォーマット済みの5分後の時刻
 
-  const babyActionCreate = (actionNum) => {
+  const babyActionCreate = (actionNum: number) => {
     return {
       action: actionNum,
       cry: 0,
@@ -34,7 +45,7 @@ export const BabyActionCreate = ({ fetch }) => {
     };
   };
 
-  const fetchAction = async (actionNum) => {
+  const fetchAction = async (actionNum: number) => {
     const API_URL = "http://localhost/api/dashboard";
     try {
       await axios.post(API_URL, babyActionCreate(actionNum));
@@ -44,7 +55,7 @@ export const BabyActionCreate = ({ fetch }) => {
     }
   };
 
-  const ACTION_ID = [
+  const ACTION_ID: IconItem[] = [
     { id: 1, label: "寝る", icon: <GiNightSleep /> },
     { id: 2, label: "授乳", icon: <GiBabyBottle /> },
     { id: 3, label: "ご飯", icon: <FaUtensilSpoon /> },
