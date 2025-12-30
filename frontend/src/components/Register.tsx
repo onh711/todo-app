@@ -23,15 +23,22 @@ const LoginCard = styled("div")({
   boxShadow: "0 0 10px rgba(0,0,0,0.1)",
 });
 
+type UserInfo = {
+  name: string;
+  mail_address: string;
+  password: string;
+  baby_name: string;
+};
+
 export const Register = () => {
-  const [registInfo, setRegistInfo] = useState({
+  const [registInfo, setRegistInfo] = useState<UserInfo>({
     name: "",
     mail_address: "",
     password: "",
     baby_name: "",
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Record<keyof UserInfo, string>>({
     name: "",
     mail_address: "",
     password: "",
@@ -100,7 +107,15 @@ export const Register = () => {
     return isValid;
   };
 
-  const handleSubmit = async (e) => {
+  const handleInputChange =
+    (key: keyof UserInfo) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setRegistInfo((prev) => ({
+        ...prev,
+        [key]: e.target.value,
+      }));
+    };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setServerError("");
 
@@ -113,7 +128,7 @@ export const Register = () => {
       await axios.post("/api/register", { ...registInfo });
       alert("会員登録を作成しました");
       navigate("/");
-    } catch (e) {
+    } catch (e: any) {
       const mailError = e.response?.data?.errors?.mail_address?.[0];
       if (mailError?.includes("already")) {
         setServerError("このメールアドレスは既に登録されています");
@@ -144,9 +159,7 @@ export const Register = () => {
               margin="normal"
               fullWidth
               label="氏名"
-              onChange={(e) =>
-                setRegistInfo({ ...registInfo, name: e.target.value })
-              }
+              onChange={handleInputChange("name")}
               error={!!errors.name}
               helperText={errors.name}
             />
@@ -155,9 +168,7 @@ export const Register = () => {
               margin="normal"
               fullWidth
               label="メールアドレス"
-              onChange={(e) =>
-                setRegistInfo({ ...registInfo, mail_address: e.target.value })
-              }
+              onChange={handleInputChange("mail_address")}
               error={!!errors.mail_address}
               helperText={errors.mail_address}
             />
@@ -167,9 +178,7 @@ export const Register = () => {
               fullWidth
               label="パスワード"
               type="password"
-              onChange={(e) =>
-                setRegistInfo({ ...registInfo, password: e.target.value })
-              }
+              onChange={handleInputChange("password")}
               error={!!errors.password}
               helperText={errors.password}
             />
@@ -178,9 +187,7 @@ export const Register = () => {
               margin="normal"
               fullWidth
               label="子供の名前"
-              onChange={(e) =>
-                setRegistInfo({ ...registInfo, baby_name: e.target.value })
-              }
+              onChange={handleInputChange("baby_name")}
               error={!!errors.baby_name}
               helperText={errors.baby_name}
             />
