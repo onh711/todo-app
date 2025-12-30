@@ -9,12 +9,34 @@ import MenuItem from "@mui/material/MenuItem";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import isBetween from "dayjs/plugin/isBetween";
+import type { Task } from "../types/task";
 dayjs.extend(isBetween);
 
-export const TaskFilter = ({ tasks, onChange }) => {
-  const [searchWord, setSearchWord] = useState("");
-  const [taskFilters, setTaskFilters] = useState("all");
-  const [taskSorts, setTaskSorts] = useState("");
+type TaskFilterProps = {
+  tasks: Task[];
+  onChange: () => Promise<void>;
+};
+const SORT_OPTIONS = [
+  { value: "start_asc", label: "開始日昇順" },
+  { value: "start_desc", label: "開始日降順" },
+  { value: "due_asc", label: "期限日昇順" },
+  { value: "due_desc", label: "期限日降順" },
+  { value: "status_asc", label: "状態昇順" },
+  { value: "status_desc", label: "状態降順" },
+] as const;
+
+const FILTER_OPTIONS = [
+  { value: "today", label: "今日のタスク" },
+  { value: "all", label: "すべてのタスク" },
+  { value: "checked", label: "完了したタスク" },
+  { value: "unchecked", label: "現在の（未完了の）タスク" },
+  { value: "expired", label: "期限切れのタスク" },
+] as const;
+
+export const TaskFilter = ({ tasks, onChange }: TaskFilterProps) => {
+  const [searchWord, setSearchWord] = useState<string>("");
+  const [taskFilters, setTaskFilters] = useState<string>("all");
+  const [taskSorts, setTaskSorts] = useState<string>("");
 
   //ワード検索機能
   const wordFilter =
@@ -43,7 +65,7 @@ export const TaskFilter = ({ tasks, onChange }) => {
     }
   });
   //ソート機能
-  const taskSortingResults = filters.toSorted((a, b) => {
+  const taskSortingResults = filters.toSorted((a: Task, b: Task): number => {
     switch (taskSorts) {
       case "start_asc":
         return (
@@ -61,6 +83,8 @@ export const TaskFilter = ({ tasks, onChange }) => {
         return a.status - b.status;
       case "status_desc":
         return b.status - a.status;
+      default:
+        return 0;
     }
   });
 
@@ -87,12 +111,11 @@ export const TaskFilter = ({ tasks, onChange }) => {
             label="並べ替え"
             onChange={(e) => setTaskSorts(e.target.value)}
           >
-            <MenuItem value="start_asc">開始日昇順</MenuItem>
-            <MenuItem value="start_desc">開始日降順</MenuItem>
-            <MenuItem value="due_asc">期限日昇順</MenuItem>
-            <MenuItem value="due_desc">期限日降順</MenuItem>
-            <MenuItem value="status_asc">状態昇順</MenuItem>
-            <MenuItem value="status_desc">状態降順</MenuItem>
+            {SORT_OPTIONS.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
         <FormControl sx={{ width: 1 / 4 }}>
@@ -102,11 +125,11 @@ export const TaskFilter = ({ tasks, onChange }) => {
             label="フィルター"
             onChange={(e) => setTaskFilters(e.target.value)}
           >
-            <MenuItem value="today">今日のタスク</MenuItem>
-            <MenuItem value="all">すべてのタスク</MenuItem>
-            <MenuItem value="checked">完了したタスク</MenuItem>
-            <MenuItem value="unchecked">現在の（未完了の）タスク</MenuItem>
-            <MenuItem value="expired">期限切れのタスク</MenuItem>
+            {FILTER_OPTIONS.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Container>

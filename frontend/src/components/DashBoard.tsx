@@ -165,7 +165,7 @@ export const DashBoard = () => {
               component={Link}
               to="/tasks"
               variant="contained"
-              sx={{ width: "40%", color: "#00000099" }}
+              sx={{ width: "40%", backgroundColor: "#fff", color: "#000000fd" }}
             >
               タスク一覧
             </Button>

@@ -3,7 +3,7 @@ import axios from "../api/axios.js";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { TaskFilter } from "./TaskFilter.jsx";
+import { TaskFilter } from "./TaskFilter";
 import type { Task } from "../types/task.js";
 
 type TasksResponse = {
@@ -34,7 +34,12 @@ export const TaskList = () => {
           <Typography variant="h1" fontSize={40} sx={{ padding: "35px" }}>
             タスク一覧
           </Typography>
-          <TaskFilter tasks={tasks} onChange={fetchTasks} />
+          <TaskFilter
+            tasks={tasks}
+            onChange={async () => {
+              await fetchTasks();
+            }}
+          />
         </Container>
       </Box>
     </>
