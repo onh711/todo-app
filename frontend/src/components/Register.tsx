@@ -51,7 +51,7 @@ export const Register = () => {
 
   // バリデーション関数
   const validateForm = () => {
-    const newErrors = {
+    const newErrors: Record<keyof UserInfo, string> = {
       name: "",
       mail_address: "",
       password: "",
@@ -159,6 +159,7 @@ export const Register = () => {
               margin="normal"
               fullWidth
               label="氏名"
+              value={registInfo.name}
               onChange={handleInputChange("name")}
               error={!!errors.name}
               helperText={errors.name}
@@ -168,6 +169,7 @@ export const Register = () => {
               margin="normal"
               fullWidth
               label="メールアドレス"
+              value={registInfo.mail_address}
               onChange={handleInputChange("mail_address")}
               error={!!errors.mail_address}
               helperText={errors.mail_address}
@@ -177,6 +179,7 @@ export const Register = () => {
               margin="normal"
               fullWidth
               label="パスワード"
+              value={registInfo.password}
               type="password"
               onChange={handleInputChange("password")}
               error={!!errors.password}
@@ -187,6 +190,7 @@ export const Register = () => {
               margin="normal"
               fullWidth
               label="子供の名前"
+              value={registInfo.baby_name}
               onChange={handleInputChange("baby_name")}
               error={!!errors.baby_name}
               helperText={errors.baby_name}

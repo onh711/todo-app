@@ -5,7 +5,7 @@ import axios from "../api/axios.js";
 import { BabyActionCreate } from "./BabyActionCreate.js";
 import Box from "@mui/material/Box";
 import { TaskTable } from "./TaskTable.js";
-import { Create } from "./Create.jsx";
+import { Create } from "./Create";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";

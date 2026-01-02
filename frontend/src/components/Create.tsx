@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import { CustomButton } from "./CustomButton.jsx";
+import { CustomButton } from "./CustomButton.js";
 
 const style = {
   position: "absolute",
@@ -31,12 +31,23 @@ const TextFieldStyle = {
   padding: "0px",
 };
 
-export const Create = ({ onAdd }) => {
+type CreateProps = {
+  onAdd: () => Promise<void>;
+};
+
+type InputData = {
+  title: string;
+  start_date: string;
+  due_date: string;
+  content: string;
+};
+
+export const Create = ({ onAdd }: CreateProps) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [inputData, setInputData] = useState({
+  const [inputData, setInputData] = useState<InputData>({
     title: "",
     start_date: "",
     due_date: "",
@@ -50,7 +61,7 @@ export const Create = ({ onAdd }) => {
     content: "",
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!handleValidate()) {
       return;
@@ -144,12 +155,19 @@ export const Create = ({ onAdd }) => {
   //     }
   //   }
 
+  const handleInputChange =
+    (key: keyof InputData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputData((prev) => ({
+        ...prev,
+        [key]: e.target.value,
+      }));
+    };
+
   return (
     <Box>
       <Button
-        sx={{ width: "100%" }}
+        sx={{ width: "100%", backgroundColor: "#fff", color: "#000000fd" }}
         variant="contained"
-        color="#00000099"
         onClick={handleOpen}
       >
         新規タスク登録
@@ -172,18 +190,16 @@ export const Create = ({ onAdd }) => {
           <Box component="form" onSubmit={handleSubmit}>
             <TextField
               label={"タスク名"}
-              error={errorMessages.title}
+              error={!!errorMessages.title}
               helperText={errorMessages.title}
               sx={TextFieldStyle}
               value={inputData.title}
               name="title"
-              onChange={(e) =>
-                setInputData({ ...inputData, title: e.target.value })
-              }
+              onChange={handleInputChange("title")}
             />
             <TextField
               type={"datetime-local"}
-              error={errorMessages.start_date}
+              error={!!errorMessages.start_date}
               helperText={errorMessages.start_date}
               label={"開始日時"}
               slotProps={{
@@ -191,34 +207,30 @@ export const Create = ({ onAdd }) => {
               }}
               sx={TextFieldStyle}
               value={inputData.start_date}
-              onChange={(e) =>
-                setInputData({ ...inputData, start_date: e.target.value })
-              }
+              onChange={handleInputChange("start_date")}
             />
             <TextField
               type={"datetime-local"}
-              error={errorMessages.due_date}
+              error={!!errorMessages.due_date}
               helperText={errorMessages.due_date}
               label={"完了期限"}
               slotProps={{
                 inputLabel: { shrink: true },
-                min: inputData.start_date,
+                htmlInput: {
+                  min: inputData.start_date,
+                },
               }}
               sx={TextFieldStyle}
               value={inputData.due_date}
-              onChange={(e) =>
-                setInputData({ ...inputData, due_date: e.target.value })
-              }
+              onChange={handleInputChange("due_date")}
             />
             <TextField
               label={"タスク詳細"}
-              error={errorMessages.content}
+              error={!!errorMessages.content}
               helperText={errorMessages.content}
               sx={TextFieldStyle}
               value={inputData.content}
-              onChange={(e) =>
-                setInputData({ ...inputData, content: e.target.value })
-              }
+              onChange={handleInputChange("content")}
             />
             <Box sx={{ justifyContent: "center", height: "100%" }}>
               <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
