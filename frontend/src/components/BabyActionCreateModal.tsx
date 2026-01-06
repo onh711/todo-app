@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import { CustomButton } from "./CustomButton";
 import Checkbox from "@mui/material/Checkbox";
-import Select from "@mui/material/Select";
+import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -42,12 +42,28 @@ const TextFieldStyle = {
   padding: "0px",
 };
 
+type BabyActionCreateModalProps = {
+  showFlag: boolean;
+  fetch: () => Promise<void>;
+  clickDate: string;
+  onCloseCreateModal: () => void;
+};
+
+type InputActions = {
+  action: number;
+  cry: number;
+  start_date: string;
+  end_date: string;
+  milk_amount: string;
+  memo: string;
+};
+
 export const BabyActionCreateModal = ({
   showFlag,
   fetch,
   clickDate,
   onCloseCreateModal,
-}) => {
+}: BabyActionCreateModalProps) => {
   const ACTION_ID = [
     { id: 1, label: "寝る", icon: <GiNightSleep /> },
     { id: 2, label: "授乳", icon: <GiBabyBottle /> },
@@ -59,7 +75,7 @@ export const BabyActionCreateModal = ({
 
   const handleClose = () => onCloseCreateModal();
 
-  const [inputActions, setInputActions] = useState({
+  const [inputActions, setInputActions] = useState<InputActions>({
     action: 1,
     cry: 0,
     start_date: dayjs(clickDate).format("YYYY-MM-DD HH:mm"),
@@ -76,7 +92,7 @@ export const BabyActionCreateModal = ({
     });
   }, [showFlag]);
 
-  const createAction = async (e) => {
+  const createAction = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const API_URL = `http://localhost/api/dashboard`;
     try {
@@ -87,6 +103,19 @@ export const BabyActionCreateModal = ({
       console.error(e);
     }
   };
+
+  const handleInputChange =
+    (key: keyof InputActions) =>
+    (
+      e:
+        | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        | SelectChangeEvent<number>
+    ) => {
+      setInputActions((prev) => ({
+        ...prev,
+        [key]: e.target.value,
+      }));
+    };
 
   return (
     <>
@@ -109,9 +138,7 @@ export const BabyActionCreateModal = ({
             <Select
               sx={TextFieldStyle}
               value={inputActions.action}
-              onChange={(e) =>
-                setInputActions({ ...inputActions, action: e.target.value })
-              }
+              onChange={handleInputChange("action")}
             >
               {ACTION_ID.map((action) => (
                 <MenuItem key={action.id} value={action.id}>
@@ -128,9 +155,7 @@ export const BabyActionCreateModal = ({
               }}
               sx={TextFieldStyle}
               value={inputActions.start_date}
-              onChange={(e) =>
-                setInputActions({ ...inputActions, start_date: e.target.value })
-              }
+              onChange={handleInputChange("start_date")}
             />
             <TextField
               type={"datetime-local"}
@@ -140,43 +165,33 @@ export const BabyActionCreateModal = ({
               }}
               sx={TextFieldStyle}
               value={inputActions.end_date}
-              onChange={(e) =>
-                setInputActions({ ...inputActions, end_date: e.target.value })
-              }
+              onChange={handleInputChange("end_date")}
             />
             <TextField
               label={"メモ"}
               sx={TextFieldStyle}
               value={inputActions.memo ? inputActions.memo : ""}
-              onChange={(e) =>
-                setInputActions({
-                  ...inputActions,
-                  memo: e.target.value,
-                })
-              }
+              onChange={handleInputChange("memo")}
             />
             {inputActions.action === 2 ? (
               <TextField
                 type="number"
                 label={"飲んだ量"}
                 sx={TextFieldStyle}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">ml</InputAdornment>
+                  ),
+                }}
                 slotProps={{
                   inputLabel: { shrink: true },
-                  input: {
+                  htmlInput: {
                     min: 0,
                     max: 300,
-                    endAdornment: (
-                      <InputAdornment position="end">ml</InputAdornment>
-                    ),
                   },
                 }}
                 value={inputActions.milk_amount}
-                onChange={(e) =>
-                  setInputActions({
-                    ...inputActions,
-                    milk_amount: e.target.value,
-                  })
-                }
+                onChange={handleInputChange("milk_amount")}
               />
             ) : (
               ""
@@ -186,10 +201,10 @@ export const BabyActionCreateModal = ({
               <Checkbox
                 checked={Boolean(inputActions.cry)}
                 onChange={(e) =>
-                  setInputActions({
-                    ...inputActions,
-                    cry: e.target.checked,
-                  })
+                  setInputActions((prev) => ({
+                    ...prev,
+                    cry: e.target.checked ? 1 : 0,
+                  }))
                 }
               />
               <Box>
