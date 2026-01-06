@@ -43,7 +43,7 @@ type InputData = {
 };
 
 export const Create = ({ onAdd }: CreateProps) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -54,7 +54,9 @@ export const Create = ({ onAdd }: CreateProps) => {
     content: "",
   });
 
-  const [errorMessages, setErrorMessages] = useState({
+  const [errorMessages, setErrorMessages] = useState<
+    Record<keyof InputData, string>
+  >({
     title: "",
     start_date: "",
     due_date: "",
@@ -77,7 +79,7 @@ export const Create = ({ onAdd }: CreateProps) => {
   };
 
   const handleValidate = () => {
-    const errors = {
+    const errors: Record<keyof InputData, string> = {
       title: "",
       start_date: "",
       due_date: "",
@@ -115,46 +117,6 @@ export const Create = ({ onAdd }: CreateProps) => {
     return isValid;
   };
 
-  //  //タイトル名のバリデーション
-  //   const titleValidate = () =>{
-  //     if(inputData.title.length >= 50 ){
-  //       setErrorMessages({...errorMessages,title:"タスク名は50文字以上入力できません。"});
-  //       setValidate({...validate,title:false});
-  //       console.log(validate.title)
-
-  //     }else if(inputData.title.length === 0){
-  //       setErrorMessages({...errorMessages,title:"タスク名を入力してください"});
-  //       setValidate({...validate,title:false});
-  //       console.log(validate.title)
-  //     }else{
-  //       setErrorMessages({...errorMessages,title:""});
-  //       setValidate({...validate,title:true});
-
-  //     }
-  //   }
-
-  //   //開始日時のバリデーション
-  //   const startValidate = () =>{
-  //     if(!inputData.start_date){
-  //       setErrorMessages({...errorMessages,start_date:"開始日時を入力してください"});
-  //       setValidate({...validate,start_date:false});
-  //     }else{
-  //       setErrorMessages({...errorMessages,start_date:""});
-  //       setValidate({...validate,start_date:true});
-  //     }
-  //   }
-
-  //   //タスク詳細のバリデーション
-  //   const contentValidate = () =>{
-  //     if(inputData.content.length >= 250){
-  //       setErrorMessages({...errorMessages,content:"タスク詳細は250文字以上入力できません。"});
-  //       setValidate({...validate,content:false});
-  //     }else{
-  //       setErrorMessages({...errorMessages,content:""});
-  //       setValidate({...validate,content:true});
-  //     }
-  //   }
-
   const handleInputChange =
     (key: keyof InputData) => (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputData((prev) => ({
@@ -162,6 +124,14 @@ export const Create = ({ onAdd }: CreateProps) => {
         [key]: e.target.value,
       }));
     };
+
+  // const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setInputData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
   return (
     <Box>
@@ -194,7 +164,6 @@ export const Create = ({ onAdd }: CreateProps) => {
               helperText={errorMessages.title}
               sx={TextFieldStyle}
               value={inputData.title}
-              name="title"
               onChange={handleInputChange("title")}
             />
             <TextField

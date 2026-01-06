@@ -1,30 +1,30 @@
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import jaLocale from '@fullcalendar/core/locales/ja';
-import interactionPlugin from '@fullcalendar/interaction';
-import { useState } from 'react';
-import { BabyActionEditModal } from './BabyActionEditModal ';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ja';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-import axios from 'axios';
-import { BabyActionCreateModal } from './BabyActionCreateModal';
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import jaLocale from "@fullcalendar/core/locales/ja";
+import interactionPlugin from "@fullcalendar/interaction";
+import { useState } from "react";
+import { BabyActionEditModal } from "./BabyActionEditModal ";
+import dayjs from "dayjs";
+import "dayjs/locale/ja";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import axios from "axios";
+import { BabyActionCreateModal } from "./BabyActionCreateModal";
 
 // UTCプラグインを読み込み
 dayjs.extend(utc);
 // timezoneプラグインを読み込み
 dayjs.extend(timezone);
 // 日本語化
-dayjs.locale('ja');
+dayjs.locale("ja");
 // タイムゾーンのデフォルトをJST化
-dayjs.tz.setDefault('Asia/Tokyo');
+dayjs.tz.setDefault("Asia/Tokyo");
 
 export const Calender = ({ actions, fetch }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const [calenderClickDate, setCalenderClickDate] = useState('');
+  const [calenderClickDate, setCalenderClickDate] = useState("");
   const [events, setEvents] = useState([]);
 
   const onCloseEditModal = () => {
@@ -36,18 +36,18 @@ export const Calender = ({ actions, fetch }) => {
   };
 
   const ACTION_ID = [
-    { id: 1, label: '寝る' },
-    { id: 2, label: '授乳' },
-    { id: 3, label: 'ご飯' },
-    { id: 4, label: 'うんち' },
-    { id: 5, label: 'おしっこ' },
-    { id: 6, label: 'うんち/おしっこ' },
+    { id: 1, label: "寝る" },
+    { id: 2, label: "授乳" },
+    { id: 3, label: "ご飯" },
+    { id: 4, label: "うんち" },
+    { id: 5, label: "おしっこ" },
+    { id: 6, label: "うんち/おしっこ" },
   ];
 
   const findId = (label) => {
     //labelを渡してリスト内のlabelのIDを返す関数
     const found = ACTION_ID.find((id) => id.label === label);
-    return found ? found.id : '';
+    return found ? found.id : "";
   };
 
   const handleEventDrop = async (info) => {
@@ -55,8 +55,8 @@ export const Calender = ({ actions, fetch }) => {
     const updatedEventData = {
       id: event.id,
       action: findId(event.title),
-      start_date: dayjs(event.start).format('YYYY-MM-DD HH:mm:ss'),
-      end_date: dayjs(event.end).format('YYYY-MM-DD HH:mm:ss'),
+      start_date: dayjs(event.start).format("YYYY-MM-DD HH:mm:ss"),
+      end_date: dayjs(event.end).format("YYYY-MM-DD HH:mm:ss"),
     };
 
     const API_URL = `http://localhost/api/drop/${event.id}`;
@@ -71,18 +71,18 @@ export const Calender = ({ actions, fetch }) => {
   const eventList = actions.map((action) => {
     const eventColors = (action) => {
       switch (action.action_text) {
-        case '寝る':
-          return '#a3ffa3';
-        case '授乳':
-          return '#ffa3d1';
-        case 'ご飯':
-          return '#a3ffff';
-        case 'うんち':
-          return '#ffc184';
-        case 'おしっこ':
-          return '#ffffa3';
-        case 'うんち/おしっこ':
-          return '#bf7fff';
+        case "寝る":
+          return "#a3ffa3";
+        case "授乳":
+          return "#ffa3d1";
+        case "ご飯":
+          return "#a3ffff";
+        case "うんち":
+          return "#ffc184";
+        case "おしっこ":
+          return "#ffffa3";
+        case "うんち/おしっこ":
+          return "#bf7fff";
       }
     };
 
@@ -95,7 +95,7 @@ export const Calender = ({ actions, fetch }) => {
       milk_amount: action.milk_amount,
       description: action.memo,
       color: eventColors(action),
-      textColor: 'rgb(0, 0, 0)',
+      textColor: "rgb(0, 0, 0)",
     };
   });
 
@@ -108,18 +108,18 @@ export const Calender = ({ actions, fetch }) => {
         locale="ja"
         timeZone="local"
         selectable={true}
-        height={'100%'}
+        height={"100%"}
         allDaySlot={false}
-        eventBackgroundColor={'#FFFFFF'}
+        eventBackgroundColor={"#FFFFFF"}
         nowIndicator={true} //現在時刻をラインで表示
         eventMinHeight={25} //イベントの表示幅の指定
         eventShortHeight={40}
         headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay',
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
-        scrollTime={dayjs(new Date().getTime()).format('HH:mm:ss')} //初期表示の時間
+        scrollTime={dayjs(new Date().getTime()).format("HH:mm:ss")} //初期表示の時間
         events={eventList} //カレンダーに渡すイベントのJSON
         eventDrop={handleEventDrop}
         eventResize={handleEventDrop}
@@ -140,8 +140,8 @@ export const Calender = ({ actions, fetch }) => {
             description: e.event.extendedProps.description,
           });
         }}
-        slotDuration={'00:15:00'}
-        slotLabelInterval={'01:00:00'} //時間の表示間隔
+        slotDuration={"00:15:00"}
+        slotLabelInterval={"01:00:00"} //時間の表示間隔
         editable={true}
       />
       <BabyActionEditModal
