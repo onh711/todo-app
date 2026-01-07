@@ -42,12 +42,29 @@ const TextFieldStyle = {
   padding: "0px",
 };
 
+type EventData = {
+  id: string;
+  title: number;
+  cry: boolean;
+  start: string;
+  end: string;
+  milk_amount: string;
+  description: string;
+};
+
+type BabyActionEditModalProps = {
+  showFlag: boolean;
+  events: EventData;
+  onCloseEditModal: () => void;
+  fetch: () => Promise<void>;
+};
+
 export const BabyActionEditModal = ({
   showFlag,
   events,
   onCloseEditModal,
   fetch,
-}) => {
+}: BabyActionEditModalProps) => {
   const ACTION_ID = [
     { id: 1, label: "寝る", icon: <GiNightSleep /> },
     { id: 2, label: "授乳", icon: <GiBabyBottle /> },
@@ -57,7 +74,7 @@ export const BabyActionEditModal = ({
     { id: 6, label: "うんち/おしっこ", icon: <FaBaby /> },
   ];
 
-  const findId = (label) => {
+  const findId = (label: number | string) => {
     //labelを渡してリスト内のlabelのIDを返す関数
     const found = ACTION_ID.find((id) => id.label === label);
     return found ? found.id : "";
@@ -88,7 +105,7 @@ export const BabyActionEditModal = ({
     memo: events.description,
   });
 
-  const editAction = async (e) => {
+  const editAction = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const API_URL = `http://localhost/api/dashboard/${events.id}`;
     try {
@@ -112,6 +129,14 @@ export const BabyActionEditModal = ({
       }
     }
   };
+
+  const handleInputChange =
+    (key: keyof EventData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputActions((prev) => ({
+        ...prev,
+        [key]: e.target.value,
+      }));
+    };
 
   return (
     <>
@@ -187,9 +212,11 @@ export const BabyActionEditModal = ({
                 sx={TextFieldStyle}
                 slotProps={{
                   inputLabel: { shrink: true },
-                  input: {
+                  htmlInput: {
                     min: 0,
                     max: 300,
+                  },
+                  input: {
                     endAdornment: (
                       <InputAdornment position="end">ml</InputAdornment>
                     ),
