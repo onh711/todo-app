@@ -2,7 +2,9 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import jaLocale from "@fullcalendar/core/locales/ja";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, {
+  type EventResizeDoneArg,
+} from "@fullcalendar/interaction";
 import { useState } from "react";
 import { BabyActionEditModal } from "./BabyActionEditModal ";
 import dayjs from "dayjs";
@@ -11,6 +13,8 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import axios from "axios";
 import { BabyActionCreateModal } from "./BabyActionCreateModal";
+import type { EventDropArg } from "@fullcalendar/core/index.js";
+import type { EditEventData } from "../types/event";
 
 // UTCプラグインを読み込み
 dayjs.extend(utc);
@@ -21,11 +25,37 @@ dayjs.locale("ja");
 // タイムゾーンのデフォルトをJST化
 dayjs.tz.setDefault("Asia/Tokyo");
 
-export const Calender = ({ actions, fetch }) => {
+type Action = {
+  id: number;
+  baby_id: number;
+  action: number;
+  action_text?: string;
+  cry: boolean;
+  start_date: string;
+  end_date: string;
+  milk_amount: number | null;
+  memo: string | null;
+};
+
+type CalenderProps = {
+  actions: Action[];
+  fetch: () => Promise<void>;
+};
+
+const ACTION_ID = [
+  { id: 1, label: "寝る" },
+  { id: 2, label: "授乳" },
+  { id: 3, label: "ご飯" },
+  { id: 4, label: "うんち" },
+  { id: 5, label: "おしっこ" },
+  { id: 6, label: "うんち/おしっこ" },
+];
+
+export const Calender = ({ actions, fetch }: CalenderProps) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [calenderClickDate, setCalenderClickDate] = useState("");
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<EditEventData | null>(null);
 
   const onCloseEditModal = () => {
     setEditModalOpen(false);
@@ -35,22 +65,13 @@ export const Calender = ({ actions, fetch }) => {
     setCreateModalOpen(false);
   };
 
-  const ACTION_ID = [
-    { id: 1, label: "寝る" },
-    { id: 2, label: "授乳" },
-    { id: 3, label: "ご飯" },
-    { id: 4, label: "うんち" },
-    { id: 5, label: "おしっこ" },
-    { id: 6, label: "うんち/おしっこ" },
-  ];
-
-  const findId = (label) => {
+  const findId = (label: string) => {
     //labelを渡してリスト内のlabelのIDを返す関数
     const found = ACTION_ID.find((id) => id.label === label);
     return found ? found.id : "";
   };
 
-  const handleEventDrop = async (info) => {
+  const handleEventDrop = async (info: EventDropArg | EventResizeDoneArg) => {
     const { event } = info;
     const updatedEventData = {
       id: event.id,
@@ -69,7 +90,7 @@ export const Calender = ({ actions, fetch }) => {
   };
 
   const eventList = actions.map((action) => {
-    const eventColors = (action) => {
+    const eventColors = (action: Action) => {
       switch (action.action_text) {
         case "寝る":
           return "#a3ffa3";
@@ -83,19 +104,23 @@ export const Calender = ({ actions, fetch }) => {
           return "#ffffa3";
         case "うんち/おしっこ":
           return "#bf7fff";
+        default:
+          return "#cccccc";
       }
     };
 
     return {
-      id: action.id,
-      title: action.action_text,
-      cry: action.cry,
+      id: String(action.id),
+      title: action.action_text || "",
       start: action.start_date,
       end: action.end_date,
-      milk_amount: action.milk_amount,
-      description: action.memo,
       color: eventColors(action),
-      textColor: "rgb(0, 0, 0)",
+      extendedProps: {
+        cry: action.cry,
+        milk_amount: action.milk_amount,
+        description: action.memo,
+        textColor: "rgb(0, 0, 0)",
+      },
     };
   });
 
@@ -104,7 +129,7 @@ export const Calender = ({ actions, fetch }) => {
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="timeGridDay"
-        locales={jaLocale}
+        locales={[jaLocale]}
         locale="ja"
         timeZone="local"
         selectable={true}
@@ -144,13 +169,14 @@ export const Calender = ({ actions, fetch }) => {
         slotLabelInterval={"01:00:00"} //時間の表示間隔
         editable={true}
       />
-      <BabyActionEditModal
-        showFlag={isEditModalOpen}
-        events={events}
-        onCloseEditModal={onCloseEditModal}
-        fetch={fetch}
-      />
-
+      {events && (
+        <BabyActionEditModal
+          showFlag={isEditModalOpen}
+          events={events}
+          onCloseEditModal={onCloseEditModal}
+          fetch={fetch}
+        />
+      )}
       <BabyActionCreateModal
         showFlag={isCreateModalOpen}
         fetch={fetch}

@@ -17,6 +17,7 @@ import { FaUtensilSpoon } from "react-icons/fa";
 import { FaPoop } from "react-icons/fa";
 import { IoIosWater } from "react-icons/io";
 import { FaBaby } from "react-icons/fa";
+import type { EditEventData } from "../types/event";
 dayjs.locale(ja);
 
 const style = {
@@ -42,19 +43,9 @@ const TextFieldStyle = {
   padding: "0px",
 };
 
-type EventData = {
-  id: string;
-  title: number;
-  cry: boolean;
-  start: string;
-  end: string;
-  milk_amount: string;
-  description: string;
-};
-
 type BabyActionEditModalProps = {
   showFlag: boolean;
-  events: EventData;
+  events: EditEventData;
   onCloseEditModal: () => void;
   fetch: () => Promise<void>;
 };
@@ -65,8 +56,8 @@ type InputState = {
   cry: boolean;
   start_date: string;
   end_date: string;
-  milk_amount: string;
-  memo: string;
+  milk_amount: number | null;
+  memo: string | null;
 };
 
 const ACTION_ID = [
