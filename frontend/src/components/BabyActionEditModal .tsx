@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import { CustomButton } from "./CustomButton";
 import Checkbox from "@mui/material/Checkbox";
-import Select from "@mui/material/Select";
+import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -59,27 +59,37 @@ type BabyActionEditModalProps = {
   fetch: () => Promise<void>;
 };
 
+type InputState = {
+  baby_id: string;
+  action: string | number;
+  cry: boolean;
+  start_date: string;
+  end_date: string;
+  milk_amount: string;
+  memo: string;
+};
+
+const ACTION_ID = [
+  { id: 1, label: "寝る", icon: <GiNightSleep /> },
+  { id: 2, label: "授乳", icon: <GiBabyBottle /> },
+  { id: 3, label: "ご飯", icon: <FaUtensilSpoon /> },
+  { id: 4, label: "うんち", icon: <FaPoop /> },
+  { id: 5, label: "おしっこ", icon: <IoIosWater /> },
+  { id: 6, label: "うんち/おしっこ", icon: <FaBaby /> },
+];
+
+const findId = (label: number | string) => {
+  //labelを渡してリスト内のlabelのIDを返す関数
+  const found = ACTION_ID.find((id) => id.label === label);
+  return found ? found.id : "";
+};
+
 export const BabyActionEditModal = ({
   showFlag,
   events,
   onCloseEditModal,
   fetch,
 }: BabyActionEditModalProps) => {
-  const ACTION_ID = [
-    { id: 1, label: "寝る", icon: <GiNightSleep /> },
-    { id: 2, label: "授乳", icon: <GiBabyBottle /> },
-    { id: 3, label: "ご飯", icon: <FaUtensilSpoon /> },
-    { id: 4, label: "うんち", icon: <FaPoop /> },
-    { id: 5, label: "おしっこ", icon: <IoIosWater /> },
-    { id: 6, label: "うんち/おしっこ", icon: <FaBaby /> },
-  ];
-
-  const findId = (label: number | string) => {
-    //labelを渡してリスト内のlabelのIDを返す関数
-    const found = ACTION_ID.find((id) => id.label === label);
-    return found ? found.id : "";
-  };
-
   const handleClose = () => onCloseEditModal();
 
   useEffect(() => {
@@ -95,7 +105,7 @@ export const BabyActionEditModal = ({
     });
   }, [showFlag]);
 
-  const [inputActions, setInputActions] = useState({
+  const [inputActions, setInputActions] = useState<InputState>({
     baby_id: events.id,
     action: findId(events.title),
     cry: events.cry,
@@ -130,13 +140,30 @@ export const BabyActionEditModal = ({
     }
   };
 
-  const handleInputChange =
-    (key: keyof EventData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback(
+    (
+      e:
+        | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        | SelectChangeEvent<any>
+    ) => {
+      const { name, value } = e.target;
       setInputActions((prev) => ({
         ...prev,
-        [key]: e.target.value,
+        [name]: value,
       }));
-    };
+    },
+    []
+  );
+
+  const handleCheckboxChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputActions((prev) => ({
+        ...prev,
+        cry: e.target.checked,
+      }));
+    },
+    []
+  );
 
   return (
     <>
@@ -157,11 +184,10 @@ export const BabyActionEditModal = ({
           </Typography>
           <Box component="form" onSubmit={editAction}>
             <Select
+              name="action"
               sx={TextFieldStyle}
               value={inputActions.action}
-              onChange={(e) =>
-                setInputActions({ ...inputActions, action: e.target.value })
-              }
+              onChange={handleChange}
             >
               {ACTION_ID.map((action) => (
                 <MenuItem key={action.id} value={action.id}>
@@ -171,6 +197,7 @@ export const BabyActionEditModal = ({
               ))}
             </Select>
             <TextField
+              name="start_date"
               type={"datetime-local"}
               label={"開始時刻"}
               slotProps={{
@@ -178,11 +205,10 @@ export const BabyActionEditModal = ({
               }}
               sx={TextFieldStyle}
               value={inputActions.start_date}
-              onChange={(e) =>
-                setInputActions({ ...inputActions, start_date: e.target.value })
-              }
+              onChange={handleChange}
             />
             <TextField
+              name="end_date"
               type={"datetime-local"}
               label={"終了時刻"}
               slotProps={{
@@ -190,23 +216,18 @@ export const BabyActionEditModal = ({
               }}
               sx={TextFieldStyle}
               value={inputActions.end_date}
-              onChange={(e) =>
-                setInputActions({ ...inputActions, end_date: e.target.value })
-              }
+              onChange={handleChange}
             />
             <TextField
+              name="memo"
               label={"メモ"}
               sx={TextFieldStyle}
               value={inputActions.memo ? inputActions.memo : ""}
-              onChange={(e) =>
-                setInputActions({
-                  ...inputActions,
-                  memo: e.target.value,
-                })
-              }
+              onChange={handleChange}
             />
             {inputActions.action === 2 ? (
               <TextField
+                name="milk_amount"
                 type="number"
                 label={"飲んだ量"}
                 sx={TextFieldStyle}
@@ -223,12 +244,7 @@ export const BabyActionEditModal = ({
                   },
                 }}
                 value={inputActions.milk_amount}
-                onChange={(e) =>
-                  setInputActions({
-                    ...inputActions,
-                    milk_amount: e.target.value,
-                  })
-                }
+                onChange={handleChange}
               />
             ) : (
               ""
@@ -236,13 +252,9 @@ export const BabyActionEditModal = ({
             <Box sx={{ justifyContent: "center" }}>
               泣いてた？
               <Checkbox
+                name="cry"
                 checked={Boolean(inputActions.cry)}
-                onChange={(e) =>
-                  setInputActions({
-                    ...inputActions,
-                    cry: e.target.checked,
-                  })
-                }
+                onChange={handleCheckboxChange}
               />
               <Box>
                 <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
