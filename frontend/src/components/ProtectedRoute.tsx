@@ -4,8 +4,12 @@ import axios from "../api/axios";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 
-export const ProtectedRoute = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+type ProtectedRouteProps = {
+  children: React.ReactNode;
+};
+
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<null | boolean>(null);
 
   const checkAuth = async () => {
     try {
