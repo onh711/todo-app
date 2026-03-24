@@ -91,16 +91,18 @@ export const LoginForm = () => {
       });
 
       navigate("/dashboard");
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e);
 
       // サーバーエラーの処理
-      if (e.response) {
+      if (axios.isAxiosError(e) && e.response) {
         if (e.response.status === 401) {
           setServerError("メールアドレスまたはパスワードが正しくありません");
         } else {
           setServerError("ログインに失敗しました。もう一度お試しください");
         }
+      } else {
+        setServerError("通信エラーが発生しました。時間をおいて再度お試しください");
       }
     }
   };
@@ -149,9 +151,13 @@ export const LoginForm = () => {
               helperText={errors.password}
             />
             <Box sx={{ textAlign: "center" }}>
-              <CustomButton detail={{ text: "ログイン", bgcolor: "#1976d2" }} />
+              <CustomButton
+                type="submit"
+                detail={{ text: "ログイン", bgcolor: "#1976d2" }}
+              />
               <Link to="/register">
                 <CustomButton
+                  type="button"
                   detail={{ text: "新規登録", bgcolor: "#1976d2" }}
                 />
               </Link>

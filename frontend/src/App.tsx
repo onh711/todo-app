@@ -4,7 +4,10 @@ import { Register } from "./components/Register";
 import { TaskList } from "./components/TaskList";
 import { Header } from "./components/Header";
 import { DashBoard } from "./components/DashBoard";
-import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
+import { Statistics } from "./components/Statistics";
+import { MyPage } from "./components/MyPage";
+import { ProfileEdit } from "./components/ProfileEdit";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -27,6 +30,30 @@ function App() {
           element={
             <ProtectedRoute>
               <DashBoard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/statistics"
+          element={
+            <ProtectedRoute>
+              <Statistics />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mypage"
+          element={
+            <ProtectedRoute>
+              <MyPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <ProtectedRoute>
+              <ProfileEdit />
             </ProtectedRoute>
           }
         />

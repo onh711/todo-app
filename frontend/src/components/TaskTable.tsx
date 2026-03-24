@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Edit } from "./Edit";
-import axios from "axios";
+import axios from "../api/axios";
 import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
@@ -12,7 +12,7 @@ import dayjs from "dayjs";
 import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
-import type { Task } from "../types/task";
+import type { Task, TaskStatusText } from "../types/task";
 
 type TaskTableProps = {
   tasks: Task[];
@@ -20,10 +20,17 @@ type TaskTableProps = {
 };
 
 export const TaskTable = ({ onChange, tasks }: TaskTableProps) => {
+  const STATUS_COLORS: Record<TaskStatusText, string> = {
+    未着手: "#C9E6EE",
+    進行中: "#FFD4B8",
+    完了: "#A8E6CF",
+    期限切れ: "#FF667D",
+  };
+
   const deleteTask = async (id: number) => {
     if (window.confirm("本当に削除しますか？")) {
       try {
-        const API_URL = `http://localhost/api/tasks/${id}`;
+        const API_URL = `/api/tasks/${id}`;
         await axios.delete(API_URL);
         onChange(); //タスクリストの更新関数
       } catch (e) {
@@ -33,18 +40,7 @@ export const TaskTable = ({ onChange, tasks }: TaskTableProps) => {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "未着手":
-        return "#C9E6EE";
-      case "進行中":
-        return "#FFD4B8";
-      case "完了":
-        return "#A8E6CF";
-      case "期限切れ":
-        return "#FF667D";
-    }
-  };
+  const getStatusColor = (status: TaskStatusText): string => STATUS_COLORS[status];
 
   return (
     <>

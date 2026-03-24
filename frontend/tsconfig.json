@@ -16,12 +16,10 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     // "types": ["node"],
     // and npm install -D @types/node
-    "allowJs": true,
+    "allowJs": false,
     "noEmit": true,
     // Other Outputs
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,

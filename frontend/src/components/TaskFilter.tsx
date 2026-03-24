@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
+import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
@@ -33,10 +33,13 @@ const FILTER_OPTIONS = [
   { value: "expired", label: "期限切れのタスク" },
 ] as const;
 
+type SortOption = (typeof SORT_OPTIONS)[number]["value"] | "";
+type FilterOption = (typeof FILTER_OPTIONS)[number]["value"];
+
 export const TaskFilter = ({ tasks, onChange }: TaskFilterProps) => {
   const [searchWord, setSearchWord] = useState<string>("");
-  const [taskFilters, setTaskFilters] = useState<string>("all");
-  const [taskSorts, setTaskSorts] = useState<string>("");
+  const [taskFilters, setTaskFilters] = useState<FilterOption>("all");
+  const [taskSorts, setTaskSorts] = useState<SortOption>("");
 
   //ワード検索機能
   const wordFilter =
@@ -88,6 +91,14 @@ export const TaskFilter = ({ tasks, onChange }: TaskFilterProps) => {
     }
   });
 
+  const handleSortChange = (e: SelectChangeEvent<SortOption>) => {
+    setTaskSorts(e.target.value as SortOption);
+  };
+
+  const handleFilterChange = (e: SelectChangeEvent<FilterOption>) => {
+    setTaskFilters(e.target.value as FilterOption);
+  };
+
   return (
     <>
       <Container
@@ -106,11 +117,11 @@ export const TaskFilter = ({ tasks, onChange }: TaskFilterProps) => {
         />
         <FormControl sx={{ width: 1 / 4 }}>
           <InputLabel>並べ替え</InputLabel>
-          <Select
-            value={taskSorts}
-            label="並べ替え"
-            onChange={(e) => setTaskSorts(e.target.value)}
-          >
+            <Select
+              value={taskSorts}
+              label="並べ替え"
+              onChange={handleSortChange}
+            >
             {SORT_OPTIONS.map((item) => (
               <MenuItem key={item.value} value={item.value}>
                 {item.label}
@@ -120,11 +131,11 @@ export const TaskFilter = ({ tasks, onChange }: TaskFilterProps) => {
         </FormControl>
         <FormControl sx={{ width: 1 / 4 }}>
           <InputLabel>フィルター</InputLabel>
-          <Select
-            value={taskFilters}
-            label="フィルター"
-            onChange={(e) => setTaskFilters(e.target.value)}
-          >
+            <Select
+              value={taskFilters}
+              label="フィルター"
+              onChange={handleFilterChange}
+            >
             {FILTER_OPTIONS.map((item) => (
               <MenuItem key={item.value} value={item.value}>
                 {item.label}

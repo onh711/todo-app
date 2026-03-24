@@ -1,12 +1,12 @@
 import * as React from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import { CustomButton } from "./CustomButton.js";
+import { CustomButton } from "./CustomButton";
 
 const style = {
   position: "absolute",
@@ -68,7 +68,7 @@ export const Create = ({ onAdd }: CreateProps) => {
     if (!handleValidate()) {
       return;
     }
-    const API_URL = "http://localhost/api/tasks";
+    const API_URL = "/api/tasks";
     try {
       await axios.post(API_URL, { ...inputData });
       onAdd();
@@ -202,8 +202,12 @@ export const Create = ({ onAdd }: CreateProps) => {
               onChange={handleInputChange("content")}
             />
             <Box sx={{ justifyContent: "center", height: "100%" }}>
-              <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
               <CustomButton
+                type="submit"
+                detail={{ text: "登録", bgcolor: "#1976d2" }}
+              />
+              <CustomButton
+                type="button"
                 onClick={handleClose}
                 detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
               />

@@ -1,10 +1,10 @@
 import React from "react";
-import { Calender } from "./Calender.jsx";
+import { Calender } from "./Calender";
 import { useEffect, useState } from "react";
-import axios from "../api/axios.js";
-import { BabyActionCreate } from "./BabyActionCreate.js";
+import axios from "../api/axios";
+import { BabyActionCreate } from "./BabyActionCreate";
 import Box from "@mui/material/Box";
-import { TaskTable } from "./TaskTable.js";
+import { TaskTable } from "./TaskTable";
 import { Create } from "./Create";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
@@ -13,30 +13,20 @@ import isBetween from "dayjs/plugin/isBetween";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
-import { TaskDrawer } from "./TaskDrawer.js";
-import type { Task } from "../types/task.js";
+import { TaskDrawer } from "./TaskDrawer";
+import type { Task } from "../types/task";
+import type { BabyAction } from "../types/babyAction";
+import type { DashboardResponse, TasksResponse } from "../types/api";
 dayjs.extend(isBetween);
 
-type Action = {
-  id: number;
-  baby_id: number;
-  action: number;
-  cry: boolean;
-  start_date: string;
-  end_date: string;
-  milk_amount: number | null;
-  memo: string | null;
-};
-
 export const DashBoard = () => {
-  const [actions, setActions] = useState<Action[]>([]);
+  const [actions, setActions] = useState<BabyAction[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const featchActions = async (): Promise<void> => {
-    const res = await axios.get("/api/dashboard");
     try {
+      const res = await axios.get<DashboardResponse>("/api/dashboard");
       setActions(res.data.baby_actions);
-      console.log(res.data.baby_actions);
     } catch (e) {
       console.error(e);
     }
@@ -44,7 +34,7 @@ export const DashBoard = () => {
 
   const featchTasks = async (): Promise<void> => {
     try {
-      const res = await axios.get("/api/tasks");
+      const res = await axios.get<TasksResponse>("/api/tasks");
       setTasks(res.data.tasks);
     } catch (e) {
       console.error(e);

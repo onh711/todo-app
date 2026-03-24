@@ -6,15 +6,16 @@ import interactionPlugin, {
   type EventResizeDoneArg,
 } from "@fullcalendar/interaction";
 import { useState } from "react";
-import { BabyActionEditModal } from "./BabyActionEditModal ";
+import { BabyActionEditModal } from "./BabyActionEditModal";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import axios from "axios";
+import axios from "../api/axios";
 import { BabyActionCreateModal } from "./BabyActionCreateModal";
-import type { EventDropArg } from "@fullcalendar/core/index.js";
+import type { EventDropArg } from "@fullcalendar/core";
 import type { EditEventData } from "../types/event";
+import type { BabyAction, BabyActionType } from "../types/babyAction";
 
 // UTCプラグインを読み込み
 dayjs.extend(utc);
@@ -25,24 +26,12 @@ dayjs.locale("ja");
 // タイムゾーンのデフォルトをJST化
 dayjs.tz.setDefault("Asia/Tokyo");
 
-type Action = {
-  id: number;
-  baby_id: number;
-  action: number;
-  action_text?: string;
-  cry: boolean;
-  start_date: string;
-  end_date: string;
-  milk_amount: number | null;
-  memo: string | null;
-};
-
 type CalenderProps = {
-  actions: Action[];
+  actions: BabyAction[];
   fetch: () => Promise<void>;
 };
 
-const ACTION_ID = [
+const ACTION_ID: ReadonlyArray<{ id: BabyActionType; label: string }> = [
   { id: 1, label: "寝る" },
   { id: 2, label: "授乳" },
   { id: 3, label: "ご飯" },
@@ -65,22 +54,27 @@ export const Calender = ({ actions, fetch }: CalenderProps) => {
     setCreateModalOpen(false);
   };
 
-  const findId = (label: string) => {
+  const findId = (label: string): BabyActionType | null => {
     //labelを渡してリスト内のlabelのIDを返す関数
     const found = ACTION_ID.find((id) => id.label === label);
-    return found ? found.id : "";
+    return found ? found.id : null;
   };
 
   const handleEventDrop = async (info: EventDropArg | EventResizeDoneArg) => {
     const { event } = info;
+    const actionId = findId(event.title);
+    if (actionId === null) {
+      console.error("不明なイベント種別:", event.title);
+      return;
+    }
     const updatedEventData = {
       id: event.id,
-      action: findId(event.title),
+      action: actionId,
       start_date: dayjs(event.start).format("YYYY-MM-DD HH:mm:ss"),
       end_date: dayjs(event.end).format("YYYY-MM-DD HH:mm:ss"),
     };
 
-    const API_URL = `http://localhost/api/drop/${event.id}`;
+    const API_URL = `/api/drop/${event.id}`;
     try {
       await axios.put(API_URL, updatedEventData);
       fetch();
@@ -90,7 +84,7 @@ export const Calender = ({ actions, fetch }: CalenderProps) => {
   };
 
   const eventList = actions.map((action) => {
-    const eventColors = (action: Action) => {
+    const eventColors = (action: BabyAction) => {
       switch (action.action_text) {
         case "寝る":
           return "#a3ffa3";
@@ -155,7 +149,6 @@ export const Calender = ({ actions, fetch }: CalenderProps) => {
         eventClick={(e) => {
           setEditModalOpen(true);
           setEvents({
-            ...events,
             id: e.event.id,
             title: e.event.title,
             cry: e.event.extendedProps.cry,

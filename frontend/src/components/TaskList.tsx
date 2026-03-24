@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from "react";
-import axios from "../api/axios.js";
+import axios from "../api/axios";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { TaskFilter } from "./TaskFilter";
-import type { Task } from "../types/task.js";
-
-type TasksResponse = {
-  tasks: Task[];
-};
+import type { Task } from "../types/task";
+import type { TasksResponse } from "../types/api";
 
 export const TaskList = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const fetchTasks = async () => {
+  const fetchTasks = async (): Promise<void> => {
     try {
       const API_URL = "/api/tasks";
       const res = await axios.get<TasksResponse>(API_URL);
       setTasks(res.data.tasks);
     } catch (e) {
-      return e;
+      console.error("タスク取得エラー:", e);
     }
   };
 

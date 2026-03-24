@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../api/axios";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import Tooltip from "@mui/material/Tooltip";
@@ -46,7 +46,7 @@ export const BabyActionCreate = ({ fetch }: BabyActionCreateProp) => {
   };
 
   const fetchAction = async (actionNum: number) => {
-    const API_URL = "http://localhost/api/dashboard";
+    const API_URL = "/api/dashboard";
     try {
       await axios.post(API_URL, babyActionCreate(actionNum));
       fetch();

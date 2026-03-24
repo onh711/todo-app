@@ -7,7 +7,7 @@ import { CustomButton } from "./CustomButton";
 import Checkbox from "@mui/material/Checkbox";
 import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import axios from "axios";
+import axios from "../api/axios";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -52,12 +52,12 @@ type BabyActionEditModalProps = {
 
 type InputState = {
   baby_id: string;
-  action: string | number;
+  action: number;
   cry: boolean;
   start_date: string;
   end_date: string;
-  milk_amount: number | null;
-  memo: string | null;
+  milk_amount: string;
+  memo: string;
 };
 
 const ACTION_ID = [
@@ -69,10 +69,10 @@ const ACTION_ID = [
   { id: 6, label: "うんち/おしっこ", icon: <FaBaby /> },
 ];
 
-const findId = (label: number | string) => {
+const findId = (label: string | number): number => {
   //labelを渡してリスト内のlabelのIDを返す関数
   const found = ACTION_ID.find((id) => id.label === label);
-  return found ? found.id : "";
+  return found ? found.id : 1;
 };
 
 export const BabyActionEditModal = ({
@@ -84,17 +84,17 @@ export const BabyActionEditModal = ({
   const handleClose = () => onCloseEditModal();
 
   useEffect(() => {
-    setInputActions({
-      ...inputActions,
+    setInputActions((prev) => ({
+      ...prev,
       baby_id: events.id,
       action: findId(events.title),
       cry: events.cry,
       start_date: dayjs(events.start).format("YYYY-MM-DD HH:mm"),
       end_date: dayjs(events.end).format("YYYY-MM-DD HH:mm"),
-      milk_amount: events.milk_amount,
-      memo: events.description,
-    });
-  }, [showFlag]);
+      milk_amount: events.milk_amount?.toString() ?? "",
+      memo: events.description ?? "",
+    }));
+  }, [events, showFlag]);
 
   const [inputActions, setInputActions] = useState<InputState>({
     baby_id: events.id,
@@ -102,15 +102,22 @@ export const BabyActionEditModal = ({
     cry: events.cry,
     start_date: dayjs(events.start).format("YYYY-MM-DD HH:mm"),
     end_date: dayjs(events.end).format("YYYY-MM-DD HH:mm"),
-    milk_amount: events.milk_amount,
-    memo: events.description,
+    milk_amount: events.milk_amount?.toString() ?? "",
+    memo: events.description ?? "",
   });
 
   const editAction = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const API_URL = `http://localhost/api/dashboard/${events.id}`;
+    const API_URL = `/api/dashboard/${events.id}`;
+    const payload = {
+      ...inputActions,
+      milk_amount:
+        inputActions.action === 2 && inputActions.milk_amount !== ""
+          ? Number(inputActions.milk_amount)
+          : null,
+    };
     try {
-      await axios.put(API_URL, inputActions);
+      await axios.put(API_URL, payload);
       handleClose();
       fetch();
     } catch (e) {
@@ -121,7 +128,7 @@ export const BabyActionEditModal = ({
   const deleteAction = async () => {
     if (window.confirm("本当に削除しますか？")) {
       try {
-        const API_URL = `http://localhost/api/dashboard/${events.id}`;
+        const API_URL = `/api/dashboard/${events.id}`;
         await axios.delete(API_URL);
         handleClose();
         fetch(); //タスクリストの更新関数
@@ -135,12 +142,12 @@ export const BabyActionEditModal = ({
     (
       e:
         | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        | SelectChangeEvent<any>
+        | SelectChangeEvent<number>
     ) => {
       const { name, value } = e.target;
       setInputActions((prev) => ({
         ...prev,
-        [name]: value,
+        [name]: name === "action" ? Number(value) : value,
       }));
     },
     []
@@ -248,12 +255,17 @@ export const BabyActionEditModal = ({
                 onChange={handleCheckboxChange}
               />
               <Box>
-                <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
                 <CustomButton
+                  type="submit"
+                  detail={{ text: "登録", bgcolor: "#1976d2" }}
+                />
+                <CustomButton
+                  type="button"
                   onClick={deleteAction}
                   detail={{ text: "削除", bgcolor: "#595c5fff" }}
                 />
                 <CustomButton
+                  type="button"
                   onClick={handleClose}
                   detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
                 />

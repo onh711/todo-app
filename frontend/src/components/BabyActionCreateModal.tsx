@@ -7,7 +7,7 @@ import { CustomButton } from "./CustomButton";
 import Checkbox from "@mui/material/Checkbox";
 import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import axios from "axios";
+import axios from "../api/axios";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -51,7 +51,7 @@ type BabyActionCreateModalProps = {
 
 type InputActions = {
   action: number;
-  cry: number;
+  cry: boolean;
   start_date: string;
   end_date: string;
   milk_amount: string;
@@ -77,7 +77,7 @@ export const BabyActionCreateModal = ({
 
   const [inputActions, setInputActions] = useState<InputActions>({
     action: 1,
-    cry: 0,
+    cry: false,
     start_date: dayjs(clickDate).format("YYYY-MM-DD HH:mm"),
     end_date: dayjs(clickDate).add(5, "m").format("YYYY-MM-DD HH:mm"),
     milk_amount: "",
@@ -85,18 +85,26 @@ export const BabyActionCreateModal = ({
   });
 
   useEffect(() => {
-    setInputActions({
-      ...inputActions,
+    setInputActions((prev) => ({
+      ...prev,
       start_date: dayjs(clickDate).format("YYYY-MM-DD HH:mm"),
       end_date: dayjs(clickDate).add(5, "m").format("YYYY-MM-DD HH:mm"),
-    });
-  }, [showFlag]);
+    }));
+  }, [clickDate, showFlag]);
 
   const createAction = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const API_URL = `http://localhost/api/dashboard`;
+    const API_URL = "/api/dashboard";
+    const payload = {
+      ...inputActions,
+      cry: inputActions.cry ? 1 : 0,
+      milk_amount:
+        inputActions.action === 2 && inputActions.milk_amount !== ""
+          ? Number(inputActions.milk_amount)
+          : null,
+    };
     try {
-      await axios.post(API_URL, inputActions);
+      await axios.post(API_URL, payload);
       handleClose();
       fetch();
     } catch (e) {
@@ -105,17 +113,20 @@ export const BabyActionCreateModal = ({
   };
 
   const handleInputChange =
-    (key: keyof InputActions) =>
-    (
-      e:
-        | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        | SelectChangeEvent<number>
-    ) => {
+    (key: "start_date" | "end_date" | "memo" | "milk_amount") =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setInputActions((prev) => ({
         ...prev,
         [key]: e.target.value,
       }));
     };
+
+  const handleActionChange = (e: SelectChangeEvent<number>) => {
+    setInputActions((prev) => ({
+      ...prev,
+      action: Number(e.target.value),
+    }));
+  };
 
   return (
     <>
@@ -138,7 +149,7 @@ export const BabyActionCreateModal = ({
             <Select
               sx={TextFieldStyle}
               value={inputActions.action}
-              onChange={handleInputChange("action")}
+              onChange={handleActionChange}
             >
               {ACTION_ID.map((action) => (
                 <MenuItem key={action.id} value={action.id}>
@@ -203,13 +214,17 @@ export const BabyActionCreateModal = ({
                 onChange={(e) =>
                   setInputActions((prev) => ({
                     ...prev,
-                    cry: e.target.checked ? 1 : 0,
+                    cry: e.target.checked,
                   }))
                 }
               />
               <Box>
-                <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
                 <CustomButton
+                  type="submit"
+                  detail={{ text: "登録", bgcolor: "#1976d2" }}
+                />
+                <CustomButton
+                  type="button"
                   onClick={handleClose}
                   detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
                 />

@@ -18,10 +18,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
+        User::firstOrCreate([
+            'mail_address' => 'test@example.com',
+        ], [
             'name' => 'Test User',
-            'mail_address' => 'test@example.com', 
             'password' => Hash::make('password'),
+        ]);
+
+        $this->call([
+            BabyActionGrowthSeasonSeeder::class,
+            BabyActionFebruary2026Seeder::class,
         ]);
     }
 }

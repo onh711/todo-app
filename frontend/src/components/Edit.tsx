@@ -1,5 +1,5 @@
 import * as React from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,7 +10,7 @@ import { CustomButton } from "./CustomButton";
 import MenuItem from "@mui/material/MenuItem";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import Tooltip from "@mui/material/Tooltip";
-import type { Task } from "../types/task";
+import type { Task, TaskStatus, TaskStatusText } from "../types/task";
 
 const style = {
   position: "absolute",
@@ -54,16 +54,16 @@ export const Edit = ({ task, onChange }: EditProps) => {
     status: task.status,
   });
 
-  const selectStatus = [
+  const selectStatus: ReadonlyArray<{ label: TaskStatusText; value: TaskStatus }> = [
     { label: "未着手", value: 1 },
     { label: "進行中", value: 2 },
     { label: "完了", value: 3 },
     { label: "期限切れ", value: 4 },
   ];
 
-  const editTask = async (e: React.FormEvent<HTMLFormElement>) => {
+  const editTask = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const API_URL = `http://localhost/api/tasks/${task.id}`;
+    const API_URL = `/api/tasks/${task.id}`;
     try {
       await axios.put(API_URL, inputData);
       onChange(); //タスクリストの更新関数
@@ -73,11 +73,19 @@ export const Edit = ({ task, onChange }: EditProps) => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleTextChange =
+    (key: "title" | "start_date" | "due_date" | "content") =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputData((prev) => ({
+        ...prev,
+        [key]: e.target.value,
+      }));
+    };
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputData((prev) => ({
       ...prev,
-      [name]: value,
+      status: Number(e.target.value) as TaskStatus,
     }));
   };
 
@@ -119,14 +127,12 @@ export const Edit = ({ task, onChange }: EditProps) => {
             sx={{ textAlign: "center" }}
           >
             <TextField
-              name="title"
               label={"タスク名"}
               sx={TextFieldStyle}
               value={inputData.title}
-              onChange={handleChange}
+              onChange={handleTextChange("title")}
             />
             <TextField
-              name="start_date"
               type={"datetime-local"}
               label={"開始日時"}
               value={inputData.start_date}
@@ -134,10 +140,9 @@ export const Edit = ({ task, onChange }: EditProps) => {
                 inputLabel: { shrink: true },
               }}
               sx={TextFieldStyle}
-              onChange={handleChange}
+              onChange={handleTextChange("start_date")}
             />
             <TextField
-              name="due_date"
               type={"datetime-local"}
               label={"完了期限"}
               value={inputData.due_date}
@@ -145,22 +150,20 @@ export const Edit = ({ task, onChange }: EditProps) => {
                 inputLabel: { shrink: true },
               }}
               sx={TextFieldStyle}
-              onChange={handleChange}
+              onChange={handleTextChange("due_date")}
             />
             <TextField
-              name="content"
               label={"タスク詳細"}
               sx={TextFieldStyle}
               value={inputData.content}
-              onChange={handleChange}
+              onChange={handleTextChange("content")}
             />
             <TextField
-              name="status"
               label={"状態"}
               select
               sx={TextFieldStyle}
               value={inputData.status}
-              onChange={handleChange}
+              onChange={handleStatusChange}
             >
               {selectStatus.map((item, index) => (
                 <MenuItem key={index} value={item.value}>
@@ -170,8 +173,12 @@ export const Edit = ({ task, onChange }: EditProps) => {
             </TextField>
 
             <Box sx={{ justifyContent: "center" }}>
-              <CustomButton detail={{ text: "編集", bgcolor: "#1976d2" }} />
               <CustomButton
+                type="submit"
+                detail={{ text: "編集", bgcolor: "#1976d2" }}
+              />
+              <CustomButton
+                type="button"
                 onClick={handleClose}
                 detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
               />

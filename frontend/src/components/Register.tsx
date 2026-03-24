@@ -1,27 +1,13 @@
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/system";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { CustomButton } from "./CustomButton";
 import axios from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
-
-const Container = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "100vh",
-  backgroundColor: "#f0f0f0",
-});
-
-const LoginCard = styled("div")({
-  backgroundColor: "#fff",
-  padding: "20px",
-  borderRadius: "10px",
-  boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-});
+import { FormCardLayout } from "./shared/FormCardLayout";
+import { ProfileFields } from "./shared/ProfileFields";
+import type { ValidationErrorResponse } from "../types/api";
 
 type UserInfo = {
   name: string;
@@ -128,84 +114,52 @@ export const Register = () => {
       await axios.post("/api/register", { ...registInfo });
       alert("会員登録を作成しました");
       navigate("/");
-    } catch (e: any) {
-      const mailError = e.response?.data?.errors?.mail_address?.[0];
-      if (mailError?.includes("already")) {
-        setServerError("このメールアドレスは既に登録されています");
-      } else {
-        setServerError("登録に失敗しました");
+    } catch (e: unknown) {
+      if (axios.isAxiosError<ValidationErrorResponse>(e)) {
+        const mailError = e.response?.data?.errors?.mail_address?.[0];
+        if (typeof mailError === "string" && mailError.includes("already")) {
+          setServerError("このメールアドレスは既に登録されています");
+          return;
+        }
       }
+      setServerError("登録に失敗しました");
     }
   };
 
   return (
-    <>
-      <Container>
-        <LoginCard>
-          <Typography variant="h5" gutterBottom sx={{ textAlign: "center" }}>
-            新規登録
+    <FormCardLayout title="新規登録">
+      <form onSubmit={handleSubmit}>
+        {serverError && (
+          <Typography color="error" sx={{ mb: 2, textAlign: "center", fontSize: "0.9rem" }}>
+            {serverError}
           </Typography>
-          <form onSubmit={handleSubmit}>
-            {serverError && (
-              <Typography
-                color="error"
-                sx={{ mb: 2, textAlign: "center", fontSize: "0.9rem" }}
-              >
-                {serverError}
-              </Typography>
-            )}
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              label="氏名"
-              value={registInfo.name}
-              onChange={handleInputChange("name")}
-              error={!!errors.name}
-              helperText={errors.name}
+        )}
+        <ProfileFields
+          values={registInfo}
+          errors={errors}
+          onChange={handleInputChange}
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          label="パスワード"
+          value={registInfo.password}
+          type="password"
+          onChange={handleInputChange("password")}
+          error={!!errors.password}
+          helperText={errors.password}
+        />
+        <Box sx={{ textAlign: "center" }}>
+          <CustomButton type="submit" detail={{ text: "登録", bgcolor: "#1976d2" }} />
+          <Link to="/login">
+            <CustomButton
+              type="button"
+              detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
             />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              label="メールアドレス"
-              value={registInfo.mail_address}
-              onChange={handleInputChange("mail_address")}
-              error={!!errors.mail_address}
-              helperText={errors.mail_address}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              label="パスワード"
-              value={registInfo.password}
-              type="password"
-              onChange={handleInputChange("password")}
-              error={!!errors.password}
-              helperText={errors.password}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              label="子供の名前"
-              value={registInfo.baby_name}
-              onChange={handleInputChange("baby_name")}
-              error={!!errors.baby_name}
-              helperText={errors.baby_name}
-            />
-            <Box sx={{ textAlign: "center" }}>
-              <CustomButton detail={{ text: "登録", bgcolor: "#1976d2" }} />
-              <Link to="/login">
-                <CustomButton
-                  detail={{ text: "キャンセル", bgcolor: "#c55858ff" }}
-                />
-              </Link>
-            </Box>
-          </form>
-        </LoginCard>
-      </Container>
-    </>
+          </Link>
+        </Box>
+      </form>
+    </FormCardLayout>
   );
 };

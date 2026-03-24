@@ -20,6 +20,8 @@
     "@fullcalendar/timegrid": "^6.1.19",
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
+    "@mui/x-charts": "^8.27.4",
+    "@mui/x-date-pickers": "^8.27.2",
     "axios": "^1.13.2",
     "dayjs": "^1.11.19",
     "react": "^19.2.0",
@@ -37,6 +39,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1",
     "vite": "^7.2.2"
   }
 }

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import axios from "../api/axios.js";
+import axios from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Slide from "@mui/material/Slide";
@@ -42,6 +42,12 @@ export const Header = () => {
             </Button>
             <Button component={Link} to="/tasks" color="inherit">
               タスク一覧
+            </Button>
+            <Button component={Link} to="/statistics" color="inherit">
+              統計
+            </Button>
+            <Button component={Link} to="/mypage" color="inherit">
+              マイページ
             </Button>
             <Button onClick={logout} color="inherit">
               ログアウト
